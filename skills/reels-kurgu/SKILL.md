@@ -18,11 +18,17 @@ Bunu kuranların çoğu ilk kez Claude Code kullanıyor ve kurgu bilmiyor.
 
 ## Dosyalar nerede
 
-- **Araçlar:** bu dosyanın yanındaki `araclar/` klasöründe. Aşağıda `araclar/…` yazan her komutu bu skill'in klasörünün tam yoluyla çalıştır.
-- **Kişinin videoları:** `~/Movies/Reels Kurgu/` (Finder'da Filmler → Reels Kurgu). Her video kendi klasöründe: `~/Movies/Reels Kurgu/<yıl-ay-gün> <kısa ad>/`.
+- **Araçlar:** kurulu kopyanın içinde, `~/.claude/skills/reels-kurgu/araclar/` klasöründe (bu dosyanın yanındaki `araclar/`). Aşağıda `araclar/…` yazan her komut `~/.claude/skills/reels-kurgu/araclar/…` demektir. `~/.reels-kurgu/kaynak` içindeki kopya yalnızca kurulum ve güncelleme içindir; araçları oradan çalıştırma.
+- **Kişinin videoları:** `~/Movies/Reels Kurgu/` (Finder'da Filmler → Reels Kurgu). Her video kendi klasöründe durur.
 - **Stil dosyası:** `~/Movies/Reels Kurgu/stil.json`.
 
-Ham videoyu proje klasörüne **`ham`** adıyla kopyala (`ham.mov`, `ham.mp4`). Kişinin özgün dosyasına hiç dokunma.
+Her videoya proje klasörünü açarak başla:
+
+```bash
+node araclar/proje.mjs yeni "<kişinin verdiği video>" --ad "<kısa ad>"
+```
+
+Bu komut `~/Movies/Reels Kurgu/<yıl-ay-gün> <kısa ad>/` klasörünü açar ve videoyu içine `ham` adıyla kopyalar. Kişinin özgün dosyasına dokunulmaz. Kısa adı videonun konusundan sen ver (iki üç kelime; kişi bir ad söylediyse onu kullan). Aşağıdaki `<proje>` bu komutun yazdırdığı klasördür.
 
 ## Başlamadan önce
 
@@ -56,13 +62,14 @@ node araclar/bas-son.mjs "<proje>"
 
 - Ses temizliği gürültüyü azaltır ve sesi Instagram'ın beklediği düzeye getirir. UYARI yazarsa (rüzgâr, trafik) kişiye söyle; düzeltilemeyecek kadar gürültülü bir kaydı sessiz bir yerde yeniden çekmek en iyisidir.
 - Döküm `dokum.txt` dosyasını yazar. Baştan sona oku.
-- `bas-son.mjs` kaydın ilk ve son saniyelerinin karelerini verir. İki görsele bak.
+- `bas-son.mjs` konuşmanın başladığı ve bittiği anların çevresinden kareler verir (dökümden sonra çalıştır). İki görsele bak: kişi hangi karede kadraja yerleşmiş, hangi karede kayıttan çıkmaya başlamış?
 - Kayıt telefonda HDR çekilmişse (iPhone'un olağan ayarı) araç onu bir kez Reels'in renk aralığına çevirir. Bu, videonun süresi kadar zaman alır; başlamadan kişiye söyle. Sonuç Apple'ın kendi dönüşümüyle aynıdır, ayrıca bir şey yapman gerekmez. "Dönüştürülemedi" derse renkler soluk çıkar; kişiye telefonun kamera ayarından HDR videoyu kapatıp yeniden çekmesini söyle.
 
 ### 2. Kesimi ve grafikleri öner → `rehber/kesim.md`, `rehber/kartlar.md`
 
 - Kesim önerini `<proje>/kararlar.json` dosyasına yaz. `node araclar/kes.mjs "<proje>" --plan` ile süreye bak.
-- Grafik önerini `<proje>/kurgu.json` dosyasına `kartlar` olarak yaz. Yoğunluğu stil dosyasındaki `grafik` ayarı belirler. Her kart o anda söyleneni göstermeli; gösterecek bir şey yoksa kart ekleme.
+- Grafik önerini `<proje>/kurgu.json` dosyasına `kartlar` olarak yaz. Yoğunluğu stil dosyasındaki `grafik` ayarı belirler. Her kart o anda söyleneni göstermeli; gösterecek bir şey yoksa kart ekleme. Çok kısa bir videoda (10 saniyenin altı) hiç kart olmaması olağandır.
+- **Çağrı:** kişi videonun sonunda bir çağrı söylüyorsa oraya `cagri` kartı koy. Söylemiyorsa ve stil dosyasında bir çağrı cümlesi varsa kendiliğinden ekleme; sor: "Videonun sonuna 'Kaydet, sonra lazım olur' yazısını ekleyeyim mi?"
 - Yüzün kadrajdaki yerini `kurgu.json` dosyasına `yuz` olarak yaz (`bas-son` karelerinden oku).
 
 ### 3. Kişiye onaylat → `rehber/inceleme.md`
@@ -80,7 +87,7 @@ node araclar/kare.mjs "<proje>"
 
 - `aktar` kişinin kararlarını uygular ve sana bir **Yapılacaklar** listesi verebilir. Hepsini yap.
 - `kes.mjs` **DİNLEYİN** derse o saniyeleri kişiye söyle.
-- `kare.mjs` görseline bak: yazı kadrajda mı, yüzü kapatıyor mu, kart ile altyazı üst üste biniyor mu. Her kartın ortasından bir kare daha al (`--an 3.2,8.5`). Sorun varsa `kurgu.json` ya da stil ayarını düzelt ve yeniden bak. Kişiye bozuk bir önizleme gösterme.
+- `kare.mjs` görseline bak: yazı kadrajda mı, yüzü kapatıyor mu, kart ile altyazı üst üste biniyor mu. Her kartın ortasından bir kare daha al (`--an 3.2,8.5`; her çağrı kendi görselini yazar, öncekini silmez). Sorun varsa `kurgu.json` ya da stil ayarını düzelt ve yeniden bak. Kişiye bozuk bir önizleme gösterme.
 
 ### 5. Önizleme
 
@@ -89,7 +96,7 @@ node araclar/render.mjs "<proje>" --taslak
 node araclar/inceleme.mjs taslak "<proje>"
 ```
 
-Önizleme yaklaşık bir dakika sürer. Kişi inceleme sayfasının Önizleme sekmesinde izler, beğenmediği ana not bırakır. Notları `aktar` ile al, düzelt, yeni önizleme al. Kişi "tamam" diyene kadar son hâli alma.
+Önizleme yaklaşık bir dakika sürer. Kişi inceleme sayfasının Önizleme sekmesinde izler, beğenmediği ana not bırakır. Kişi sohbette "tamam" derse onay budur; sayfada yeniden düğmeye basması gerekmez. Yine de son hâlden önce `aktar` çalıştır: sayfada not ya da değişiklik bırakmışsa gelir, bırakmamışsa "değişiklik yok" der. Not varsa düzelt ve yeni önizleme al. Kişi "tamam" diyene kadar son hâli alma.
 
 ### 6. Son hâl ve kontrol
 

@@ -323,7 +323,11 @@ if (komut === 'aktar') {
   const geriAlinan = veri.oneri.kes.filter((i) => !simdikiKes.has(i));
   const kelimeYaz = (liste) => liste.slice(0, 12).map((i) => `"${veri.kelimeler[i]?.m}"`).join(' ') + (liste.length > 12 ? ' …' : '');
 
-  console.log(`Kararlar aktarıldı${k.durum === 'bitti' ? '' : ' (kişi henüz "İncelemeyi bitir" demedi)'}.`);
+  // Son aktarımdan beri sayfada bir şey değişti mi? Değişmediyse (kişi onayını sohbette verdiyse) uyarı gereksizdir.
+  const degismedi = k.uygulananOzet && k.uygulananOzet === kararOzeti(k) && !(k.notlar || []).length;
+  if (degismedi) console.log('Kararlar aktarıldı. Sayfada son aktarımdan beri değişiklik yok.');
+  else if (k.durum === 'bitti') console.log('Kararlar aktarıldı.');
+  else console.log('Kararlar aktarıldı. Not: kişi sayfada değişiklik yapmış ama henüz "İncelemeyi bitir" dememiş; devam etmeden önce bitirip bitirmediğini sorun.');
   console.log(`  Süre ${sureYaz(veri.sure)} → ${sureYaz(plan.sure)} · ${yeni.kes.length} kelime kesik · ${plan.duraklamalar.filter((d) => !d.tutuldu).length} duraklama kısalıyor`);
   if (eklenen.length) console.log(`  Kişinin ek olarak kestiği ${eklenen.length} kelime: ${kelimeYaz(eklenen)}`);
   if (geriAlinan.length) console.log(`  Kişinin geri aldığı ${geriAlinan.length} kelime: ${kelimeYaz(geriAlinan)}`);
@@ -391,6 +395,7 @@ if (komut === 'aktar') {
     hiz: yeni.hiz ?? veri.oneri.hiz, duzeltme: yeni.duzeltme, vurgu: yeni.vurgu, kartlar: {}, stilIstegi: { altyazi: {} }, notlar: [], durum: 'suruyor',
   };
   temiz.ozet = kararOzeti(temiz);
+  temiz.uygulananOzet = temiz.ozet; // sayfa bu alanı taşır; sonraki aktarımda "değişti mi" diye bakılır
   await writeFile(path.join(cikis, 'kararlar.json'), JSON.stringify(temiz));
 
   console.log('\nSıradaki adımlar: (yapılacaklar varsa onlar) → kes.mjs → altyazi.mjs --yeniden → kare.mjs → render.mjs --taslak → inceleme.mjs taslak');

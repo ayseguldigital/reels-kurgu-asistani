@@ -19,7 +19,7 @@ Dökümü okur, neyin kalıp neyin gideceğini önerirsin. Karar kişinindir: ö
 
 ## Ne kesilir
 
-1. **Baş ve son.** Kayıt çoğu zaman telefonu yerleştirirken başlar, kaydı durdurmaya uzanırken biter. `bas-son.mjs` karelerine bak: kişinin kadraja yerleşip kameraya baktığı ilk kareyi ve kayıttan çıkmaya başladığı kareyi bul. O anların dışını, üstünde konuşma olsa bile `bas` ve `bit` ile at.
+1. **Baş ve son.** Kayıt çoğu zaman telefonu yerleştirirken başlar, kaydı durdurmaya uzanırken biter. `bas-son.mjs` karelerine bak (kareler ilk kelimenin 3 saniye öncesinden ve son kelimenin 1 saniye öncesinden başlar; hangi karenin hangi saniye olduğunu araç yazar): kişinin kadraja yerleşip kameraya baktığı ilk kareyi ve kayıttan çıkmaya başladığı kareyi bul. O anların dışını, üstünde konuşma olsa bile `bas` ve `bit` ile at. İlk kelimeden önce kişi zaten yerleşmiş ve bekliyorsa `bas` yazmana gerek yoktur; konuşmadan önceki sessizlik kendiliğinden gider.
 2. **Çekim arası konuşma.** "Oldu mu?", "bir daha alıyorum", kamera arkasındaki kişiyle konuşma, gülüp toparlanma. Bunlar videoya ait değildir.
 3. **Tekrar çekimler.** Aynı cümle ya da bölüm birden çok kez söylendiyse **son denemeyi** tut, öncekileri kes; kişi çoğu zaman beğenene kadar tekrar eder. İki deneme belirgin biçimde farklıysa ikisini de kişiye göster, hangisini istediğini sor.
 4. **Yarım kalan cümleler.** Başlanıp bırakılan, sonra baştan alınan cümleler.
@@ -70,7 +70,7 @@ Yazdıktan sonra sonucu gör (hiçbir şey üretmez):
 node araclar/kes.mjs "<proje klasörü>" --plan
 ```
 
-Süreye bak. Reels için 20–60 saniye iyi bir aralıktır; 90 saniyeyi geçiyorsa neyin çıkarılabileceğini öner ama kişinin anlatmak istediğini kısaltma kararını ona bırak.
+Süreye bak. Reels için 20–60 saniye iyi bir aralıktır; 90 saniyeyi geçiyorsa neyin çıkarılabileceğini öner ama kişinin anlatmak istediğini kısaltma kararını ona bırak. Kısa çıkması sorun değildir: ham kayıt zaten kısaysa video 5–10 saniye olabilir. Süreyi uzatmak için kesilmesi gereken yerleri bırakma; yalnızca kişiye sürenin kaç saniye olduğunu söyle.
 
 ## Kişiye sunmak
 

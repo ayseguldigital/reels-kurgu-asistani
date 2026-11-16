@@ -83,3 +83,18 @@ test('art arda gelen zeminli kartların aralıkları birleşir', () => {
   ]);
   assert.deepEqual(a, [[1, 6], [9, 10]]);
 });
+
+test('her kart türünün rehberde bir bölümü var', async () => {
+  const { readFileSync } = await import('node:fs');
+  const rehber = readFileSync(new URL('../skills/reels-kurgu/rehber/kartlar.md', import.meta.url), 'utf8');
+  for (const tur of Object.keys(KART_TURLERI)) assert.ok(rehber.includes(`### ${tur}`), `kartlar.md içinde "${tur}" bölümü yok`);
+});
+
+test('talimat dosyasında adı geçen her araç depoda var', async () => {
+  const { readFileSync, existsSync, readdirSync } = await import('node:fs');
+  const kok = new URL('../skills/reels-kurgu/', import.meta.url);
+  const metinler = ['SKILL.md', ...readdirSync(new URL('rehber/', kok)).map((d) => `rehber/${d}`)].map((d) => readFileSync(new URL(d, kok), 'utf8')).join('\n');
+  const araclar = new Set([...metinler.matchAll(/araclar\/([a-z-]+\.mjs)/g)].map((m) => m[1]));
+  assert.ok(araclar.size >= 10);
+  for (const a of araclar) assert.ok(existsSync(new URL(`araclar/${a}`, kok)), `belgelerde geçen araclar/${a} depoda yok`);
+});

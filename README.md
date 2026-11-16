@@ -4,7 +4,7 @@ Kameraya konuştuğun ham videoyu Claude'a verirsin, kendi stilinde bitmiş bir 
 
 Kurgu bilmen gerekmez. Claude ile konuşursun; o keser, sen onaylarsın.
 
-[Ayşegül Digital](https://instagram.com/aysegul.digital) tarafından hazırlandı. Ücretsiz ve açık kaynak.
+[Ayşegül Digital](https://aysegul.digital) tarafından hazırlandı. Ücretsiz ve açık kaynak.
 
 ## Ne yapar
 
@@ -136,4 +136,8 @@ Asistan şu açık kaynak araçların üstüne kuruludur: HyperFrames, whisper.c
 
 ## Bir yerde takılırsan
 
-Önce Claude'a sor: "kurulumu kontrol et" ya da "şu hatayı aldım" demen çoğu zaman yeter. Çözülmezse [@aysegul.digital](https://instagram.com/aysegul.digital) hesabına yaz.
+Önce Claude'a sor: "kurulumu kontrol et" ya da "şu hatayı aldım" demen çoğu zaman yeter. Çözülmezse Instagram'da [@aysegul.digital](https://instagram.com/aysegul.digital) hesabına yaz.
+
+## Ayşegül Digital
+
+Sosyal medya danışmanlığı, dijital pazarlama stratejileri ve içerik üretimi üzerine notlar ve kaynaklar: [aysegul.digital](https://aysegul.digital)

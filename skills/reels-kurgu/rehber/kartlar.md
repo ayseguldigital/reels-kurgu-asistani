@@ -82,6 +82,8 @@ Yazılarda `*yıldız*` arasına alınan kelime vurgu rengine döner.
 
 Yıldızlı kelime kutu içinde öne çıkar. Olağan yeri altyazının üstüdür (`konum: "alt"`); çeneyi ya da eli kapatıyorsa `konum: "ust"` ver.
 
+Çağrı kartı "o anda söyleneni göster" kuralının tek istisnasıdır: kişi çağrıyı söylemese de videonun sonuna yazı olarak eklenebilir. Ama bunu kendiliğinden yapma. Kişi çağrıyı söylüyorsa kartı o cümleye bağla; söylemiyorsa stil dosyasındaki çağrıyı eklemek isteyip istemediğini sor ve isterse son cümleye bağla.
+
 ### gorsel
 
 ```json

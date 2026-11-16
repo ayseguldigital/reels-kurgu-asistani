@@ -1,6 +1,6 @@
 # Lisanslar
 
-Bu depodaki kod [MIT lisansı](LICENSE) ile dağıtılır (© 2026 Ayşegül Digital).
+Bu depodaki kod [MIT lisansı](LICENSE) ile dağıtılır (© 2026 [Ayşegül Digital](https://aysegul.digital)).
 
 Asistan, başkalarının hazırladığı açık kaynak araçları ve yazı tiplerini kullanır. Hangisinin depoda bulunduğu, hangisinin kurulum sırasında kendi kaynağından indirildiği aşağıdadır.
 

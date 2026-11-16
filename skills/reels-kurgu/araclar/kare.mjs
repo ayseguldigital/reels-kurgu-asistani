@@ -4,7 +4,8 @@
 //   node araclar/kare.mjs <proje klasörü> --an 1.2,5,12.5
 //   node araclar/kare.mjs <proje klasörü>            (--an verilmezse her altyazının ortasından örnekler alır)
 //
-// Yazar:  <proje>/.ara/kareler/pafta.jpg  (karelerin yan yana dizildiği tek görsel) ve tek tek PNG'ler
+// Yazar:  <proje>/.ara/kareler/pafta-altyazi.jpg   (--an verilmediyse)
+//         <proje>/.ara/kareler/pafta-<saniyeler>.jpg (--an verildiyse; önceki paftalar silinmez)
 //
 // Render dakikalar sürer, kare saniyeler. Yazı kadrajdan taşıyor mu, yüzü kapatıyor mu, okunuyor mu diye
 // önce buna bakılır; sorun varsa kurgu.json ya da stil.json düzeltilir.
@@ -34,7 +35,10 @@ if (!anlar.length) throw new Error('Gösterilecek an yok. --an ile saniye verin 
 anlar = anlar.map((t) => +t.toFixed(2));
 
 await calistir(process.execPath, [path.join(BURASI, 'kur.mjs'), klasor]);
-const cikis = path.join(ara, 'kareler');
+const paftaKlasoru = path.join(ara, 'kareler');
+await mkdir(paftaKlasoru, { recursive: true });
+// Tek tek kareler her çağrıda yenilenir; paftalar birikir ki art arda iki bakış birbirini silmesin.
+const cikis = path.join(paftaKlasoru, 'tek');
 await rm(cikis, { recursive: true, force: true });
 await mkdir(cikis, { recursive: true });
 const sahne = path.join(klasor, 'sahne');
@@ -52,7 +56,9 @@ const satir = Math.ceil(pngler.length / sutun);
 const girdiler = pngler.flatMap((d) => ['-i', path.join(cikis, d)]);
 const olcek = pngler.map((_, i) => `[${i}:v]scale=405:720[k${i}]`).join(';');
 const dizilim = pngler.map((_, i) => `${(i % sutun) * 405}_${Math.floor(i / sutun) * 720}`).join('|');
-const pafta = path.join(cikis, 'pafta.jpg');
+const ozelCikti = secenek('cikti', null);
+const paftaAdi = typeof verilen === 'string' ? `pafta-${anlar.join('_').slice(0, 60)}.jpg` : 'pafta-altyazi.jpg';
+const pafta = typeof ozelCikti === 'string' ? path.resolve(ozelCikti) : path.join(paftaKlasoru, paftaAdi);
 const birlestir =
   pngler.length === 1
     ? `${olcek};[k0]copy[cikis]`

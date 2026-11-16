@@ -29,10 +29,12 @@ html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; backgro
   font-weight: 800; color: var(--altyazi-renk);
 }
 .kelime { display: inline-block; white-space: nowrap; }
-.kelime.vurgu { color: var(--renk-vurgu); font-family: var(--font-vurgu), var(--font-govde), sans-serif; }
+/* Vurgulu kelime biraz büyüktür: söylenen kelime de aynı renge döndüğü için yalnız renkle ayırt edilemez. */
+.kelime.vurgu { color: var(--renk-vurgu); font-family: var(--font-vurgu), var(--font-govde), sans-serif; font-size: 1.14em; }
 
 /* kontur: yazının çevresinde ince koyu çerçeve; her arka planda okunur */
-.zemin-kontur .satir { -webkit-text-stroke: 0.14em var(--renk-koyu); paint-order: stroke fill; text-shadow: 0 0.05em 0.12em rgba(0,0,0,.35); }
+/* Kontur harfleri kalınlaştırır ve kelime aralarını daraltır; aralık biraz açılır. */
+.zemin-kontur .satir { -webkit-text-stroke: 0.14em var(--renk-koyu); paint-order: stroke fill; text-shadow: 0 0.05em 0.12em rgba(0,0,0,.35); word-spacing: 0.1em; }
 /* gölge: çerçevesiz, yumuşak gölge */
 .zemin-golge .satir { text-shadow: 0 0.04em 0.06em rgba(0,0,0,.55), 0 0.1em 0.5em rgba(0,0,0,.5); }
 /* kutu: yazının arkasında yuvarlak köşeli zemin */
@@ -44,7 +46,7 @@ html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; backgro
 .kart .v { color: var(--renk-vurgu); font-family: var(--font-vurgu), var(--font-govde), sans-serif; }
 .golgeli { box-shadow: 0 18px 50px rgba(0,0,0,.28), 0 4px 12px rgba(0,0,0,.18); }
 /* Videonun üstünde duran yazı: konturla okunur. Düz zeminde kontura gerek yok. */
-.video-ustu { -webkit-text-stroke: 0.12em var(--renk-koyu); paint-order: stroke fill; text-shadow: 0 0.05em 0.14em rgba(0,0,0,.4); }
+.video-ustu { -webkit-text-stroke: 0.12em var(--renk-koyu); paint-order: stroke fill; text-shadow: 0 0.05em 0.14em rgba(0,0,0,.4); word-spacing: 0.14em; }
 
 /* başlık */
 .k-baslik { left: 110px; width: 860px; text-align: center; color: var(--renk-acik); font-family: var(--font-vurgu), var(--font-govde), sans-serif; font-weight: 800; line-height: 1.04; letter-spacing: -0.02em; }
@@ -82,7 +84,7 @@ html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; backgro
 .k-cagri { left: 540px; padding: 26px 50px 30px; border-radius: 999px; background: var(--renk-vurgu); color: var(--renk-koyu); font-size: 54px; font-weight: 800; white-space: nowrap; }
 .k-cagri.konum-alt { top: 1085px; }
 .k-cagri.konum-ust { top: 300px; }
-.k-cagri .v { display: inline-block; padding: 2px 20px 6px; margin: 0 4px; border-radius: 18px; background: var(--renk-koyu); color: var(--renk-acik); font-family: var(--font-govde), sans-serif; }
+.k-cagri .v { display: inline-block; padding: 2px 20px 6px; margin: 0 2px; border-radius: 18px; background: var(--renk-koyu); color: var(--renk-acik); font-family: var(--font-govde), sans-serif; }
 
 /* görsel */
 .k-gorsel { left: 110px; top: 270px; width: 860px; height: 520px; }

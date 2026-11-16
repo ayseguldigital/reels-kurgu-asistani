@@ -32,6 +32,7 @@ Vurgulu kelime kalıcı olarak vurgu renginde görünür:
 - **Cümle başına en çok bir kelime.** Her şey vurguluysa hiçbir şey vurgulu değildir.
 - Cümlenin anlamını taşıyan kelimeyi seç: sayı, sonuç, karşıtlık, ürün ya da kavram adı. "Bir", "çok", "ve" gibi kelimeleri değil.
 - Tek kelime biçiminde (`kelime`) vurguyu daha da seyrek kullan.
+- Stil dosyasında `aktifKelime` açıksa söylenen kelime de o an vurgu rengine döner. Vurgulu kelimeyi ondan ayıran şey kalıcı olması ve biraz daha büyük yazılmasıdır; bir karede iki kelimenin aynı renkte görünmesi hata değildir.
 
 Değişiklikten sonra altyazıyı yeniden üret:
 
@@ -47,7 +48,7 @@ Düzeltmeler ve vurgular `kararlar.json` içinde durduğu için kesim değişse 
 node araclar/kare.mjs "<proje klasörü>"
 ```
 
-Sekiz altyazının karesini tek görselde verir. Bak:
+Sekiz altyazının karesini tek görselde verir (`.ara/kareler/pafta-altyazi.jpg`). Belirli anlara bakmak için `--an 1.2,5` ekle; her çağrı ayrı bir görsel yazar. Bak:
 
 - Yazı kadrajın içinde mi, kesilmiş harf var mı?
 - İki satırı geçen altyazı var mı?

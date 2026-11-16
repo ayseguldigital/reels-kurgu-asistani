@@ -7,7 +7,7 @@
 //
 // Stil dosyası: ~/Movies/Reels Kurgu/stil.json. Elle ya da stil sohbetiyle doldurulur (rehber/stil-sohbeti.md).
 // Önizleme, kişi bir renge ya da yazı tipine karar vermeden önce "böyle görünecek" diyebilmek içindir.
-import { writeFile, mkdir, rm, copyFile } from 'node:fs/promises';
+import { writeFile, mkdir, rm } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { calistir } from '../ortak/calistir.mjs';
@@ -132,10 +132,8 @@ if (komut === 'onizleme') {
     }),
   );
   await calistir(process.execPath, [path.join(BURASI, 'altyazi.mjs'), proje, '--yeniden']);
-  const { cikti } = await calistir(process.execPath, [path.join(BURASI, 'kare.mjs'), proje, '--an', '2.4,5.6,9.2,11.4']);
-  const pafta = path.join(proje, '.ara', 'kareler', 'pafta.jpg');
   const hedef = path.join(DEPO, 'stil-onizleme.jpg');
-  await copyFile(pafta, hedef);
+  const { cikti } = await calistir(process.execPath, [path.join(BURASI, 'kare.mjs'), proje, '--an', '2.4,5.6,9.2,11.4', '--cikti', hedef]);
   if (!cikti.includes('Kareler hazır')) throw new Error('Önizleme alınamadı.');
   console.log(`Stil önizlemesi hazır: ${hedef}`);
   console.log('Soldan sağa: başlık ve altyazı · liste kartı · sayı kartı · çağrı.');

@@ -100,6 +100,12 @@ node araclar/inceleme.mjs taslak "<proje klasörü>"
 
 Kişi önizlemeden sonra bir şey değiştirirse sayfa "bu önizleme eski" der. O zaman kararları yeniden aktar ve yeni bir önizleme al. Kişi "tamam" demeden son hâli alma.
 
+Önizleme onayı sohbette verilebilir ("tamam", "güzel olmuş"). O durumda da son hâlden önce bir kez `aktar` çalıştır:
+
+- "Sayfada son aktarımdan beri değişiklik yok" derse devam et.
+- Not ya da değişiklik gelirse onları uygula ve yeni önizleme al.
+- "Değişiklik yapmış ama İncelemeyi bitir dememiş" derse kişiye sor: sayfadaki değişiklikler bitti mi?
+
 ## Kişiye söylenecekler
 
 - Sayfada yapılan her şey kendiliğinden kaydedilir; "Geri al" son değişikliği geri getirir.
