@@ -25,6 +25,14 @@ export const GSAP = {
   sha256: 'c174bfce53a729418d57a8ad8625e7247c793a22fef8e2851e3cfa3de9cd8280',
 };
 
+/** Lottie oynatıcısı (lottie-web, MIT). Yalnızca Lottie kartı kullanılan videolarda sahneye eklenir. */
+export const LOTTIE = {
+  surum: '5.12.2',
+  dosya: path.join(DEPO, 'lottie', 'lottie.min.js'),
+  adres: 'https://cdn.jsdelivr.net/npm/lottie-web@5.12.2/build/player/lottie.min.js',
+  sha256: 'a0757321f974527bda3cc2593bf56cc7ffe4578421249ced6ae49ffb1c529f90',
+};
+
 /** HyperFrames sürümü sabittir; yeni sürüm ancak denendikten sonra buradan yükseltilir. */
 export const HYPERFRAMES_SURUM = '0.8.167';
 

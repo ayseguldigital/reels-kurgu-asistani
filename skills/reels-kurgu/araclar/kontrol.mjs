@@ -12,7 +12,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
 import { bul, calistir } from '../ortak/calistir.mjs';
-import { MODEL, GSAP, CALISMA, HYPERFRAMES_SURUM, hyperframes } from '../ortak/yollar.mjs';
+import { MODEL, GSAP, LOTTIE, CALISMA, HYPERFRAMES_SURUM, hyperframes } from '../ortak/yollar.mjs';
 
 const kur = process.argv.includes('--kur');
 let eksik = 0;
@@ -106,27 +106,25 @@ if (await modelTamam()) {
   }
 }
 
-// 6. Animasyon kütüphanesi (GSAP): altyazı ve grafik hareketleri
-async function gsapTamam() {
-  try {
-    return (await ozetAl(GSAP.dosya, 'sha256')) === GSAP.sha256;
-  } catch {
-    return false;
-  }
+// 6. Animasyon kütüphaneleri: altyazı ve grafik hareketleri (GSAP), hazır animasyonlar (Lottie)
+async function kutuphane(k, ad) {
+  const tamamMi = async () => {
+    try {
+      return (await ozetAl(k.dosya, 'sha256')) === k.sha256;
+    } catch {
+      return false;
+    }
+  };
+  if (await tamamMi()) return tamam(`${ad} ${k.surum}`);
+  if (!kur) return yok(`${ad} ${k.surum} indirilmemiş`);
+  await mkdir(path.dirname(k.dosya), { recursive: true });
+  await canliCalistir('curl', ['-L', '--fail', '--silent', '--show-error', '-o', k.dosya, k.adres]);
+  if (await tamamMi()) return tamam(`${ad} ${k.surum} indirildi`);
+  await rm(k.dosya, { force: true });
+  return yok(`${ad} indirilemedi ya da beklenen dosya değil. Komutu yeniden çalıştırın.`);
 }
-if (await gsapTamam()) {
-  tamam(`Animasyon kütüphanesi (GSAP ${GSAP.surum})`);
-} else if (!kur) {
-  yok(`Animasyon kütüphanesi indirilmemiş (GSAP ${GSAP.surum})`);
-} else {
-  await mkdir(path.dirname(GSAP.dosya), { recursive: true });
-  await canliCalistir('curl', ['-L', '--fail', '--silent', '--show-error', '-o', GSAP.dosya, GSAP.adres]);
-  if (await gsapTamam()) tamam(`Animasyon kütüphanesi indirildi (GSAP ${GSAP.surum})`);
-  else {
-    await rm(GSAP.dosya, { force: true });
-    yok('Animasyon kütüphanesi indirilemedi ya da beklenen dosya değil. Komutu yeniden çalıştırın.');
-  }
-}
+await kutuphane(GSAP, 'Animasyon kütüphanesi GSAP');
+await kutuphane(LOTTIE, 'Lottie oynatıcısı');
 
 // 7. HyperFrames ve onun kullandığı tarayıcı: videonun kendisini üretir
 const hf = hyperframes();
