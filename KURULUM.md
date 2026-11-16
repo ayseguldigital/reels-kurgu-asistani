@@ -75,7 +75,7 @@ Sonunda **HAZIR** yazdığını söyler. Claude uygulamasını kapatıp yeniden 
 
 ### Çekerken işini kolaylaştıracak üç şey
 
-- **HDR'yi kapat.** iPhone'da Ayarlar → Kamera → Video Kaydı → HDR Video kapalı olsun. Açık çekilen video da işlenir ama renkler telefonda gördüğünden biraz farklı çıkabilir.
+- **Dikey çek.** Telefonu dik tut; yatay çekilen videonun kenarları kırpılır.
 - **Sessiz bir yerde çek.** Gürültü azaltılır ama rüzgâr ve yoğun trafik tam temizlenmez.
 - **Takılırsan durma.** Cümleyi baştan söyle ve devam et; tekrarları Claude bulup keser.
 
@@ -115,7 +115,7 @@ Claude neyin eksik olduğunu bulur ve çoğunu kendisi düzeltir.
 | Model indirmesi yarıda kaldı | Claude'a "kurulumu sürdür" yaz; kaldığı yerden devam eder. |
 | "Boş alan az" | Bilgisayarında en az 10 GB yer aç. |
 | Claude asistanı tanımıyor | Claude uygulamasını kapatıp yeniden aç. Hâlâ tanımıyorsa "Reels Kurgu Asistanı'nı kur" yaz. |
-| Renkler telefondakinden farklı | Video HDR çekilmiş ve çevrilmiş. Telefonda HDR'yi kapatıp yeniden çekersen renkler birebir tutar. |
+| Video soluk ve gri çıktı | HDR kayıt çevrilememiş olabilir. Claude'a "bu video HDR mi, çevrildi mi?" diye sor. Çözülmezse iPhone'da Ayarlar → Kamera → Video Kaydı → HDR Video'yu kapatıp yeniden çek. |
 | İnceleme sayfası açılmıyor | Claude'a "inceleme sayfasını bu bilgisayarda aç" yaz. |
 | Altyazıda yanlış yazılmış kelime | Claude'a söyle ("Cloud değil Claude") ya da inceleme sayfasında kalemle düzelt. |
 

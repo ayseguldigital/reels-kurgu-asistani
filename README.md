@@ -9,6 +9,7 @@ Kurgu bilmen gerekmez. Claude ile konuşursun; o keser, sen onaylarsın.
 ## Ne yapar
 
 - **Sesi temizler.** Arka plan gürültüsünü azaltır, sesi netleştirir ve Instagram'ın beklediği düzeye getirir.
+- **iPhone'un HDR videosunu çevirir.** iPhone videoyu olağan ayarda HDR çeker ve bu, başka araçlarda soluk çıkar. Asistan bunu Reels'in renk aralığına, Apple'ın kendi dönüşümüyle aynı sonucu verecek biçimde çevirir. Telefonunda bir ayar değiştirmen gerekmez.
 - **Konuşmanı yazıya döker.** Türkçe, kelime kelime. Bilgisayarında yapılır; sesin hiçbir yere gönderilmez.
 - **Kesim önerir.** Kamerayı yerleştirdiğin anları, tekrar çekimleri, çekim arası konuşmaları ve uzun duraklamaları bulur. Sen onaylamadan hiçbir şey kesilmez.
 - **Altyazı ekler.** Senin renginde ve yazı tipinde. Söylenen kelime o an renklenir, öne çıkmasını istediğin kelimeler vurgulanır.
@@ -94,7 +95,6 @@ Asistan ücretsizdir. Claude planın dışında hiçbir şey ödemezsin: kullan�
 - **Arka plan müziği:** eklemez. Müziği paylaşırken Instagram'da eklersin; güncel sesler zaten oradadır.
 - **Çok kameralı çekim ve röportaj:** tek kişinin kameraya konuştuğu videolar için hazırlandı.
 - **Ekran kaydı ve ek görüntü kurgusu:** yok. Kendi ekran görüntülerini ve fotoğraflarını grafik olarak ekleyebilirsin.
-- **HDR:** iPhone videoyu olağan ayarda HDR çeker. Asistan bunu Reels'in renk aralığına çevirir ama renkler telefonda gördüğünle birebir aynı olmayabilir. En temiz sonuç için çekmeden önce Ayarlar → Kamera → Video Kaydı altından HDR videoyu kapat.
 - **Kısa "ııı"lar:** uzun duraksamalar kendiliğinden gider ama bir kelimeye yapışık kısa bir "ııı" kalabilir. İnceleme sayfasında dinleyip kesebilirsin.
 - **Yazım:** özel adları yanlış duyabilir. Paylaşmadan önce altyazıyı bir kez oku.
 

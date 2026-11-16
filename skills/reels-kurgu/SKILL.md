@@ -57,7 +57,7 @@ node araclar/bas-son.mjs "<proje>"
 - Ses temizliği gürültüyü azaltır ve sesi Instagram'ın beklediği düzeye getirir. UYARI yazarsa (rüzgâr, trafik) kişiye söyle; düzeltilemeyecek kadar gürültülü bir kaydı sessiz bir yerde yeniden çekmek en iyisidir.
 - Döküm `dokum.txt` dosyasını yazar. Baştan sona oku.
 - `bas-son.mjs` kaydın ilk ve son saniyelerinin karelerini verir. İki görsele bak.
-- Kayıt telefonda HDR çekilmişse araç onu bir kez olağan renk aralığına çevirir ve bunu yazar. Renkler telefondakinden biraz farklı görünebilir; kişiye söyle, `bas-son` karelerinde renge bak ve sonraki çekimlerde telefonun kamera ayarından HDR videoyu kapatmasını öner. "Dönüştürülemedi" derse renkler soluk çıkar; kişiye HDR'yi kapatıp yeniden çekmesini söyle.
+- Kayıt telefonda HDR çekilmişse (iPhone'un olağan ayarı) araç onu bir kez Reels'in renk aralığına çevirir. Bu, videonun süresi kadar zaman alır; başlamadan kişiye söyle. Sonuç Apple'ın kendi dönüşümüyle aynıdır, ayrıca bir şey yapman gerekmez. "Dönüştürülemedi" derse renkler soluk çıkar; kişiye telefonun kamera ayarından HDR videoyu kapatıp yeniden çekmesini söyle.
 
 ### 2. Kesimi ve grafikleri öner → `rehber/kesim.md`, `rehber/kartlar.md`
 
@@ -157,6 +157,6 @@ Kişi sorarsa ya da denk gelirse açıkça söyle:
 - Mac'te denendi. Windows ve Linux'ta denenmedi.
 - Tek kişinin kameraya konuştuğu videolar için. Çok kameralı çekim ve röportaj kurgusu yok.
 - Arka plan müziği eklenmez. Ses efektleri paketteki on sesle sınırlıdır.
-- Telefonun HDR kaydı olağan renk aralığına çevrilir; renkler telefondakiyle birebir aynı olmayabilir. Dönüşüm yalnızca Mac'te çalışır.
+- Telefonun HDR kaydı Reels'in renk aralığına çevrilir (iPhone kaydıyla denendi). Dönüşüm yalnızca Mac'te çalışır.
 - Dökümün yazmadığı kısa "ııı"lar bir duraklamanın içinde değilse kalabilir.
 - Ekran kaydı, B-roll ve yeşil perde yok; yalnızca konuşmacı videosu, üstüne kartlar.
