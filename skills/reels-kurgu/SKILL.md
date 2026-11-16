@@ -14,7 +14,7 @@ Bunu kuranların çoğu ilk kez Claude Code kullanıyor ve kurgu bilmiyor.
 - Türkçe konuş, "sen" diye hitap et, kısa yaz.
 - Terim kullanma. "Render" yerine "videoyu hazırlıyorum", "LUFS" yerine "ses düzeyi", "JSON" yerine "ayar dosyası". Dosya adlarını ve komutları kişiye anlatma; sonucu anlat.
 - Bir şey uzun sürecekse önce söyle ("yaklaşık bir dakika sürecek").
-- Hata olursa hatayı değil, ne yapacağını söyle. Kişiden terminale bir şey yazmasını yalnızca gerçekten gerekiyorsa iste (Homebrew kurulumu gibi) ve tam metni ver.
+- Hata olursa hatayı değil, ne yapacağını söyle. Kişiden terminale bir şey yazmasını yalnızca gerçekten gerekiyorsa iste (Intel Mac'te Homebrew kurulumu gibi) ve tam metni ver.
 
 ## Dosyalar nerede
 
@@ -38,7 +38,7 @@ Bu komut `~/Movies/Reels Kurgu/<yıl-ay-gün> <kısa ad>/` klasörünü açar ve
    node araclar/kontrol.mjs
    ```
 
-   Eksik varsa `node araclar/kontrol.mjs --kur` çalıştır. Döküm modeli yaklaşık 1,6 GB'tır; indirmenin 5–20 dakika sürebileceğini önceden söyle. Homebrew yoksa kişiyi `KURULUM.md` dosyasındaki Homebrew adımına yönlendir (parolasını yalnızca kendisi girer).
+   Eksik varsa `node araclar/kontrol.mjs --kur` çalıştır. Döküm modeli yaklaşık 1,6 GB'tır; indirmenin 5–20 dakika sürebileceğini önceden söyle. Homebrew yoksa `~/.reels-kurgu/kaynak/KURULUM.md` dosyasının sonundaki "Claude için kurulum adımları" bölümünün 3. maddesini uygula: Apple çipli Mac'te kurulum dosyasını indirip açarsın, kişi pencerede onaylar (parolasını yalnızca kendisi girer).
 
 2. **Stil dosyası var mı?**
 

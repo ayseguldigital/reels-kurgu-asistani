@@ -9,7 +9,8 @@
 #   2. Asistanı Claude'un göreceği yere kopyalar: ~/.claude/skills/reels-kurgu
 #   3. Kalan araçları (FFmpeg, Whisper, döküm modeli, HyperFrames) kurar ve kontrol eder.
 #
-# Homebrew'u bu betik kurmaz: parola ister ve onu yalnızca siz girmelisiniz. Adımı KURULUM.md anlatır.
+# Homebrew'u bu betik kurmaz: kurulumu parola ister ve onu yalnızca siz girmelisiniz. Adımı KURULUM.md anlatır
+# (Apple çipli Mac'te çift tıklanan bir kurulum dosyası, Terminal gerekmez).
 
 set -u
 KONTROL=0
