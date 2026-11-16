@@ -60,16 +60,11 @@ await calistir('ffmpeg', ['-v', 'error', '-y', '-i', kaynakSes, '-vn', '-ac', '1
 
 console.error('Konuşma yazıya dökülüyor…');
 const cikisOnEki = path.join(ara, 'whisper');
-await calistir('whisper-cli', [
-  '-m', MODEL.dosya,
-  '-f', ses16,
-  '-l', dil,
-  '-ojf',
-  '-of', cikisOnEki,
-  '-dtw', 'large.v3.turbo',
-  '-nfa',
-  '-np',
-]);
+const whisperArg = ['-m', MODEL.dosya, '-f', ses16, '-l', dil, '-ojf', '-of', cikisOnEki, '-dtw', 'large.v3.turbo', '-nfa', '-np'];
+// Özel adlar (marka, kişi, ürün adı) ipucu olarak verilir; döküm onları doğru yazmaya yatkın olur.
+const ozelAdlar = (stil.ozelAdlar || []).filter(Boolean);
+if (ozelAdlar.length) whisperArg.push('--prompt', `${ozelAdlar.join(', ')}.`);
+await calistir('whisper-cli', whisperArg);
 const whisper = await jsonOku(`${cikisOnEki}.json`);
 const olcum = await duzeyOlc(ses16, { enAzSessizlik: 0.1 });
 

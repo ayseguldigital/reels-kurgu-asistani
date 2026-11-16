@@ -1,0 +1,265 @@
+[
+ {
+  "aile": "Inter",
+  "tur": "sans",
+  "aciklama": "Sade ve okunaklı; her işe uyar",
+  "klasor": "inter",
+  "dosyalar": [
+   {
+    "dosya": "inter/inter-400-900-latin-ext.woff2",
+    "agirlik": "400 900",
+    "stil": "normal",
+    "aralik": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+    "bayt": 85272
+   },
+   {
+    "dosya": "inter/inter-400-900-latin.woff2",
+    "agirlik": "400 900",
+    "stil": "normal",
+    "aralik": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bayt": 48432
+   }
+  ],
+  "telif": "Copyright 2020 The Inter Project Authors (https://github.com/rsms/inter)"
+ },
+ {
+  "aile": "Poppins",
+  "tur": "sans",
+  "aciklama": "Yuvarlak hatlı, sıcak",
+  "klasor": "poppins",
+  "dosyalar": [
+   {
+    "dosya": "poppins/poppins-500-latin-ext.woff2",
+    "agirlik": "500",
+    "stil": "normal",
+    "aralik": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+    "bayt": 5496
+   },
+   {
+    "dosya": "poppins/poppins-500-latin.woff2",
+    "agirlik": "500",
+    "stil": "normal",
+    "aralik": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bayt": 7740
+   },
+   {
+    "dosya": "poppins/poppins-700-latin-ext.woff2",
+    "agirlik": "700",
+    "stil": "normal",
+    "aralik": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+    "bayt": 5448
+   },
+   {
+    "dosya": "poppins/poppins-700-latin.woff2",
+    "agirlik": "700",
+    "stil": "normal",
+    "aralik": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bayt": 7848
+   },
+   {
+    "dosya": "poppins/poppins-800-latin-ext.woff2",
+    "agirlik": "800",
+    "stil": "normal",
+    "aralik": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+    "bayt": 5484
+   },
+   {
+    "dosya": "poppins/poppins-800-latin.woff2",
+    "agirlik": "800",
+    "stil": "normal",
+    "aralik": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bayt": 7816
+   }
+  ],
+  "telif": "Copyright 2020 The Poppins Project Authors (https://github.com/itfoundry/Poppins)"
+ },
+ {
+  "aile": "Rubik",
+  "tur": "sans",
+  "aciklama": "Yumuşak köşeli, samimi",
+  "klasor": "rubik",
+  "dosyalar": [
+   {
+    "dosya": "rubik/rubik-400-900-latin-ext.woff2",
+    "agirlik": "400 900",
+    "stil": "normal",
+    "aralik": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+    "bayt": 19288
+   },
+   {
+    "dosya": "rubik/rubik-400-900-latin.woff2",
+    "agirlik": "400 900",
+    "stil": "normal",
+    "aralik": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bayt": 35324
+   }
+  ],
+  "telif": "Copyright 2015 The Rubik Project Authors (https://github.com/googlefonts/rubik)"
+ },
+ {
+  "aile": "Nunito",
+  "tur": "sans",
+  "aciklama": "Tombul ve dostça",
+  "klasor": "nunito",
+  "dosyalar": [
+   {
+    "dosya": "nunito/nunito-400-900-latin-ext.woff2",
+    "agirlik": "400 900",
+    "stil": "normal",
+    "aralik": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+    "bayt": 35464
+   },
+   {
+    "dosya": "nunito/nunito-400-900-latin.woff2",
+    "agirlik": "400 900",
+    "stil": "normal",
+    "aralik": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bayt": 39152
+   }
+  ],
+  "telif": "Copyright 2014 The Nunito Project Authors (https://github.com/googlefonts/nunito)"
+ },
+ {
+  "aile": "Bricolage Grotesque",
+  "tur": "sans",
+  "aciklama": "Karakterli, modern",
+  "klasor": "bricolagegrotesque",
+  "dosyalar": [
+   {
+    "dosya": "bricolagegrotesque/bricolagegrotesque-400-800-latin-ext.woff2",
+    "agirlik": "400 800",
+    "stil": "normal",
+    "aralik": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+    "bayt": 18740
+   },
+   {
+    "dosya": "bricolagegrotesque/bricolagegrotesque-400-800-latin.woff2",
+    "agirlik": "400 800",
+    "stil": "normal",
+    "aralik": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bayt": 41236
+   }
+  ],
+  "telif": "Copyright 2022 The Bricolage Grotesque Project Authors (https://github.com/ateliertriay/bricolage)"
+ },
+ {
+  "aile": "Space Grotesk",
+  "tur": "sans",
+  "aciklama": "Teknolojik, keskin",
+  "klasor": "spacegrotesk",
+  "dosyalar": [
+   {
+    "dosya": "spacegrotesk/spacegrotesk-400-700-latin-ext.woff2",
+    "agirlik": "400 700",
+    "stil": "normal",
+    "aralik": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+    "bayt": 18924
+   },
+   {
+    "dosya": "spacegrotesk/spacegrotesk-400-700-latin.woff2",
+    "agirlik": "400 700",
+    "stil": "normal",
+    "aralik": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bayt": 22320
+   }
+  ],
+  "telif": "Copyright 2020 The Space Grotesk Project Authors (https://github.com/floriankarsten/space-grotesk)"
+ },
+ {
+  "aile": "Playfair Display",
+  "tur": "serif",
+  "aciklama": "Zarif tırnaklı; vurgu için",
+  "klasor": "playfairdisplay",
+  "dosyalar": [
+   {
+    "dosya": "playfairdisplay/playfairdisplay-400-900-italik-latin-ext.woff2",
+    "agirlik": "400 900",
+    "stil": "italic",
+    "aralik": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+    "bayt": 23332
+   },
+   {
+    "dosya": "playfairdisplay/playfairdisplay-400-900-italik-latin.woff2",
+    "agirlik": "400 900",
+    "stil": "italic",
+    "aralik": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bayt": 38888
+   },
+   {
+    "dosya": "playfairdisplay/playfairdisplay-400-900-latin-ext.woff2",
+    "agirlik": "400 900",
+    "stil": "normal",
+    "aralik": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+    "bayt": 20980
+   },
+   {
+    "dosya": "playfairdisplay/playfairdisplay-400-900-latin.woff2",
+    "agirlik": "400 900",
+    "stil": "normal",
+    "aralik": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bayt": 38460
+   }
+  ],
+  "telif": "Copyright 2017 The Playfair Display Project Authors (https://github.com/clauseggers/Playfair-Display), with Reserved Font Name \"Playfair Display\""
+ },
+ {
+  "aile": "DM Serif Display",
+  "tur": "serif",
+  "aciklama": "Kalın tırnaklı başlık",
+  "klasor": "dmserifdisplay",
+  "dosyalar": [
+   {
+    "dosya": "dmserifdisplay/dmserifdisplay-400-italik-latin-ext.woff2",
+    "agirlik": "400",
+    "stil": "italic",
+    "aralik": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+    "bayt": 7244
+   },
+   {
+    "dosya": "dmserifdisplay/dmserifdisplay-400-italik-latin.woff2",
+    "agirlik": "400",
+    "stil": "italic",
+    "aralik": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bayt": 17660
+   },
+   {
+    "dosya": "dmserifdisplay/dmserifdisplay-400-latin-ext.woff2",
+    "agirlik": "400",
+    "stil": "normal",
+    "aralik": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+    "bayt": 6800
+   },
+   {
+    "dosya": "dmserifdisplay/dmserifdisplay-400-latin.woff2",
+    "agirlik": "400",
+    "stil": "normal",
+    "aralik": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bayt": 17844
+   }
+  ],
+  "telif": "Copyright 2014-2018 Adobe (http://www.adobe.com/), with Reserved Font Name 'Source'. All Rights Reserved. Source is a trademark of Adobe in the United States and/or other countries. Copyright 2019 Google LLC."
+ },
+ {
+  "aile": "Bebas Neue",
+  "tur": "baslik",
+  "aciklama": "Dar, yalnız büyük harf; güçlü başlık",
+  "klasor": "bebasneue",
+  "dosyalar": [
+   {
+    "dosya": "bebasneue/bebasneue-400-latin-ext.woff2",
+    "agirlik": "400",
+    "stil": "normal",
+    "aralik": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+    "bayt": 5664
+   },
+   {
+    "dosya": "bebasneue/bebasneue-400-latin.woff2",
+    "agirlik": "400",
+    "stil": "normal",
+    "aralik": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    "bayt": 8596
+   }
+  ],
+  "telif": "Copyright © 2010 by Dharma Type."
+ }
+]

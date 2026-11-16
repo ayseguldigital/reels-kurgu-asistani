@@ -1,0 +1,27 @@
+/* Sahne: videonun üstüne binen altyazı ve grafik katmanları. Renkler ve yazı tipleri stil dosyasından gelir. */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+#root { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: var(--font-govde), system-ui, sans-serif; }
+#konusma { position: absolute; inset: 0; width: 1080px; height: 1920px; object-fit: cover; }
+
+/* --- Altyazı --- */
+#altyazi {
+  position: absolute; left: 110px; width: 860px; height: 420px;
+  display: grid; place-items: center; pointer-events: none; z-index: 30;
+}
+#altyazi.konum-alt { top: 1130px; }
+#altyazi.konum-orta { top: 880px; }
+.satir {
+  grid-area: 1 / 1; max-width: 860px; opacity: 0;
+  text-align: center; text-wrap: balance; line-height: 1.12; letter-spacing: -0.01em;
+  font-weight: 800; color: var(--altyazi-renk);
+}
+.kelime { display: inline-block; white-space: nowrap; }
+.kelime.vurgu { color: var(--renk-vurgu); font-family: var(--font-vurgu), var(--font-govde), sans-serif; }
+
+/* kontur: yazının çevresinde ince koyu çerçeve; her arka planda okunur */
+.zemin-kontur .satir { -webkit-text-stroke: 0.14em var(--renk-koyu); paint-order: stroke fill; text-shadow: 0 0.05em 0.12em rgba(0,0,0,.35); }
+/* gölge: çerçevesiz, yumuşak gölge */
+.zemin-golge .satir { text-shadow: 0 0.04em 0.06em rgba(0,0,0,.55), 0 0.1em 0.5em rgba(0,0,0,.5); }
+/* kutu: yazının arkasında yuvarlak köşeli zemin */
+.zemin-kutu .satir { background: var(--renk-ana); padding: 0.22em 0.5em 0.26em; border-radius: 0.32em; box-shadow: 0 0.12em 0.5em rgba(0,0,0,.28); }

@@ -11,8 +11,8 @@ import { stat, mkdir, rename, rm, statfs } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
-import { bul } from '../ortak/calistir.mjs';
-import { MODEL, CALISMA } from '../ortak/yollar.mjs';
+import { bul, calistir } from '../ortak/calistir.mjs';
+import { MODEL, GSAP, CALISMA, HYPERFRAMES_SURUM, hyperframes } from '../ortak/yollar.mjs';
 
 const kur = process.argv.includes('--kur');
 let eksik = 0;
@@ -32,9 +32,9 @@ function canliCalistir(komut, argumanlar) {
   });
 }
 
-function sha1(dosya) {
+function ozetAl(dosya, tur) {
   return new Promise((coz, reddet) => {
-    const ozet = createHash('sha1');
+    const ozet = createHash(tur);
     createReadStream(dosya).on('data', (p) => ozet.update(p)).on('end', () => coz(ozet.digest('hex'))).on('error', reddet);
   });
 }
@@ -97,7 +97,7 @@ if (await modelTamam()) {
   const kod = await canliCalistir('curl', ['-L', '--fail', '--progress-bar', '-C', '-', '-o', gecici, MODEL.adres]);
   if (kod !== 0) {
     yok('Model indirilemedi. İnternet bağlantınızı kontrol edip komutu yeniden çalıştırın; indirme kaldığı yerden sürer.');
-  } else if ((await sha1(gecici)) !== MODEL.sha1) {
+  } else if ((await ozetAl(gecici, 'sha1')) !== MODEL.sha1) {
     await rm(gecici, { force: true });
     yok('İndirilen model dosyası bozuk çıktı ve silindi. Komutu yeniden çalıştırın.');
   } else {
@@ -106,7 +106,56 @@ if (await modelTamam()) {
   }
 }
 
-// 6. Boş alan
+// 6. Animasyon kütüphanesi (GSAP): altyazı ve grafik hareketleri
+async function gsapTamam() {
+  try {
+    return (await ozetAl(GSAP.dosya, 'sha256')) === GSAP.sha256;
+  } catch {
+    return false;
+  }
+}
+if (await gsapTamam()) {
+  tamam(`Animasyon kütüphanesi (GSAP ${GSAP.surum})`);
+} else if (!kur) {
+  yok(`Animasyon kütüphanesi indirilmemiş (GSAP ${GSAP.surum})`);
+} else {
+  await mkdir(path.dirname(GSAP.dosya), { recursive: true });
+  await canliCalistir('curl', ['-L', '--fail', '--silent', '--show-error', '-o', GSAP.dosya, GSAP.adres]);
+  if (await gsapTamam()) tamam(`Animasyon kütüphanesi indirildi (GSAP ${GSAP.surum})`);
+  else {
+    await rm(GSAP.dosya, { force: true });
+    yok('Animasyon kütüphanesi indirilemedi ya da beklenen dosya değil. Komutu yeniden çalıştırın.');
+  }
+}
+
+// 7. HyperFrames ve onun kullandığı tarayıcı: videonun kendisini üretir
+const hf = hyperframes();
+async function hfTarayiciVar() {
+  try {
+    const { cikti } = await calistir(hf.komut, [...hf.on, 'browser', 'path'], { ortam: hf.ortam });
+    return cikti.trim().length > 0;
+  } catch {
+    return false;
+  }
+}
+if (nodeSurum < 22) {
+  yok('HyperFrames kontrol edilemedi: önce Node.js güncellenmeli.');
+} else if (await hfTarayiciVar()) {
+  tamam(`HyperFrames ${HYPERFRAMES_SURUM} ve tarayıcısı`);
+} else if (!kur) {
+  yok(`HyperFrames ${HYPERFRAMES_SURUM} ya da tarayıcısı hazır değil`);
+} else {
+  console.log('  … HyperFrames ve tarayıcısı indiriliyor (yaklaşık 200 MB)');
+  await new Promise((coz) => {
+    const s = spawn(hf.komut, [...hf.on, 'browser', 'ensure'], { stdio: 'inherit', env: hf.ortam });
+    s.on('error', () => coz(1));
+    s.on('close', coz);
+  });
+  if (await hfTarayiciVar()) tamam(`HyperFrames ${HYPERFRAMES_SURUM} ve tarayıcısı kuruldu`);
+  else yok('HyperFrames kurulamadı. İnternet bağlantınızı kontrol edip komutu yeniden çalıştırın.');
+}
+
+// 8. Boş alan
 try {
   const d = await statfs(os.homedir());
   const gb = Math.floor((d.bavail * d.bsize) / 1e9);
@@ -116,7 +165,7 @@ try {
   /* ölçülemezse geç */
 }
 
-// 7. Çalışma klasörü
+// 9. Çalışma klasörü
 await mkdir(CALISMA, { recursive: true });
 tamam(`Çalışma klasörü: ${CALISMA}`);
 

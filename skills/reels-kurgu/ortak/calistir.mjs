@@ -8,13 +8,14 @@ import path from 'node:path';
  * Bir programı çalıştırır, bitince çıktısını döndürür.
  * @param {string} komut
  * @param {string[]} argumanlar
- * @param {{ikili?: boolean, izin?: number[], canli?: boolean}} [secenek]
+ * @param {{ikili?: boolean, izin?: number[], canli?: boolean, ortam?: object, klasor?: string}} [secenek]
  *   ikili: stdout Buffer olarak döner. izin: hata sayılmayacak çıkış kodları. canli: stderr ekrana da akar.
+ *   ortam: ortam değişkenleri. klasor: komutun çalışacağı klasör.
  */
 export function calistir(komut, argumanlar, secenek = {}) {
-  const { ikili = false, izin = [0], canli = false } = secenek;
+  const { ikili = false, izin = [0], canli = false, ortam = undefined, klasor = undefined } = secenek;
   return new Promise((coz, reddet) => {
-    const surec = spawn(komut, argumanlar, { stdio: ['ignore', 'pipe', 'pipe'] });
+    const surec = spawn(komut, argumanlar, { stdio: ['ignore', 'pipe', 'pipe'], env: ortam, cwd: klasor });
     const cikti = [];
     let hata = '';
     surec.stdout.on('data', (p) => cikti.push(p));
