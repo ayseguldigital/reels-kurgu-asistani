@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kapak Stüdyosu</title>
+<style>
+/* Düzen: solda kapağın canlı önizlemesi, sağda sırayla kare, başlık, görünüm ve kaydetme. */
+:root {
+  --zemin: #F3F5F8; --yuzey: #FFFFFF; --yuzey-2: #E9EDF3; --murekkep: #141821; --soluk: #5F6878; --cizgi: #D8DEE8;
+  --vurgu: #2B56E0; --vurgu-ustu: #FFFFFF; --iyi: #1F7A4D; --uyari: #9A6508;
+  --yazi: system-ui, -apple-system, "Segoe UI", sans-serif; --r: 12px;
+}
+@media (prefers-color-scheme: dark) { :root {
+  --zemin: #0E1116; --yuzey: #171B23; --yuzey-2: #212733; --murekkep: #E9ECF2; --soluk: #9AA4B5; --cizgi: #2B3340;
+  --vurgu: #86A2FF; --vurgu-ustu: #0E1116; --iyi: #5FCB93; --uyari: #E7B34F; color-scheme: dark } }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--zemin); color: var(--murekkep); font: 15px/1.45 var(--yazi); }
+button, input, textarea, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+[hidden] { display: none !important; }
+:focus-visible { outline: 2px solid var(--vurgu); outline-offset: 2px; }
+
+.uyg { max-width: 1120px; margin: 0 auto; padding: 16px 16px 40px; display: grid; gap: 16px; }
+header h1 { font-size: 22px; margin: 0; letter-spacing: -0.01em; }
+header p { margin: 2px 0 0; color: var(--soluk); font-size: 13.5px; }
+.sahne { position: sticky; top: 8px; z-index: 3; display: grid; gap: 8px; justify-items: center; background: var(--zemin); padding-bottom: 6px; }
+.cerceve { position: relative; height: min(46vh, 420px); aspect-ratio: 9/16; max-width: 100%; border-radius: var(--r); overflow: hidden; background: #000; }
+.cerceve canvas { width: 100%; height: 100%; display: block; }
+.kilavuz { position: absolute; left: 0; right: 0; border-block: 2px dashed rgba(255,255,255,.9); box-shadow: 0 0 0 1px rgba(0,0,0,.25); pointer-events: none; }
+.kilavuz.dikey { top: 12.5%; bottom: 12.5%; }
+.kilavuz.kare { top: 21.875%; bottom: 21.875%; border-color: rgba(255,220,120,.95); }
+.durum { font-size: 12.5px; color: var(--soluk); min-height: 1.4em; text-align: center; }
+
+.bolum { background: var(--yuzey); border: 1px solid var(--cizgi); border-radius: var(--r); padding: 16px; display: grid; gap: 12px; min-width: 0; }
+.bolum h2 { font-size: 16px; margin: 0; }
+.ipucu { color: var(--soluk); font-size: 13px; margin: 0; max-width: 62ch; }
+label.alan { display: grid; gap: 5px; font-size: 13px; font-weight: 600; min-width: 0; }
+label.alan span.deger { font-weight: 400; color: var(--soluk); font-variant-numeric: tabular-nums; }
+select, textarea, input[type="text"] { border: 1px solid var(--cizgi); border-radius: 9px; padding: 8px 10px; background: var(--zemin); width: 100%; font-weight: 400; }
+textarea { min-height: 84px; resize: vertical; font-size: 16px; }
+input[type="range"] { width: 100%; accent-color: var(--vurgu); }
+.satir { display: flex; gap: 10px; flex-wrap: wrap; align-items: end; }
+.satir > * { flex: 1 1 180px; min-width: 0; }
+.ornekler { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+.ornekler button { padding: 0; border: 2px solid transparent; border-radius: 8px; overflow: hidden; background: var(--yuzey-2); aspect-ratio: 9/16; }
+.ornekler button[aria-pressed="true"] { border-color: var(--vurgu); }
+.ornekler img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.adim { display: grid; grid-template-columns: auto 1fr auto; gap: 8px; align-items: center; }
+.kucuk { border: 1px solid var(--cizgi); background: var(--yuzey); border-radius: 8px; padding: 6px 10px; font-size: 13px; white-space: nowrap; }
+.gorunumler { display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 8px; }
+.gorunumler button { border: 1px solid var(--cizgi); background: var(--yuzey); border-radius: 10px; padding: 9px 8px; text-align: left; display: grid; gap: 2px; }
+.gorunumler button b { font-size: 13.5px; }
+.gorunumler button small { color: var(--soluk); font-size: 11.5px; line-height: 1.25; }
+.gorunumler button[aria-pressed="true"] { border-color: var(--vurgu); box-shadow: inset 0 0 0 1px var(--vurgu); }
+.renkler { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.renkler button { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--cizgi); padding: 0; }
+.renkler button[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--zemin), 0 0 0 4px var(--vurgu); }
+.renkler input[type="color"] { width: 40px; height: 34px; padding: 0; border: 1px solid var(--cizgi); border-radius: 8px; background: none; }
+.onay { display: flex; gap: 8px; align-items: center; font-size: 14px; font-weight: 400; }
+.kaydet { display: flex; gap: 8px; flex-wrap: wrap; }
+.birincil { border: 0; border-radius: 10px; background: var(--vurgu); color: var(--vurgu-ustu); font-weight: 700; padding: 10px 16px; }
+.ikincil { border: 1px solid var(--cizgi); border-radius: 10px; background: var(--yuzey); padding: 9px 14px; font-weight: 600; }
+.kayitlar { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; font-size: 13px; color: var(--iyi); overflow-wrap: anywhere; }
+.uyari { color: var(--uyari); font-size: 13px; }
+video { display: none; }
+
+@media (min-width: 880px) {
+  .uyg { grid-template-columns: 300px minmax(0, 1fr); column-gap: 24px; align-items: start; }
+  header { grid-column: 1 / -1; }
+  .sahne { top: 16px; }
+  .cerceve { height: min(70vh, 534px); }
+  .sag { display: grid; gap: 14px; min-width: 0; }
+}
+@media (max-width: 879px) { .sag { display: grid; gap: 14px; } }
+</style>
+</head>
+<body>
+<div class="uyg">
+  <header>
+    <h1>Kapak Stüdyosu</h1>
+    <p id="proje">Yükleniyor…</p>
+  </header>
+
+  <section class="sahne" aria-label="Kapak önizlemesi">
+    <div class="cerceve">
+      <canvas id="tuval" width="1080" height="1920" aria-label="Kapak önizlemesi"></canvas>
+      <div class="kilavuz dikey" id="k-dikey" hidden></div>
+      <div class="kilavuz kare" id="k-kare" hidden></div>
+    </div>
+    <div class="durum" id="durum" role="status" aria-live="polite"></div>
+  </section>
+
+  <div class="sag">
+    <section class="bolum">
+      <h2>1. Kareyi seç</h2>
+      <p class="ipucu">Alttaki altı kare videoya eşit aralıklarla dağıtılmıştır; hiçbiri "en iyi" diye seçilmedi. Yüz ifadesine sen karar ver, sonra çubukla tam kareyi ayarla.</p>
+      <label class="alan">Video
+        <select id="kaynak"></select>
+      </label>
+      <div class="ornekler" id="ornekler"></div>
+      <label class="alan" for="konum-t">Tam kare <span class="deger" id="t-yazi">0:00,00</span></label>
+      <div class="adim">
+        <button class="kucuk" id="geri" type="button" aria-label="Bir kare geri">◀ 1 kare</button>
+        <input type="range" id="konum-t" min="0" max="1" step="0.01" value="0">
+        <button class="kucuk" id="ileri" type="button" aria-label="Bir kare ileri">1 kare ▶</button>
+      </div>
+    </section>
+
+    <section class="bolum">
+      <h2>2. Başlığı yaz</h2>
+      <label class="alan" for="baslik">Başlık
+        <textarea id="baslik" placeholder="Reels kurgusu&#10;artık *çok kolay*" autocomplete="off"></textarea>
+      </label>
+      <p class="ipucu">Yeni satır için Enter'a bas. Öne çıkmasını istediğin kelimeyi *yıldız* arasına al. Kısa başlık büyük görünür: satır başına 2–3 kelime yeter.</p>
+    </section>
+
+    <section class="bolum">
+      <h2>3. Görünümü seç</h2>
+      <div class="gorunumler" id="gorunumler"></div>
+      <label class="alan" id="etiket-alani" hidden>Üstteki küçük etiket
+        <input type="text" id="etiket" placeholder="3 İPUCU" autocomplete="off" maxlength="24">
+      </label>
+      <div class="satir">
+        <label class="alan">Yazı tipi
+          <select id="font"></select>
+        </label>
+        <label class="alan" for="boyut">Yazı boyutu <span class="deger" id="boyut-yazi"></span>
+          <input type="range" id="boyut" min="50" max="220" step="2">
+        </label>
+      </div>
+      <label class="alan" for="yukseklik">Yukarı ya da aşağı
+        <input type="range" id="yukseklik" min="0.08" max="0.92" step="0.005">
+      </label>
+      <div class="alan">Yazı rengi
+        <div class="renkler" id="renkler"></div>
+      </div>
+      <p class="uyari" id="tasma-uyarisi" hidden></p>
+    </section>
+
+    <section class="bolum">
+      <h2>4. Kontrol et ve kaydet</h2>
+      <p class="ipucu">Instagram kapağı profil ızgarasında ortadan kırpar. Çizgileri aç ve başlığın çizgilerin içinde kaldığına bak; çizgiler kaydedilen kapakta görünmez.</p>
+      <label class="onay"><input type="checkbox" id="c-dikey"> 3:4 kırpma çizgisi (profil ızgarası)</label>
+      <label class="onay"><input type="checkbox" id="c-kare"> Kare kırpma çizgisi</label>
+      <div class="kaydet">
+        <button class="birincil" type="button" data-boy="1920">Tam kapak 1080×1920</button>
+        <button class="ikincil" type="button" data-boy="1440">3:4 · 1080×1440</button>
+        <button class="ikincil" type="button" data-boy="1080">Kare · 1080×1080</button>
+      </div>
+      <ul class="kayitlar" id="kayitlar"></ul>
+    </section>
+  </div>
+</div>
+<video id="video" muted playsinline preload="auto"></video>
+
+<script type="module">
+const EN = 1080;
+const BOY = 1920;
+const $ = (s) => document.querySelector(s);
+const tuval = $('#tuval');
+const ctx = tuval.getContext('2d');
+const video = $('#video');
+
+const GORUNUMLER = [
+  ['yalin', 'Yalın', 'Yumuşak gölgeli yazı'],
+  ['gecis', 'Koyu geçiş', 'Yazının olduğu taraf kararır'],
+  ['panel', 'Panel', 'Yazının arkasında renkli kutu'],
+  ['bant', 'Bantlar', 'Her satır kendi şeridinde'],
+  ['vurgu', 'Fosforlu', 'Yıldızlı kelimenin altı boyanır'],
+  ['kontur', 'Kontur', 'Kalın dış çizgili yazı'],
+  ['yarim', 'Yarım blok', 'Yazı düz renkli alanda'],
+  ['cerceve', 'Çerçeve', 'İnce çerçeve ve küçük etiket'],
+];
+
+let D; // sunucudan gelen durum
+let S; // kişinin seçimleri
+let kaynak; // seçili video
+let tamKare = null; // tam kalitedeki kare (Image)
+let tamKareAni = -1;
+
+const durumYaz = (m) => { $('#durum').textContent = m; };
+const zamanYaz = (t) => {
+  const dk = Math.floor(t / 60);
+  return `${dk}:${(t - dk * 60).toFixed(2).padStart(5, '0').replace('.', ',')}`;
+};
+
+// ---------------------------------------------------------------- Yazı tipleri
+function agirlikSec(aile) {
+  const f = D.fontlar.find((x) => x.aile === aile);
+  if (!f) return 800;
+  let enIyi = 0;
+  for (const d of f.dosyalar) {
+    const [alt, ust] = d.agirlik.split(' ').map(Number);
+    if (ust !== undefined && alt <= 800 && ust >= 800) return 800;
+    const aday = Math.min(ust ?? alt, 800) >= alt ? Math.min(ust ?? alt, 800) : alt;
+    enIyi = Math.max(enIyi, aday);
+  }
+  return enIyi || 700;
+}
+function fontlariTanit() {
+  for (const f of D.fontlar) {
+    for (const d of f.dosyalar) {
+      const yuz = new FontFace(f.aile, `url("/fontlar/${d.dosya}")`, { weight: d.agirlik, style: d.stil, unicodeRange: d.aralik });
+      document.fonts.add(yuz);
+    }
+  }
+}
+const fontYazisi = (px, aile = S.font) => `${agirlikSec(aile)} ${px}px "${aile}", system-ui, sans-serif`;
+
+// ---------------------------------------------------------------- Çizim
+function rgba(hex, a) {
+  const h = hex.replace('#', '');
+  const n = parseInt(h.length === 3 ? h.split('').map((c) => c + c).join('') : h, 16);
+  return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`;
+}
+/** "bir *iki* üç" → [{yazi:"bir ", vurgu:false}, {yazi:"iki", vurgu:true}, …] */
+function parcala(satir) {
+  return satir.split(/(\*[^*]+\*)/).filter(Boolean).map((p) => (p.startsWith('*') && p.endsWith('*') && p.length > 2 ? { yazi: p.slice(1, -1), vurgu: true } : { yazi: p, vurgu: false }));
+}
+function blokHazirla(c, enCokEn) {
+  const satirlar = S.baslik.split('\n').map((s) => s.trim()).filter(Boolean).map(parcala);
+  const vurguOlcegi = S.gorunum === 'vurgu' ? 1.16 : 1;
+  let boyut = S.boyut;
+  let enler = [];
+  for (;;) {
+    enler = satirlar.map((satir) => satir.reduce((toplam, p) => {
+      c.font = fontYazisi(p.vurgu ? boyut * vurguOlcegi : boyut);
+      return toplam + c.measureText(p.yazi).width;
+    }, 0));
+    if (!satirlar.length || Math.max(...enler) <= enCokEn || boyut <= 36) break;
+    boyut = Math.floor(boyut * 0.96);
+  }
+  const satirBoyu = boyut * 1.12;
+  const yukseklik = satirlar.length * satirBoyu;
+  return { satirlar, boyut, enler, satirBoyu, yukseklik, vurguOlcegi, en: satirlar.length ? Math.max(...enler) : 0, kuculdu: boyut < S.boyut };
+}
+function yaziCiz(c, blok, ust, { renk = S.renk, vurguRengi = D.renkler.vurgu, kontur = 0 } = {}) {
+  c.textBaseline = 'middle';
+  c.textAlign = 'left';
+  blok.satirlar.forEach((satir, n) => {
+    let x = EN / 2 - blok.enler[n] / 2;
+    const y = ust + blok.satirBoyu * (n + 0.5);
+    for (const p of satir) {
+      c.font = fontYazisi(p.vurgu ? blok.boyut * blok.vurguOlcegi : blok.boyut);
+      if (kontur) {
+        c.lineJoin = 'round';
+        c.lineWidth = kontur;
+        c.strokeStyle = D.renkler.koyu;
+        c.strokeText(p.yazi, x, y);
+      }
+      c.fillStyle = p.vurgu ? vurguRengi : renk;
+      c.fillText(p.yazi, x, y);
+      x += c.measureText(p.yazi).width;
+    }
+  });
+}
+function golge(c, boyut, guc = 0.55) {
+  c.shadowColor = `rgba(0,0,0,${guc})`;
+  c.shadowBlur = boyut * 0.3;
+  c.shadowOffsetY = boyut * 0.05;
+}
+function golgeKapat(c) {
+  c.shadowColor = 'transparent';
+  c.shadowBlur = 0;
+  c.shadowOffsetY = 0;
+}
+
+/** Kapağı 1080×1920 bir tuvale çizer. `resim` bir video ya da görsel olabilir. */
+function kapakCiz(c, resim) {
+  c.save();
+  c.fillStyle = '#111';
+  c.fillRect(0, 0, EN, BOY);
+  if (resim) {
+    const en = resim.videoWidth || resim.naturalWidth;
+    const boy = resim.videoHeight || resim.naturalHeight;
+    if (en && boy) {
+      const o = Math.max(EN / en, BOY / boy);
+      c.drawImage(resim, (EN - en * o) / 2, (BOY - boy * o) / 2, en * o, boy * o);
+    }
+  }
+  const R = D.renkler;
+  const g = S.gorunum;
+  const dolgu = g === 'panel' ? 56 : g === 'bant' ? 34 : 0;
+  const enCokEn = (g === 'cerceve' ? 820 : 940) - dolgu * 2;
+  const blok = blokHazirla(c, enCokEn);
+  const kenar = g === 'cerceve' ? 560 : 90;
+  let ust = S.konum * BOY - blok.yukseklik / 2;
+  ust = Math.max(kenar, Math.min(BOY - kenar - blok.yukseklik, ust));
+  const merkez = ust + blok.yukseklik / 2;
+  const altta = merkez > BOY / 2;
+
+  if (!blok.satirlar.length && g !== 'cerceve') { c.restore(); return blok; }
+
+  if (g === 'yalin') {
+    golge(c, blok.boyut);
+    yaziCiz(c, blok, ust);
+  } else if (g === 'gecis') {
+    const gecis = altta ? c.createLinearGradient(0, BOY, 0, Math.max(0, ust - 320)) : c.createLinearGradient(0, 0, 0, Math.min(BOY, ust + blok.yukseklik + 320));
+    gecis.addColorStop(0, rgba(R.koyu, 0.9));
+    gecis.addColorStop(0.55, rgba(R.koyu, 0.6));
+    gecis.addColorStop(1, rgba(R.koyu, 0));
+    c.fillStyle = gecis;
+    c.fillRect(0, 0, EN, BOY);
+    golge(c, blok.boyut, 0.3);
+    yaziCiz(c, blok, ust);
+  } else if (g === 'panel') {
+    const en = blok.en + dolgu * 2;
+    golge(c, 90, 0.3);
+    c.fillStyle = R.ana;
+    c.beginPath();
+    c.roundRect(EN / 2 - en / 2, ust - dolgu * 0.8, en, blok.yukseklik + dolgu * 1.6, 44);
+    c.fill();
+    golgeKapat(c);
+    yaziCiz(c, blok, ust);
+  } else if (g === 'bant') {
+    blok.satirlar.forEach((_, n) => {
+      const en = blok.enler[n] + dolgu * 2;
+      c.fillStyle = R.ana;
+      c.beginPath();
+      c.roundRect(EN / 2 - en / 2, ust + blok.satirBoyu * n + blok.satirBoyu * 0.03, en, blok.satirBoyu * 0.96, 14);
+      c.fill();
+    });
+    yaziCiz(c, blok, ust);
+  } else if (g === 'vurgu') {
+    // Yıldızlı kelimelerin altına fosforlu kalem şeridi.
+    c.textBaseline = 'middle';
+    blok.satirlar.forEach((satir, n) => {
+      let x = EN / 2 - blok.enler[n] / 2;
+      const y = ust + blok.satirBoyu * (n + 0.5);
+      for (const p of satir) {
+        c.font = fontYazisi(p.vurgu ? blok.boyut * blok.vurguOlcegi : blok.boyut);
+        const en = c.measureText(p.yazi).width;
+        if (p.vurgu) {
+          c.fillStyle = R.vurgu;
+          c.beginPath();
+          c.roundRect(x - blok.boyut * 0.1, y - blok.boyut * 0.16, en + blok.boyut * 0.2, blok.boyut * 0.72, blok.boyut * 0.12);
+          c.fill();
+        }
+        x += en;
+      }
+    });
+    golge(c, blok.boyut, 0.5);
+    yaziCiz(c, blok, ust, { vurguRengi: S.renk });
+  } else if (g === 'kontur') {
+    yaziCiz(c, blok, ust, { kontur: blok.boyut * 0.17 });
+  } else if (g === 'yarim') {
+    const pay = 110;
+    c.fillStyle = R.ana;
+    if (altta) c.fillRect(0, ust - pay, EN, BOY - (ust - pay));
+    else c.fillRect(0, 0, EN, ust + blok.yukseklik + pay);
+    c.fillStyle = R.vurgu;
+    c.fillRect(0, altta ? ust - pay - 10 : ust + blok.yukseklik + pay, EN, 10);
+    yaziCiz(c, blok, ust);
+  } else if (g === 'cerceve') {
+    // Çerçeve ortadaki kareyi sarar; kare ve 3:4 kırpmalarda da eksiksiz görünür.
+    const k = { x: 56, y: 476, en: 968, boy: 968 };
+    golge(c, 60, 0.35);
+    c.strokeStyle = S.renk;
+    c.lineWidth = 9;
+    c.strokeRect(k.x, k.y, k.en, k.boy);
+    golgeKapat(c);
+    if (S.etiket.trim()) {
+      c.font = `700 44px "${S.font}", system-ui, sans-serif`;
+      const yazi = S.etiket.trim().toLocaleUpperCase('tr');
+      const en = c.measureText(yazi).width + 64;
+      c.fillStyle = R.vurgu;
+      c.beginPath();
+      c.roundRect(EN / 2 - en / 2, k.y - 40, en, 80, 40);
+      c.fill();
+      c.fillStyle = R.koyu;
+      c.textAlign = 'center';
+      c.textBaseline = 'middle';
+      c.fillText(yazi, EN / 2, k.y + 2);
+    }
+    golge(c, blok.boyut, 0.6);
+    yaziCiz(c, blok, ust);
+  }
+  c.restore();
+  return { ...blok, ust };
+}
+
+function ciz() {
+  if (!S) return;
+  const hazir = tamKare && Math.abs(tamKareAni - S.t) < 0.001;
+  const blok = kapakCiz(ctx, hazir ? tamKare : video.readyState >= 2 ? video : tamKare);
+  $('#k-dikey').hidden = !S.kilavuz.dikey;
+  $('#k-kare').hidden = !S.kilavuz.kare;
+  $('#etiket-alani').hidden = S.gorunum !== 'cerceve';
+  $('#boyut-yazi').textContent = blok.kuculdu ? `${S.boyut} → ${blok.boyut} (sığması için küçüldü)` : String(S.boyut);
+  // Kare kırpmada kesilecek başlık için uyarı.
+  const uyari = $('#tasma-uyarisi');
+  if (blok.satirlar?.length && (blok.ust < 420 || blok.ust + blok.yukseklik > 1500)) {
+    uyari.hidden = false;
+    uyari.textContent = 'Başlığın bir kısmı kare kırpmanın dışında kalıyor. Kapağı kare olarak da kullanacaksan başlığı ortaya yaklaştır.';
+  } else uyari.hidden = true;
+}
+
+// ---------------------------------------------------------------- Kare seçimi
+let kareZamanlayici = 0;
+let kareSirasi = 0;
+function tamKareIste() {
+  clearTimeout(kareZamanlayici);
+  kareZamanlayici = setTimeout(() => tamKareYukle().catch(() => {}), 220);
+}
+function tamKareYukle() {
+  const sira = ++kareSirasi;
+  const an = S.t;
+  durumYaz('Kare tam kalitede alınıyor…');
+  return new Promise((coz, reddet) => {
+    const g = new Image();
+    g.onload = () => {
+      if (sira !== kareSirasi) return coz(false);
+      tamKare = g;
+      tamKareAni = an;
+      durumYaz('');
+      ciz();
+      coz(true);
+    };
+    g.onerror = () => { durumYaz('Kare alınamadı'); reddet(new Error('kare')); };
+    g.src = `/api/kare?kaynak=${kaynak.ad}&t=${an.toFixed(3)}&_=${Date.now()}`;
+  });
+}
+function aniAyarla(t, kaydetsin = true) {
+  S.t = Math.max(0, Math.min(kaynak.sure - 0.05, Math.round(t * kaynak.fps) / kaynak.fps));
+  $('#konum-t').value = String(S.t);
+  $('#t-yazi').textContent = zamanYaz(S.t);
+  for (const b of document.querySelectorAll('#ornekler button')) b.setAttribute('aria-pressed', String(Math.abs(Number(b.dataset.t) - S.t) < 0.02));
+  if (video.readyState >= 1) video.currentTime = S.t;
+  tamKareIste();
+  if (kaydetsin) kaydet();
+}
+video.addEventListener('seeked', ciz);
+video.addEventListener('loadeddata', ciz);
+
+function kaynakSec(ad, ilk = false) {
+  kaynak = D.kaynaklar.find((k) => k.ad === ad) || D.kaynaklar[0];
+  S.kaynak = kaynak.ad;
+  $('#kaynak').value = kaynak.ad;
+  $('#konum-t').max = String(Math.max(0.1, kaynak.sure - 0.05));
+  $('#konum-t').step = String(1 / kaynak.fps);
+  video.src = `/medya/${kaynak.ad}.mp4`;
+  const anlar = Array.from({ length: 6 }, (_, i) => +(((i + 0.5) / 6) * kaynak.sure).toFixed(2));
+  $('#ornekler').innerHTML = anlar.map((t) => `<button type="button" data-t="${t}" aria-pressed="false" aria-label="${zamanYaz(t)} anındaki kare"><img alt="" loading="lazy" src="/api/kare?kaynak=${kaynak.ad}&t=${t}&kucuk=1"></button>`).join('');
+  tamKare = null;
+  aniAyarla(ilk ? S.t : anlar[2], !ilk);
+}
+
+// ---------------------------------------------------------------- Kaydetme
+let kayitZamanlayici = 0;
+function kaydet() {
+  clearTimeout(kayitZamanlayici);
+  kayitZamanlayici = setTimeout(() => {
+    fetch('/api/kapak', { method: 'PUT', body: JSON.stringify(S) }).catch(() => durumYaz('Seçimler kaydedilemedi'));
+  }, 500);
+}
+async function disaAktar(boy) {
+  durumYaz('Kapak hazırlanıyor…');
+  if (!tamKare || Math.abs(tamKareAni - S.t) > 0.001) await tamKareYukle();
+  await document.fonts.load(fontYazisi(100), 'ığüşöçİĞ');
+  const ana = document.createElement('canvas');
+  ana.width = EN;
+  ana.height = BOY;
+  kapakCiz(ana.getContext('2d'), tamKare);
+  const cikti = document.createElement('canvas');
+  cikti.width = EN;
+  cikti.height = boy;
+  cikti.getContext('2d').drawImage(ana, 0, (BOY - boy) / 2, EN, boy, 0, 0, EN, boy);
+  const parca = await new Promise((coz) => cikti.toBlob(coz, 'image/png'));
+  const yanit = await fetch(`/api/kaydet?boy=${boy}`, { method: 'POST', body: parca });
+  const sonuc = await yanit.json();
+  if (!yanit.ok) throw new Error(sonuc.hata || 'kaydedilemedi');
+  return sonuc.dosya;
+}
+
+// ---------------------------------------------------------------- Kumandalar
+function kumandalariDoldur() {
+  $('#kaynak').innerHTML = D.kaynaklar.map((k) => `<option value="${k.ad}">${k.etiket}</option>`).join('');
+  $('#font').innerHTML = D.fontlar.map((f) => `<option value="${f.aile}">${f.aile} · ${f.aciklama}</option>`).join('');
+  $('#gorunumler').innerHTML = GORUNUMLER.map(([ad, baslik, aciklama]) => `<button type="button" data-g="${ad}" aria-pressed="false"><b>${baslik}</b><small>${aciklama}</small></button>`).join('');
+  const R = D.renkler;
+  const secenekler = [...new Set([R.acik, R.vurgu, R.koyu, R.ana])];
+  $('#renkler').innerHTML = secenekler.map((r) => `<button type="button" data-renk="${r}" style="background:${r}" aria-label="Renk ${r}" aria-pressed="false"></button>`).join('') + '<input type="color" id="ozel-renk" aria-label="Başka bir renk seç">';
+}
+function kumandalariEsle() {
+  $('#baslik').value = S.baslik;
+  $('#etiket').value = S.etiket;
+  $('#font').value = S.font;
+  $('#boyut').value = String(S.boyut);
+  $('#yukseklik').value = String(S.konum);
+  $('#c-dikey').checked = S.kilavuz.dikey;
+  $('#c-kare').checked = S.kilavuz.kare;
+  for (const b of document.querySelectorAll('#gorunumler button')) b.setAttribute('aria-pressed', String(b.dataset.g === S.gorunum));
+  for (const b of document.querySelectorAll('#renkler button')) b.setAttribute('aria-pressed', String(b.dataset.renk.toLowerCase() === S.renk.toLowerCase()));
+  $('#ozel-renk').value = /^#[0-9a-f]{6}$/i.test(S.renk) ? S.renk : '#ffffff';
+}
+function degisti() {
+  kumandalariEsle();
+  ciz();
+  kaydet();
+}
+
+$('#kaynak').addEventListener('change', (e) => kaynakSec(e.target.value));
+$('#ornekler').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) aniAyarla(Number(b.dataset.t)); });
+$('#konum-t').addEventListener('input', (e) => aniAyarla(Number(e.target.value)));
+$('#geri').addEventListener('click', () => aniAyarla(S.t - 1 / kaynak.fps));
+$('#ileri').addEventListener('click', () => aniAyarla(S.t + 1 / kaynak.fps));
+$('#baslik').addEventListener('input', (e) => { S.baslik = e.target.value; ciz(); kaydet(); });
+$('#etiket').addEventListener('input', (e) => { S.etiket = e.target.value; ciz(); kaydet(); });
+$('#gorunumler').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) { S.gorunum = b.dataset.g; degisti(); } });
+$('#font').addEventListener('change', async (e) => { S.font = e.target.value; await document.fonts.load(fontYazisi(100), 'ığüşöçİĞ').catch(() => {}); degisti(); });
+$('#boyut').addEventListener('input', (e) => { S.boyut = Number(e.target.value); ciz(); kaydet(); });
+$('#yukseklik').addEventListener('input', (e) => { S.konum = Number(e.target.value); ciz(); kaydet(); });
+$('#renkler').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) { S.renk = b.dataset.renk; degisti(); } });
+$('#renkler').addEventListener('input', (e) => { if (e.target.id === 'ozel-renk') { S.renk = e.target.value; degisti(); } });
+$('#c-dikey').addEventListener('change', (e) => { S.kilavuz.dikey = e.target.checked; degisti(); });
+$('#c-kare').addEventListener('change', (e) => { S.kilavuz.kare = e.target.checked; degisti(); });
+document.querySelector('.kaydet').addEventListener('click', async (e) => {
+  const b = e.target.closest('button');
+  if (!b) return;
+  b.disabled = true;
+  try {
+    const dosya = await disaAktar(Number(b.dataset.boy));
+    durumYaz('Kaydedildi');
+    const li = document.createElement('li');
+    li.textContent = `✓ ${dosya}`;
+    $('#kayitlar').prepend(li);
+  } catch (hata) {
+    durumYaz(`Kaydedilemedi: ${hata.message}`);
+  }
+  b.disabled = false;
+});
+
+// ---------------------------------------------------------------- Başlangıç
+async function baslat() {
+  D = await fetch('/api/durum', { cache: 'no-store' }).then((y) => y.json());
+  $('#proje').textContent = D.ad;
+  fontlariTanit();
+  kumandalariDoldur();
+  const varsayilan = {
+    kaynak: D.kaynaklar[0].ad, t: -1, baslik: '', etiket: '', gorunum: 'yalin', font: D.stilFontlari.vurgu || D.fontlar[0].aile,
+    boyut: 130, konum: 0.66, renk: D.renkler.acik, kilavuz: { dikey: true, kare: false },
+  };
+  S = { ...varsayilan, ...(D.kapak || {}) };
+  S.kilavuz = { ...varsayilan.kilavuz, ...(S.kilavuz || {}) };
+  if (!D.fontlar.some((f) => f.aile === S.font)) S.font = D.fontlar[0].aile;
+  if (!GORUNUMLER.some(([ad]) => ad === S.gorunum)) S.gorunum = 'yalin';
+  const ilkKezAciliyor = S.t < 0;
+  kumandalariEsle();
+  await document.fonts.load(fontYazisi(100), 'ığüşöçİĞ').catch(() => {});
+  kaynakSec(S.kaynak, !ilkKezAciliyor);
+  ciz();
+}
+baslat().catch((e) => { durumYaz('Sayfa açılırken bir sorun oldu'); console.error(e); });
+</script>
+</body>
+</html>
