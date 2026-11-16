@@ -30,7 +30,7 @@ export async function duzeyeGetir(dosya, hedef = HEDEF_LUFS, secenek = {}) {
     if (Math.abs(fark) <= 0.4) break;
     const sinirGerek = (olcum.tepe ?? 0) + fark > TEPE;
     const suzgec = sinirGerek
-      ? `volume=${fark.toFixed(2)}dB,alimiter=limit=${sinir}:attack=3:release=60:level=false`
+      ? `volume=${fark.toFixed(2)}dB,alimiter=limit=${sinir}:attack=3:release=60:level=false:latency=true`
       : `volume=${fark.toFixed(2)}dB`;
     const gecici = `${dosya}.duzey.wav`;
     await calistir('ffmpeg', ['-v', 'error', '-y', '-i', dosya, '-af', suzgec, '-ar', String(hz), '-ac', String(kanal), '-c:a', 'pcm_s16le', gecici]);

@@ -57,7 +57,7 @@ node araclar/bas-son.mjs "<proje>"
 - Ses temizliği gürültüyü azaltır ve sesi Instagram'ın beklediği düzeye getirir. UYARI yazarsa (rüzgâr, trafik) kişiye söyle; düzeltilemeyecek kadar gürültülü bir kaydı sessiz bir yerde yeniden çekmek en iyisidir.
 - Döküm `dokum.txt` dosyasını yazar. Baştan sona oku.
 - `bas-son.mjs` kaydın ilk ve son saniyelerinin karelerini verir. İki görsele bak.
-- Kayıt telefonda HDR çekilmişse araç uyarır. Renkler soluk ya da fazla parlak çıkabilir; kişiye söyle ve sonraki çekimlerde telefonun kamera ayarından HDR videoyu kapatmasını öner.
+- Kayıt telefonda HDR çekilmişse araç onu bir kez olağan renk aralığına çevirir ve bunu yazar. Renkler telefondakinden biraz farklı görünebilir; kişiye söyle, `bas-son` karelerinde renge bak ve sonraki çekimlerde telefonun kamera ayarından HDR videoyu kapatmasını öner. "Dönüştürülemedi" derse renkler soluk çıkar; kişiye HDR'yi kapatıp yeniden çekmesini söyle.
 
 ### 2. Kesimi ve grafikleri öner → `rehber/kesim.md`, `rehber/kartlar.md`
 
@@ -132,7 +132,7 @@ Kısa ve somut bitir:
 2. **Özgün dosyaya dokunma.** Her şey proje klasöründeki kopyada olur.
 3. **Stil dosyası kazanır.** Kişi kurgu sırasında bir kural söylerse hemen stil dosyasına yaz.
 4. **Tasarım yapma.** Kart türleri ve görünüşleri hazırdır; yeni bir görsel dil, kendi yazdığın sayfa ya da animasyon ekleme. Kişi şablonda olmayan bir şey isterse bunun şablonda olmadığını söyle ve en yakın kart türünü öner.
-5. **Dışarıdan içerik alma.** İnternetten görsel, müzik, ses ya da animasyon indirme; çoğunun lisansı vardır. Görseli, Lottie dosyasını ve ekran görüntüsünü kişi verir. Tek istisna `site-goruntu.mjs` ile alınan, adı geçen sitenin herkese açık ana sayfasıdır.
+5. **Dışarıdan içerik alma.** İnternetten görsel, müzik, ses, yazı tipi ya da animasyon indirme; çoğunun lisansı vardır. Görseli, Lottie dosyasını, yazı tipini ve ekran görüntüsünü kişi verir. Ses efektleri paketle gelir. Tek istisna `site-goruntu.mjs` ile alınan, adı geçen sitenin herkese açık ana sayfasıdır.
 6. **Kişinin söylediğini değiştirme.** Altyazıda yalnızca yazım düzeltilir; cümle yeniden yazılmaz.
 7. **Göstermeden önce bak.** Önizlemeyi ve kareleri kişiden önce sen gör.
 8. **Emin değilsen sor.** Anlaşılmayan bir kelimeyi ya da iki denemeden hangisinin kalacağını tahmin etme.
@@ -156,7 +156,7 @@ Kişi sorarsa ya da denk gelirse açıkça söyle:
 
 - Mac'te denendi. Windows ve Linux'ta denenmedi.
 - Tek kişinin kameraya konuştuğu videolar için. Çok kameralı çekim ve röportaj kurgusu yok.
-- Arka plan müziği eklenmez.
-- Telefonun HDR kaydında renkler bozulabilir.
+- Arka plan müziği eklenmez. Ses efektleri paketteki on sesle sınırlıdır.
+- Telefonun HDR kaydı olağan renk aralığına çevrilir; renkler telefondakiyle birebir aynı olmayabilir. Dönüşüm yalnızca Mac'te çalışır.
 - Dökümün yazmadığı kısa "ııı"lar bir duraklamanın içinde değilse kalabilir.
 - Ekran kaydı, B-roll ve yeşil perde yok; yalnızca konuşmacı videosu, üstüne kartlar.

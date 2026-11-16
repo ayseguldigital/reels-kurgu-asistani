@@ -16,12 +16,14 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { calistir, medyaBilgisi } from '../ortak/calistir.mjs';
 import { stilOku } from '../ortak/stil.mjs';
-import { hamBul, araKlasor, jsonOku, klasorAl, secenek } from '../ortak/yollar.mjs';
+import { araKlasor, jsonOku, klasorAl, secenek } from '../ortak/yollar.mjs';
+import { fontlariListele } from '../ortak/fontlar.mjs';
+import { goruntuKaynagi } from '../ortak/goruntu.mjs';
 
 const BURASI = path.dirname(fileURLToPath(import.meta.url));
 const KOK = path.join(BURASI, '..');
 const SAYFA = path.join(KOK, 'kapak', 'sayfa.html');
-const FONTLAR = path.join(KOK, 'fontlar');
+const FONT_TURLERI = { woff2: 'font/woff2', woff: 'font/woff', truetype: 'font/ttf', opentype: 'font/otf' };
 const EN = 1080;
 const BOY = 1920;
 const BOYUTLAR = { 1920: 'kapak-1080x1920.png', 1440: 'kapak-1080x1440.png', 1080: 'kapak-1080x1080.png' };
@@ -30,7 +32,7 @@ const klasor = klasorAl('node araclar/kapak.mjs <proje klasörü> [--port N]');
 const port = Number(secenek('port', process.env.PORT || 4318));
 const ara = await araKlasor(klasor);
 const stil = await stilOku(klasor);
-const fontListesi = await jsonOku(path.join(FONTLAR, 'fontlar.json'));
+const fontListesi = await fontlariListele(stil);
 
 async function varMi(dosya) {
   try {
@@ -48,7 +50,7 @@ if (await varMi(kesim)) {
   const b = await medyaBilgisi(kesim);
   kaynaklar.push({ ad: 'kesim', etiket: 'Kesilmiş video', dosya: kesim, onizleme: kesim, sure: b.sure, fps: b.fps || 30 });
 }
-const ham = await hamBul(klasor);
+const ham = (await goruntuKaynagi(klasor)).dosya;
 {
   const b = await medyaBilgisi(ham);
   // Ham kayıt her tarayıcıda oynamayabilir (telefon kayıtları); gezinmek için hafif bir kopyası kullanılır.
@@ -124,7 +126,11 @@ const sunucu = createServer(async (istek, yanit) => {
       jsonGonder(yanit, {
         ad: path.basename(klasor),
         renkler: stil.renkler,
-        fontlar: fontListesi.map((f) => ({ aile: f.aile, tur: f.tur, aciklama: f.aciklama, dosyalar: f.dosyalar })),
+        fontlar: fontListesi.map((f, n) => ({
+          aile: f.aile,
+          aciklama: f.aciklama,
+          dosyalar: f.dosyalar.map((d, m) => ({ adres: `/font/${n}/${m}`, agirlik: d.agirlik, stil: d.stil, aralik: d.aralik })),
+        })),
         stilFontlari: stil.fontlar,
         kaynaklar: kaynaklar.map((k) => ({ ad: k.ad, etiket: k.etiket, sure: k.sure, fps: k.fps })),
         kapak: await jsonOku(path.join(klasor, 'kapak.json'), null),
@@ -152,8 +158,12 @@ const sunucu = createServer(async (istek, yanit) => {
       const kaynak = kaynaklar.find((k) => `/medya/${k.ad}.mp4` === yol);
       if (!kaynak) yanit.writeHead(404).end('yok');
       else await dosyaGonder(istek, yanit, kaynak.onizleme, 'video/mp4');
-    } else if (yol.startsWith('/fontlar/') && yol.endsWith('.woff2') && !yol.includes('..')) {
-      await dosyaGonder(istek, yanit, path.join(FONTLAR, yol.slice('/fontlar/'.length)), 'font/woff2');
+    } else if (yol.startsWith('/font/')) {
+      // Yazı tipleri sıra numarasıyla istenir; dosya yolu sayfadan gelmez.
+      const [n, m] = yol.slice('/font/'.length).split('/').map(Number);
+      const d = fontListesi[n]?.dosyalar[m];
+      if (!d) yanit.writeHead(404).end('yok');
+      else await dosyaGonder(istek, yanit, d.yol, FONT_TURLERI[d.bicim] || 'application/octet-stream');
     } else {
       yanit.writeHead(404).end('yok');
     }

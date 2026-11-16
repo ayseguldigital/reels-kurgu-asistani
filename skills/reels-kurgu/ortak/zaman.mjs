@@ -215,7 +215,7 @@ export function kararOzeti(k) {
     k.sira ?? null,
     Object.entries(k.duzeltme || {}).sort(([a], [b]) => Number(a) - Number(b)),
     sirali(k.vurgu),
-    Object.entries(k.kartlar || {}).map(([n, d]) => [n, d.durum || 'tut', d.not || '']).sort(([a], [b]) => Number(a) - Number(b)),
+    Object.entries(k.kartlar || {}).map(([n, d]) => [n, d.durum || 'tut', d.not || '', d.ses === false ? 'sessiz' : d.ses === true ? 'sesli' : '']).sort(([a], [b]) => Number(a) - Number(b)),
     Object.entries(k.stilIstegi?.altyazi || {}).sort(),
   ]);
   let h = 2166136261;

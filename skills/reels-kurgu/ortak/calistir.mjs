@@ -86,6 +86,7 @@ export async function medyaBilgisi(dosya) {
     en,
     boy,
     fps,
+    donme,
     kodek: goruntu?.codec_name ?? null,
     renkAktarimi: goruntu?.color_transfer ?? null,
     hdr: ['arib-std-b67', 'smpte2084'].includes(goruntu?.color_transfer),

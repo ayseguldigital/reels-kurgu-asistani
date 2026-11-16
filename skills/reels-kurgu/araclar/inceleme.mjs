@@ -19,6 +19,7 @@ import { calistir, medyaBilgisi, sureYaz } from '../ortak/calistir.mjs';
 import { planla, tempoAl, kararOzeti } from '../ortak/zaman.mjs';
 import { stilOku } from '../ortak/stil.mjs';
 import { hamBul, jsonOku } from '../ortak/yollar.mjs';
+import { goruntuKaynagi } from '../ortak/goruntu.mjs';
 
 const BURASI = path.dirname(fileURLToPath(import.meta.url));
 const KOK = path.join(BURASI, '..');
@@ -60,7 +61,7 @@ async function hafifVideo(kaynak, ses, hedef, sure) {
   const goruntuHizi = Math.max(180, Math.min(900, toplam - sesHizi - 20));
   const boy = goruntuHizi < 350 ? 640 : 960;
   const arg = ['-v', 'error', '-y', '-i', kaynak];
-  if (ses) arg.push('-i', ses, '-map', '0:v', '-map', '1:a');
+  if (ses) arg.push('-i', ses, '-map', '0:v', '-map', '1:a:0?');
   arg.push(
     '-vf', `scale=-2:${boy}:force_original_aspect_ratio=decrease,scale=trunc(iw/2)*2:trunc(ih/2)*2,fps=30`,
     '-c:v', 'libx264', '-preset', 'veryfast', '-b:v', `${goruntuHizi}k`, '-maxrate', `${Math.round(goruntuHizi * 1.3)}k`,
@@ -102,6 +103,7 @@ async function veriYaz() {
     },
     stil: { renkler: stil.renkler, altyazi: stil.altyazi, duzeltmeler: stil.duzeltmeler || {} },
     kartlar: kurgu.kartlar || [],
+    sesEfekti: stil.sesEfekti,
     ses: sesRapor ? { once: sesRapor.once, sonra: sesRapor.sonra, gurultuAzaltma: sesRapor.gurultuAzaltma, uyarilar: sesRapor.uyarilar } : null,
     medya: { kaynak: 'medya/kaynak.mp4', sesOnce: sesOrnegi ? 'medya/ses-once.mp4' : null, sesSonra: sesOrnegi ? 'medya/ses-sonra.mp4' : null },
   };
@@ -119,7 +121,9 @@ if (komut === 'hazirla') {
   const sesVar = await varMi(temizSes);
 
   console.error('Sayfa için hafif video hazırlanıyor…');
-  const bayt = await hafifVideo(ham, sesVar ? temizSes : null, path.join(cikis, 'kaynak.mp4'), bilgi.sure);
+  const goruntu = (await goruntuKaynagi(klasor)).dosya;
+  // Görüntü dönüştürülmüş kopyadan, ses temizlenmiş sesten (o yoksa ham kayıttan) alınır.
+  const bayt = await hafifVideo(goruntu, sesVar ? temizSes : ham, path.join(cikis, 'kaynak.mp4'), bilgi.sure);
 
   // Ses karşılaştırması: konuşmanın başladığı yerden 10 saniye, temizlik öncesi ve sonrası.
   if (sesVar) {
@@ -331,6 +335,7 @@ if (komut === 'aktar') {
   const kurgu = await jsonOku(kurguDosyasi, null);
   const kartKararlari = k.kartlar || {};
   const istekler = [];
+  let kartDegisti = false;
   if (kurgu?.kartlar?.length) {
     const kalanKartlar = [];
     kurgu.kartlar.forEach((kart, n) => {
@@ -341,12 +346,22 @@ if (komut === 'aktar') {
         return;
       }
       if (karar.not && karar.not.trim()) istekler.push(`DEĞİŞİKLİK İSTEĞİ · ${ozet}: ${karar.not.trim()}`);
+      // Ses efekti: kişi kartı sessiz yaptıysa ya da sesi geri açtıysa karta işlenir.
+      if (karar.ses === false && kart.ses !== false) {
+        kart.ses = false;
+        kartDegisti = true;
+        console.log(`  SESSİZ: ${ozet}`);
+      } else if (karar.ses === true && kart.ses === false) {
+        delete kart.ses;
+        kartDegisti = true;
+        console.log(`  SES AÇILDI: ${ozet}`);
+      }
       if (kart.kelime !== undefined && simdikiKes.has(kart.kelime)) {
         istekler.push(`KART KELİMESİ KESİLDİ · ${ozet}: bağlı olduğu ${kart.kelime} numaralı kelime artık videoda yok; başka bir kelimeye bağlayın ya da kartı çıkarın.`);
       }
       kalanKartlar.push(kart);
     });
-    if (kalanKartlar.length !== kurgu.kartlar.length) {
+    if (kalanKartlar.length !== kurgu.kartlar.length || kartDegisti) {
       kurgu.kartlar = kalanKartlar;
       await writeFile(kurguDosyasi, JSON.stringify(kurgu, null, 1));
     }

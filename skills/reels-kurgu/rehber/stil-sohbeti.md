@@ -23,9 +23,28 @@ Kişinin videoları her seferinde aynı görünsün diye renkleri, yazı tipi, a
 6. **Altyazı zemini.** Kontur (yazının çevresinde ince koyu çizgi; her arka planda okunur), gölge (daha sade) ya da kutu (yazının arkasında renkli zemin).
 7. **Tempo.** Sakin (duraklamalar az kısaltılır, doğal konuşma), dengeli ya da hızlı (boşluklar sıkı kesilir). Emin değilse dengeli.
 8. **Grafik ne kadar olsun?** Az (yalnızca gerektiğinde), dengeli ya da yoğun.
-9. **Kesilmesini istediğin dolgu sözcüğü var mı?** "Şey", "yani", "hani", "aslında" gibi. Bunlar kendiliğinden kesilmez; kişi isterse listeye yazılır.
-10. **Videolarını nasıl bitiriyorsun?** Hep kullandığı çağrı cümlesi ("Yorumlara REHBER yaz", "Kaydet, sonra lazım olacak"). Yoksa boş kalır.
-11. **Doğru yazılması gereken adlar var mı?** Marka adı, kendi adı, ürün adları, sık andığı araçlar. Döküm bunları yanlış duyabilir.
+9. **Ses efekti olsun mu?** Grafikler girerken kısa sesler çalar. Yok, az (her grafikte tek ses; çoğu hesap için doğru seçim) ya da çok (liste maddelerinde ve sayılarda da ses).
+10. **Kesilmesini istediğin dolgu sözcüğü var mı?** "Şey", "yani", "hani", "aslında" gibi. Bunlar kendiliğinden kesilmez; kişi isterse listeye yazılır.
+11. **Videolarını nasıl bitiriyorsun?** Hep kullandığı çağrı cümlesi ("Yorumlara REHBER yaz", "Kaydet, sonra lazım olacak"). Yoksa boş kalır.
+12. **Doğru yazılması gereken adlar var mı?** Marka adı, kendi adı, ürün adları, sık andığı araçlar. Döküm bunları yanlış duyabilir.
+
+## Kendi yazı tipin
+
+Kişinin markasına ait bir yazı tipi varsa kullanabilir.
+
+1. Dosyayı ister: `.ttf`, `.otf`, `.woff` ya da `.woff2`. `~/Movies/Reels Kurgu/fontlar/` klasörüne kopyala.
+2. Stil dosyasına tanıt ve seç:
+
+   ```json
+   "ozelFontlar": [{ "aile": "Markam", "dosya": "Markam-Bold.ttf" }],
+   "fontlar": { "govde": "Markam", "vurgu": "Markam" }
+   ```
+
+   Kalın ve ince ayrı dosyalardaysa: `"dosyalar": [{ "dosya": "Markam-Regular.otf", "agirlik": "400" }, { "dosya": "Markam-Bold.otf", "agirlik": "700" }]`. Altyazı ve başlıklar kalın yazılır; kalın dosya varsa onu ver.
+3. `node araclar/stil.mjs kontrol` çalıştır. Yazı tipi Türkçe harfleri (ç ğ ı ö ş ü İ) içermiyorsa söyler. Eksik harfler videoda başka bir yazı tipiyle görünür ve kötü durur; kişiye söyle ve Türkçe destekli bir sürümünü ya da paketten benzer bir yazı tipini öner.
+4. Önizlemeyi çıkar ve göster.
+
+Yazı tipinin lisansı kişinin sorumluluğundadır. Satın aldığı ya da serbest lisanslı bir yazı tipi olduğunu varsay; internetten yazı tipi indirme.
 
 ## Dosyaya yazmak
 
@@ -49,7 +68,7 @@ Yalnızca kişinin seçtiği alanları yaz; yazılmayan alanlar başlangıç de�
 |---|---|
 | `renkler.ana`, `renkler.vurgu` | altı haneli renk kodu |
 | `renkler.acik`, `renkler.koyu` | genelde `#FFFFFF` ve `#111111`; dokunma |
-| `fontlar.govde`, `fontlar.vurgu` | paketteki yazı tiplerinden biri |
+| `fontlar.govde`, `fontlar.vurgu` | paketteki yazı tiplerinden biri ya da kişinin eklediği (`ozelFontlar`) |
 | `altyazi.bicim` | `kelime` · `ifade` · `cumle` |
 | `altyazi.zemin` | `kontur` · `golge` · `kutu` |
 | `altyazi.boyut` | `kucuk` · `orta` · `buyuk` |
@@ -60,6 +79,8 @@ Yalnızca kişinin seçtiği alanları yaz; yazılmayan alanlar başlangıç de�
 | `tempo` | `sakin` · `dengeli` · `hizli` |
 | `hiz` | `1` olduğu gibi; `1.05` biraz hızlı. Kişi istemedikçe dokunma |
 | `grafik` | `az` · `dengeli` · `yogun` |
+| `sesEfekti` | `yok` · `az` · `cok` |
+| `sesEfektiDuzeyi` | efektlerin yüksekliği, dB. `0` olağan, `-6` daha kısık, `4` daha belirgin |
 | `duzeltmeler` | dökümde hep yanlış çıkan kelimeler: `{"Cloud": "Claude"}` |
 | `kurallar` | kişinin düz yazıyla söylediği kurallar |
 

@@ -13,6 +13,7 @@ Kurgu bilmen gerekmez. Claude ile konuşursun; o keser, sen onaylarsın.
 - **Kesim önerir.** Kamerayı yerleştirdiğin anları, tekrar çekimleri, çekim arası konuşmaları ve uzun duraklamaları bulur. Sen onaylamadan hiçbir şey kesilmez.
 - **Altyazı ekler.** Senin renginde ve yazı tipinde. Söylenen kelime o an renklenir, öne çıkmasını istediğin kelimeler vurgulanır.
 - **Grafik ekler.** Başlık, liste, sayı, karşılaştırma, site görüntüsü, kendi görsellerin ve çağrı. Her grafik o anda söylediğini gösterir.
+- **Ses efekti ekler.** Grafikler girerken kısa sesler çalar. İstemediğin grafikte kapatırsın ya da hiç kullanmazsın.
 - **Önce gösterir.** Kesimleri, altyazıyı ve grafikleri bir inceleme sayfasında görürsün; kelimelere dokunarak değiştirirsin. Sonra önizlemeyi izler, beğenmediğin ana not bırakırsın.
 - **Kapak hazırlar.** Videodan kareyi sen seçersin, başlığı yazarsın, sekiz görünümden birini seçersin.
 - **Kontrol eder.** Bitmiş videonun boyutunu, ses düzeyini ve kesimde yutulmuş kelime olup olmadığını ölçer.
@@ -70,6 +71,8 @@ Claude uygulamasında Code sekmesinde, videoyu mesaj kutusuna sürükleyip yazma
 | Kapak | `bu video için kapak yap` |
 | Stilini değiştirmek | `altyazım kutulu olsun` ya da `stilimi değiştirmek istiyorum` |
 | Bir kural koymak | `bir daha sayı kartı kullanma` |
+| Kendi yazı tipini kullanmak | yazı tipi dosyasını sürükle ve `bu yazı tipini kullan` yaz |
+| Ses efektlerini kapatmak | `ses efekti istemiyorum` |
 
 Videoların ve stil dosyan **Filmler → Reels Kurgu** klasöründe durur. Her video kendi klasöründedir; bitmiş dosyalar içindeki `bitmis` klasörüne yazılır.
 
@@ -91,7 +94,7 @@ Asistan ücretsizdir. Claude planın dışında hiçbir şey ödemezsin: kullan�
 - **Arka plan müziği:** eklemez. Müziği paylaşırken Instagram'da eklersin; güncel sesler zaten oradadır.
 - **Çok kameralı çekim ve röportaj:** tek kişinin kameraya konuştuğu videolar için hazırlandı.
 - **Ekran kaydı ve ek görüntü kurgusu:** yok. Kendi ekran görüntülerini ve fotoğraflarını grafik olarak ekleyebilirsin.
-- **HDR:** iPhone videoyu olağan ayarda HDR çeker ve renkler soluk ya da fazla parlak çıkabilir. Çekmeden önce Ayarlar → Kamera → Video Kaydı altından HDR videoyu kapat.
+- **HDR:** iPhone videoyu olağan ayarda HDR çeker. Asistan bunu Reels'in renk aralığına çevirir ama renkler telefonda gördüğünle birebir aynı olmayabilir. En temiz sonuç için çekmeden önce Ayarlar → Kamera → Video Kaydı altından HDR videoyu kapat.
 - **Kısa "ııı"lar:** uzun duraksamalar kendiliğinden gider ama bir kelimeye yapışık kısa bir "ııı" kalabilir. İnceleme sayfasında dinleyip kesebilirsin.
 - **Yazım:** özel adları yanlış duyabilir. Paylaşmadan önce altyazıyı bir kez oku.
 
@@ -99,7 +102,7 @@ Asistan ücretsizdir. Claude planın dışında hiçbir şey ödemezsin: kullan�
 
 Görünüşle ilgili her şey tek dosyadadır: `Filmler/Reels Kurgu/stil.json`. Claude ile konuşarak değiştirirsin; elle açman gerekmez. Bir kural söylediğinde ("bir daha kutulu altyazı kullanma") Claude onu dosyaya yazar ve sonraki videolarda uyar.
 
-Dokuz yazı tipi hazır gelir ve hepsi Türkçe harfleri içerir: Inter, Poppins, Rubik, Nunito, Bricolage Grotesque, Space Grotesk, Playfair Display, DM Serif Display, Bebas Neue.
+Dokuz yazı tipi hazır gelir ve hepsi Türkçe harfleri içerir: Inter, Poppins, Rubik, Nunito, Bricolage Grotesque, Space Grotesk, Playfair Display, DM Serif Display, Bebas Neue. Markana ait bir yazı tipin varsa dosyasını Claude'a ver; onu da kullanabilirsin. Asistan, yazı tipinde eksik Türkçe harf varsa seni uyarır.
 
 Doldurulmuş bir örnek için [ornek/stil.json](ornek/stil.json) dosyasına bakabilirsin.
 
@@ -117,6 +120,7 @@ skills/reels-kurgu/
   inceleme/                  inceleme sayfası
   kapak/                     kapak stüdyosu
   fontlar/                   dokuz açık lisanslı yazı tipi
+  sesler/                    on açık lisanslı ses efekti
 ornek/                       örnek stil dosyası ve örnek animasyon
 testler/                     otomatik testler
 LISANSLAR.md                 kullanılan araçların ve yazı tiplerinin lisansları
@@ -128,7 +132,7 @@ Kendi ihtiyacına göre değiştirmek serbest. Claude'a "bu depoda şunu değiş
 
 [MIT](LICENSE). Dilediğin gibi kullanabilir, değiştirebilir ve paylaşabilirsin.
 
-Asistan şu açık kaynak araçların üstüne kuruludur: HyperFrames, whisper.cpp, FFmpeg, GSAP ve lottie-web. Yazı tipleri SIL Open Font License ile dağıtılır. Ayrıntılar [LISANSLAR.md](LISANSLAR.md) dosyasında.
+Asistan şu açık kaynak araçların üstüne kuruludur: HyperFrames, whisper.cpp, FFmpeg, GSAP ve lottie-web. Yazı tipleri SIL Open Font License ile dağıtılır; ses efektleri kamu malı (CC0) kayıtlardır. Ayrıntılar [LISANSLAR.md](LISANSLAR.md) dosyasında.
 
 ## Bir yerde takılırsan
 

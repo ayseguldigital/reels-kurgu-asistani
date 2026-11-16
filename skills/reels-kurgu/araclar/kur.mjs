@@ -13,11 +13,13 @@ import { fileURLToPath } from 'node:url';
 import '../ortak/calistir.mjs';
 import { stilOku } from '../ortak/stil.mjs';
 import { kartlariCoz, zeminAraliklari } from '../ortak/kartlar.mjs';
+import { sesPlani } from '../ortak/sesplani.mjs';
+import { fontlariListele, fontBul as fontAra, fontCss as fontKurallari } from '../ortak/fontlar.mjs';
 import { GSAP, LOTTIE, jsonOku, klasorAl, secenek } from '../ortak/yollar.mjs';
 
 const BURASI = path.dirname(fileURLToPath(import.meta.url));
 const SABLON = path.join(BURASI, '..', 'sablon');
-const FONTLAR = path.join(BURASI, '..', 'fontlar');
+const SESLER = path.join(BURASI, '..', 'sesler');
 const GORSEL_UZANTILARI = ['.png', '.jpg', '.jpeg', '.webp', '.gif'];
 
 const klasor = klasorAl('node araclar/kur.mjs <proje klasörü> [--altyazisiz]');
@@ -25,7 +27,7 @@ const altyazisiz = secenek('altyazisiz', false);
 const kurgu = await jsonOku(path.join(klasor, 'kurgu.json'));
 const kesim = await jsonOku(path.join(klasor, 'kesim.json'));
 const stil = await stilOku(klasor);
-const fontListesi = await jsonOku(path.join(FONTLAR, 'fontlar.json'));
+const fontListesi = await fontlariListele(stil);
 
 async function varMi(dosya) {
   try {
@@ -112,12 +114,22 @@ if (lottieGerekli) {
   await copyFile(LOTTIE.dosya, path.join(sahne, 'lottie.min.js'));
 }
 
+// --- Ses efektleri: hangi kartta hangi ses çalacak. Karışımı render.mjs yapar. ---
+const sesListesi = await jsonOku(path.join(SESLER, 'sesler.json'));
+const plan = sesPlani(kartlar, stil.sesEfekti, sesListesi, kesim.sure, Number(stil.sesEfektiDuzeyi) || 0);
+if (plan.hatalar.length) throw new Error(`kurgu.json içindeki seslerde düzeltilmesi gerekenler var:\n  - ${plan.hatalar.join('\n  - ')}`);
+await mkdir(path.join(klasor, '.ara'), { recursive: true });
+await writeFile(
+  path.join(klasor, '.ara', 'ses-plani.json'),
+  JSON.stringify({ olaylar: plan.olaylar.map((o) => ({ ...o, dosya: path.join(SESLER, `${o.ad}.wav`) })) }, null, 1),
+);
+
 // --- Yazı tipleri ---
 function fontBul(ad) {
-  const f = fontListesi.find((x) => x.aile.toLocaleLowerCase('tr') === String(ad).toLocaleLowerCase('tr'));
+  const f = fontAra(fontListesi, ad);
   if (!f) {
     const secenekler = fontListesi.map((x) => x.aile).join(', ');
-    throw new Error(`"${ad}" yazı tipi pakette yok. Seçenekler: ${secenekler}.`);
+    throw new Error(`"${ad}" yazı tipi bulunamadı. Seçenekler: ${secenekler}. Kendi yazı tipinizi eklemek için: rehber/stil-sohbeti.md → "Kendi yazı tipin".`);
   }
   return f;
 }
@@ -125,13 +137,13 @@ const kullanilan = [...new Set([stil.fontlar.govde, stil.fontlar.vurgu])].map(fo
 const fontCss = [];
 for (const f of kullanilan) {
   for (const d of f.dosyalar) {
-    const ad = path.basename(d.dosya);
-    await copyFile(path.join(FONTLAR, d.dosya), path.join(sahne, 'fontlar', ad));
-    fontCss.push(
-      `@font-face{font-family:"${f.aile}";font-style:${d.stil};font-weight:${d.agirlik};font-display:block;` +
-        `src:url("fontlar/${ad}") format("woff2");unicode-range:${d.aralik};}`,
-    );
+    try {
+      await copyFile(d.yol, path.join(sahne, 'fontlar', d.ad));
+    } catch {
+      throw new Error(`"${f.aile}" yazı tipinin dosyası bulunamadı: ${d.yol}`);
+    }
   }
+  fontCss.push(fontKurallari(f, (d) => `fontlar/${d.ad}`));
 }
 
 // --- Sayfa ---
@@ -201,5 +213,9 @@ await writeFile(path.join(sahne, 'package.json'), JSON.stringify({ name: 'sahne'
 
 console.log(`Sahne kuruldu: ${sahne}`);
 console.log(`  ${veri.altyazilar.length} altyazı${altyazisiz ? ' (gizli)' : ''} · ${kartlar.length} grafik · yazı tipi ${kullanilan.map((f) => f.aile).join(' + ')}`);
-for (const k of kartlar) console.log(`  ${k.bas.toFixed(1).padStart(5)}–${k.bit.toFixed(1).padEnd(5)} ${k.tur}${k.zemin ? ' (konuşmacı küçülür)' : ''}`);
+kartlar.forEach((k, n) => {
+  const sesler = plan.olaylar.filter((o) => o.kart === n).map((o) => o.ad);
+  const sesYazisi = sesler.length ? ` · ses: ${[...new Set(sesler)].join(', ')}` : k.tur === 'yakinlas' ? '' : ' · sessiz';
+  console.log(`  ${k.bas.toFixed(1).padStart(5)}–${k.bit.toFixed(1).padEnd(5)} ${k.tur}${k.zemin ? ' (konuşmacı küçülür)' : ''}${sesYazisi}`);
+});
 for (const u of uyarilar) console.log(`UYARI: ${u}`);

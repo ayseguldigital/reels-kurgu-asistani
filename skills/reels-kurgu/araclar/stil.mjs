@@ -14,11 +14,10 @@ import { calistir } from '../ortak/calistir.mjs';
 import { stilOku, VARSAYILAN_STIL } from '../ortak/stil.mjs';
 import { TEMPOLAR } from '../ortak/zaman.mjs';
 import { DEPO, STIL_DOSYASI, jsonOku } from '../ortak/yollar.mjs';
+import { fontlariListele, fontBul, kisiFontlariniDenetle, KISI_FONT_KLASORU } from '../ortak/fontlar.mjs';
 
 const BURASI = path.dirname(fileURLToPath(import.meta.url));
-const FONTLAR = path.join(BURASI, '..', 'fontlar');
 const komut = process.argv[2];
-const fontListesi = await jsonOku(path.join(FONTLAR, 'fontlar.json'));
 
 const SECENEKLER = {
   'altyazi.bicim': ['kelime', 'ifade', 'cumle'],
@@ -43,12 +42,12 @@ function denetle(stil, ham) {
   }
   for (const rol of ['govde', 'vurgu']) {
     const ad = stil.fontlar[rol];
-    if (!fontListesi.some((f) => f.aile.toLocaleLowerCase('tr') === String(ad).toLocaleLowerCase('tr'))) {
-      sorunlar.push(`"${ad}" yazı tipi pakette yok. Seçenekler: ${fontListesi.map((f) => f.aile).join(', ')}`);
+    if (!fontBul(fontListesi, ad)) {
+      sorunlar.push(`"${ad}" yazı tipi bulunamadı. Seçenekler: ${fontListesi.map((f) => f.aile).join(', ')}. Kendi yazı tipiniz için "ozelFontlar" alanına tanıtın.`);
     }
   }
   if (typeof stil.hiz !== 'number' || stil.hiz < 0.8 || stil.hiz > 1.3) sorunlar.push(`"hiz" 0.8 ile 1.3 arasında bir sayı olmalı (şu an: ${stil.hiz}).`);
-  for (const alan of ['ozelAdlar', 'dolguSozcukler', 'kurallar']) {
+  for (const alan of ['ozelAdlar', 'dolguSozcukler', 'kurallar', 'ozelFontlar']) {
     if (!Array.isArray(stil[alan])) sorunlar.push(`"${alan}" bir liste olmalı.`);
   }
   // Tanınmayan alanlar: çoğu zaman yazım hatasıdır (ör. "altyazı" ya da "renk").
@@ -57,14 +56,21 @@ function denetle(stil, ham) {
   return sorunlar;
 }
 
-if (komut === 'fontlar') {
-  console.log('Paketteki yazı tipleri (hepsi Türkçe harfleri içerir):');
-  for (const f of fontListesi) console.log(`  ${f.aile.padEnd(22)} ${f.aciklama}`);
-  process.exit(0);
-}
-
 const ham = await jsonOku(STIL_DOSYASI, null);
 const stil = await stilOku();
+const fontListesi = await fontlariListele(stil);
+
+if (komut === 'fontlar') {
+  console.log('Paketteki yazı tipleri (hepsi Türkçe harfleri içerir):');
+  for (const f of fontListesi.filter((x) => !x.kisi)) console.log(`  ${f.aile.padEnd(22)} ${f.aciklama}`);
+  const kisi = fontListesi.filter((x) => x.kisi);
+  if (kisi.length) {
+    console.log('\nKişinin eklediği yazı tipleri:');
+    for (const f of kisi) console.log(`  ${f.aile.padEnd(22)} ${f.dosyalar.map((d) => d.ad).join(', ')}`);
+  }
+  console.log(`\nKendi yazı tipini eklemek için dosyayı şu klasöre koyun: ${KISI_FONT_KLASORU}`);
+  process.exit(0);
+}
 
 if (komut === 'kontrol') {
   if (!ham) {
@@ -72,7 +78,7 @@ if (komut === 'kontrol') {
     console.log('Önce stil sohbetini yapın (rehber/stil-sohbeti.md). Dosya yokken başlangıç değerleri kullanılır.');
     process.exit(3);
   }
-  const sorunlar = denetle(stil, ham);
+  const sorunlar = [...denetle(stil, ham), ...(await kisiFontlariniDenetle(fontListesi))];
   const a = stil.altyazi;
   console.log(`Stil dosyası: ${STIL_DOSYASI}\n`);
   console.log(`  Renkler      ana ${stil.renkler.ana} · vurgu ${stil.renkler.vurgu} · açık ${stil.renkler.acik} · koyu ${stil.renkler.koyu}`);
@@ -81,6 +87,7 @@ if (komut === 'kontrol') {
   console.log(`  Tempo        ${stil.tempo}${stil.hiz !== 1 ? ` · hız ${stil.hiz}×` : ''}`);
   console.log(`  Grafik       ${stil.grafik} · ses efekti ${stil.sesEfekti}`);
   console.log(`  Çağrı        ${stil.cagri || '(yok)'}`);
+  if (stil.ozelFontlar.length) console.log(`  Kendi yazı tiplerin: ${stil.ozelFontlar.map((f) => f.aile).join(', ')}`);
   if (stil.ozelAdlar.length) console.log(`  Özel adlar   ${stil.ozelAdlar.join(', ')}`);
   if (Object.keys(stil.duzeltmeler).length) console.log(`  Düzeltmeler  ${Object.entries(stil.duzeltmeler).map(([y, d]) => `${y} → ${d}`).join(', ')}`);
   if (stil.dolguSozcukler.length) console.log(`  Kesilecek dolgu sözcükler: ${stil.dolguSozcukler.join(', ')}`);
@@ -93,7 +100,7 @@ if (komut === 'kontrol') {
 }
 
 if (komut === 'onizleme') {
-  const sorunlar = denetle(stil, ham);
+  const sorunlar = [...denetle(stil, ham), ...(await kisiFontlariniDenetle(fontListesi))];
   if (sorunlar.length) throw new Error(`Stil dosyasında düzeltilmesi gerekenler var:\n  - ${sorunlar.join('\n  - ')}`);
 
   // Videosuz bir deneme projesi: nötr bir arka plan ve örnek cümleler.

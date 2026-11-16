@@ -134,6 +134,40 @@ Sol sütun soluk ve çarpılı, sağ sütun vurgulu ve onaylıdır. Sütun baş�
 
 Konuşmacıya kısa bir yaklaşma. Vurgulu, tek cümlelik anlarda kullan; art arda iki kez kullanma. Konuşmacının küçüldüğü bir kartla aynı ana gelirse kendiliğinden atlanır.
 
+## Ses efektleri
+
+Kartlar girerken kısa bir ses efekti çalar. Sen bir şey yazmazsın; hangi kartta hangi sesin çalacağı bellidir ve yoğunluğu stil dosyasındaki `sesEfekti` ayarı belirler:
+
+| Ayar | Ne olur |
+|---|---|
+| `yok` | Hiç ses efekti yok |
+| `az` | Her kart girerken tek bir ses (olağan ayar) |
+| `cok` | Ayrıca liste maddelerinde tık, sayı tamamlanınca çın, karşılaştırmanın ikinci sütununda tok |
+
+| Kart | Olağan sesi |
+|---|---|
+| `baslik` | `whoosh` |
+| `etiket`, `lottie` | `pop` |
+| `liste`, `sayi`, `site`, `karsilastirma` | `gecis` |
+| `gorsel` | `deklansor` |
+| `cagri` | `bildirim` |
+| `yakinlas` | sessiz |
+
+Bir kartta değiştirmek için karta `ses` yaz:
+
+```json
+{ "tur": "sayi", "kelime": 40, "deger": 5000, "sonEk": " TL", "ses": "para" }
+{ "tur": "etiket", "kelime": 12, "metin": "Not", "ses": false }
+```
+
+- `"ses": false` o kartı sessiz yapar. Kişi bunu inceleme sayfasında kendisi de yapabilir.
+- `"ses": "<ad>"` giriş sesini değiştirir. Seçenekler: `whoosh`, `gecis`, `pop`, `tik`, `tok`, `cin`, `klavye`, `deklansor`, `bildirim`, `para`.
+- `para` ve `klavye` hiçbir kartın olağan sesi değildir; konu para ya da yazı yazmak olduğunda elle seç.
+- Efektler konuşmanın altında, kısık çalar. Kişi "sesler çok yüksek" ya da "duyulmuyor" derse stil dosyasında `sesEfektiDuzeyi` değerini değiştir (dB; `-6` daha kısık, `4` daha belirgin).
+- Başka ses ekleme, internetten ses indirme. Paketteki on ses açık lisanslıdır (`sesler/KAYNAKLAR.md`).
+
+`kur.mjs` her kartın yanında hangi sesin çalacağını yazar; oradan kontrol et.
+
 ## Konuşmacının yer açması (`zemin`)
 
 Uzun kartlar (`liste`, `gorsel`, `site`, `karsilastirma`) yüzü kapatmasın diye konuşmacı küçülüp alttaki pencereye çekilir, arkası kişinin ana rengiyle dolar. Bu olağan davranıştır. Kartın videonun üstünde durmasını istersen `"zemin": false` yaz; `baslik` ve `sayi` için tersine `"zemin": true` yazabilirsin (bölüm geçişi gibi durur).

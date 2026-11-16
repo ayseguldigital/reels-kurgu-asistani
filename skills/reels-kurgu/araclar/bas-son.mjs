@@ -10,13 +10,16 @@
 // Yazar:  <proje>/.ara/bas.jpg ve son.jpg (soldan sağa, üstten alta 8'er kare)
 import path from 'node:path';
 import { calistir, medyaBilgisi } from '../ortak/calistir.mjs';
-import { hamBul, araKlasor, klasorAl } from '../ortak/yollar.mjs';
+import { araKlasor, klasorAl } from '../ortak/yollar.mjs';
+import { goruntuKaynagi } from '../ortak/goruntu.mjs';
 
 const PENCERE = 4; // saniye
 const ARALIK = 0.5;
 
 const klasor = klasorAl('node araclar/bas-son.mjs <proje klasörü>');
-const ham = await hamBul(klasor);
+const kaynak = await goruntuKaynagi(klasor);
+if (kaynak.uyari) console.log(`UYARI: ${kaynak.uyari}`);
+const ham = kaynak.dosya;
 const ara = await araKlasor(klasor);
 const bilgi = await medyaBilgisi(ham);
 const pencere = Math.min(PENCERE, bilgi.sure / 2);

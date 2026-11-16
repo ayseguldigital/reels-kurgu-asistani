@@ -201,7 +201,9 @@ function agirlikSec(aile) {
 function fontlariTanit() {
   for (const f of D.fontlar) {
     for (const d of f.dosyalar) {
-      const yuz = new FontFace(f.aile, `url("/fontlar/${d.dosya}")`, { weight: d.agirlik, style: d.stil, unicodeRange: d.aralik });
+      const tanim = { weight: d.agirlik, style: d.stil };
+      if (d.aralik) tanim.unicodeRange = d.aralik;
+      const yuz = new FontFace(f.aile, `url("${d.adres}")`, tanim);
       document.fonts.add(yuz);
     }
   }

@@ -15,7 +15,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { calistir, medyaBilgisi, sureYaz } from '../ortak/calistir.mjs';
 import { srtYaz } from '../ortak/altyazi.mjs';
-import { lufsOlc } from '../ortak/ses.mjs';
+import { lufsOlc, duzeyeGetir, TEPE } from '../ortak/ses.mjs';
 import { hyperframes, araKlasor, jsonOku, klasorAl, secenek } from '../ortak/yollar.mjs';
 
 const BURASI = path.dirname(fileURLToPath(import.meta.url));
@@ -24,7 +24,8 @@ const taslak = secenek('taslak', false);
 const kurgu = await jsonOku(path.join(klasor, 'kurgu.json'));
 const ara = await araKlasor(klasor);
 const hf = hyperframes();
-const ses = path.join(klasor, 'kesim.wav');
+const konusma = path.join(klasor, 'kesim.wav');
+let ses = konusma; // ses efekti varsa karışımın yolu olur
 const sahne = path.join(klasor, 'sahne');
 
 // Son hâlin sıkıştırması: sabit 10 Mbit/sn. Instagram videoyu zaten yeniden sıkıştırır; bu değer 1080p için
@@ -50,6 +51,30 @@ async function goruntuAl(cikis, kalite) {
   return Math.round((Date.now() - basladi) / 1000);
 }
 
+/**
+ * Konuşmanın altına ses efektlerini yerleştirir. Plan kur.mjs tarafından yazılır (hangi ses, hangi an, ne kadar yüksek).
+ * Efekt yoksa konuşma olduğu gibi kullanılır.
+ */
+async function sesKaristir() {
+  const { olaylar } = await jsonOku(path.join(ara, 'ses-plani.json'), { olaylar: [] });
+  if (!olaylar.length) return { dosya: konusma, adet: 0 };
+  const girdiler = ['-i', konusma];
+  const suzgec = [];
+  olaylar.forEach((o, n) => {
+    girdiler.push('-i', o.dosya);
+    suzgec.push(`[${n + 1}:a]adelay=${Math.round(o.an * 1000)}:all=1,volume=${o.kazanc}dB[e${n}]`);
+  });
+  const sinir = Math.pow(10, TEPE / 20).toFixed(3);
+  suzgec.push(
+    `[0:a]${olaylar.map((_, n) => `[e${n}]`).join('')}amix=inputs=${olaylar.length + 1}:duration=first:normalize=0,` +
+      `alimiter=limit=${sinir}:attack=3:release=60:level=false:latency=true[cikis]`,
+  );
+  const karisim = path.join(ara, 'karisim.wav');
+  await calistir('ffmpeg', ['-v', 'error', '-y', ...girdiler, '-filter_complex', suzgec.join(';'), '-map', '[cikis]', '-ar', '48000', '-ac', '1', '-c:a', 'pcm_s16le', karisim]);
+  await duzeyeGetir(karisim);
+  return { dosya: karisim, adet: olaylar.length };
+}
+
 /** Görüntüye sesi ekler. Görüntü yeniden sıkıştırılmaz. */
 async function sesEkle(goruntu, cikis) {
   await calistir('ffmpeg', [
@@ -60,6 +85,7 @@ async function sesEkle(goruntu, cikis) {
 
 if (taslak) {
   await kur(false);
+  ses = (await sesKaristir()).dosya;
   const sessiz = path.join(ara, 'taslak-sessiz.mp4');
   console.error('Önizleme hazırlanıyor…');
   const saniye = await goruntuAl(sessiz, TASLAK);
@@ -77,6 +103,8 @@ const bitmis = path.join(klasor, 'bitmis');
 await mkdir(bitmis, { recursive: true });
 
 await kur(false);
+const karisim = await sesKaristir();
+ses = karisim.dosya;
 const sessiz = path.join(ara, 'son-sessiz.mp4');
 console.error('Video hazırlanıyor…');
 const saniye = await goruntuAl(sessiz, SON);
@@ -112,5 +140,5 @@ console.log(`Bitti (${saniye} sn sürdü).`);
 console.log(`  ${son}`);
 console.log(`  ${altyazisizDosya}`);
 console.log(`  ${srt}`);
-console.log(`  ${bilgi.en}×${bilgi.boy} · ${sureYaz(bilgi.sure)} · ses ${duzey.lufs ?? '?'} LUFS`);
+console.log(`  ${bilgi.en}×${bilgi.boy} · ${sureYaz(bilgi.sure)} · ses ${duzey.lufs ?? '?'} LUFS · ${karisim.adet} ses efekti`);
 console.log('Şimdi son kontrolü çalıştırın: node araclar/son-kontrol.mjs "<proje klasörü>"');

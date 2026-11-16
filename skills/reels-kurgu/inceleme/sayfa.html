@@ -201,7 +201,7 @@ button { cursor: pointer; }
 
     <section class="panel" id="p-grafik" role="tabpanel" aria-labelledby="s-grafik" hidden>
       <h2>Grafikler</h2>
-      <p class="ipucu">Claude'un önerdiği grafikler. İstemediğini çıkar; değişmesini istediğin bir şey varsa altına yaz. Küçük çizim grafiğin kadrajdaki yerini gösterir.</p>
+      <p class="ipucu">Claude'un önerdiği grafikler. İstemediğini çıkar; değişmesini istediğin bir şey varsa altına yaz. Küçük çizim grafiğin kadrajdaki yerini gösterir. Grafikler girerken kısa bir ses efekti çalar; istemediğin kartta kapatabilirsin.</p>
       <div id="grafik-icerik"></div>
     </section>
 
@@ -584,6 +584,12 @@ function maket(k) {
   const kisi = k.zemin ? '<i class="kisi" style="left:14%;right:14%;top:43%;height:34%"></i>' : '<i class="kisi" style="left:0;right:0;top:0;bottom:0;opacity:.22"></i>';
   return `<div class="maket">${kisi}<i class="yer" style="top:${ust}%;height:${boy}%"></i><i class="yazi"></i></div>`;
 }
+// Ses efekti: stil "yok" değilse ve kartın bir sesi varsa kişi o kartı sessiz yapabilir.
+function sesDugmesi(kart, karar, n) {
+  if (!V.sesEfekti || V.sesEfekti === 'yok' || kart.tur === 'yakinlas') return '';
+  const sessiz = karar.ses === false || (karar.ses === undefined && kart.ses === false);
+  return `<div><button type="button" class="kucuk" data-ses-kart="${n}" aria-pressed="${!sessiz}">${sessiz ? 'Ses efekti kapalı' : 'Ses efekti açık'}</button></div>`;
+}
 function grafikCiz() {
   const kartlar = V.kartlar || [];
   $('#grafik-sayisi').textContent = kartlar.length ? String(kartlar.filter((_, n) => K.kartlar[n]?.durum !== 'cikar').length) : '';
@@ -605,6 +611,7 @@ function grafikCiz() {
           <div class="parcali"><button type="button" data-kart="${n}" data-durum="tut" aria-pressed="${karar.durum !== 'cikar'}">Kalsın</button><button type="button" data-kart="${n}" data-durum="cikar" aria-pressed="${karar.durum === 'cikar'}">Çıkar</button></div>
         </div>
         <div class="ozet">${kacis(kartOzeti(kart))}</div>
+        ${sesDugmesi(kart, karar, n)}
         <textarea id="kn-${n}" data-not="${n}" rows="1" placeholder="Değişmesini istediğin bir şey varsa yaz" aria-label="Bu grafik için not">${kacis(karar.not || '')}</textarea>
       </div>
     </div>`;
@@ -613,7 +620,11 @@ function grafikCiz() {
 $('#p-grafik').addEventListener('click', (e) => {
   const hedef = e.target.closest('button');
   if (!hedef) return;
-  if (hedef.dataset.kart !== undefined) {
+  if (hedef.dataset.sesKart !== undefined) {
+    const n = hedef.dataset.sesKart;
+    const acik = hedef.getAttribute('aria-pressed') === 'true';
+    degistir((k) => { k.kartlar[n] = { ...(k.kartlar[n] || {}), ses: !acik }; });
+  } else if (hedef.dataset.kart !== undefined) {
     const n = hedef.dataset.kart;
     degistir((k) => { k.kartlar[n] = { ...(k.kartlar[n] || {}), durum: hedef.dataset.durum }; });
   } else if (hedef.dataset.c !== undefined) konumla(Number(hedef.dataset.c) + 0.01);

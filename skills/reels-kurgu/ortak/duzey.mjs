@@ -96,3 +96,43 @@ export function sesliSure(olcum, bas, bit) {
   for (let k = k0; k < k1; k++) if (olcum.db[k] >= olcum.esik) sayi++;
   return sayi * olcum.adim;
 }
+
+/**
+ * İki ses dosyası arasındaki zaman kaymasını ölçer (saniye). Artı değer: `islenmis`, `asil`dan geç kalıyor.
+ * Gürültü azaltma gibi süzgeçler sesi birkaç on milisaniye geciktirebilir; görüntüyle eşleşme bozulmasın diye
+ * ölçülür ve düzeltilir. Konuşmanın en güçlü olduğu üç saniyede, ±80 ms içinde aranır.
+ */
+export async function kaymaOlc(asil, islenmis) {
+  const oku = async (dosya) => {
+    const { cikti } = await calistir('ffmpeg', ['-v', 'error', '-i', dosya, '-vn', '-ac', '1', '-ar', String(HZ), '-f', 's16le', '-'], { ikili: true });
+    return new Int16Array(cikti.buffer, cikti.byteOffset, Math.floor(cikti.byteLength / 2));
+  };
+  const a = await oku(asil);
+  const b = await oku(islenmis);
+  const n = Math.min(a.length, b.length);
+  const pencere = HZ * 3;
+  const enCok = Math.round(HZ * 0.08);
+  if (n < pencere + enCok * 4) return 0;
+  // En güçlü üç saniye
+  let enIyiBas = enCok;
+  let enIyiGuc = -1;
+  for (let i = enCok; i < n - pencere - enCok; i += HZ / 2) {
+    let guc = 0;
+    for (let j = i; j < i + pencere; j += 16) guc += Math.abs(a[j]);
+    if (guc > enIyiGuc) {
+      enIyiGuc = guc;
+      enIyiBas = i;
+    }
+  }
+  let enIyiKayma = 0;
+  let enIyiIlinti = -Infinity;
+  for (let k = -enCok; k <= enCok; k++) {
+    let toplam = 0;
+    for (let i = enIyiBas; i < enIyiBas + pencere; i += 2) toplam += a[i] * b[i + k];
+    if (toplam > enIyiIlinti) {
+      enIyiIlinti = toplam;
+      enIyiKayma = k;
+    }
+  }
+  return enIyiKayma / HZ;
+}

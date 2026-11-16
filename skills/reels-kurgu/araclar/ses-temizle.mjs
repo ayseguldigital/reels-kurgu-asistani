@@ -8,7 +8,7 @@
 import { writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { calistir } from '../ortak/calistir.mjs';
-import { duzeyOlc } from '../ortak/duzey.mjs';
+import { duzeyOlc, kaymaOlc } from '../ortak/duzey.mjs';
 import { HEDEF_LUFS, TEPE, duzeyeGetir } from '../ortak/ses.mjs';
 import { hamBul, araKlasor, klasorAl, secenek } from '../ortak/yollar.mjs';
 
@@ -59,6 +59,16 @@ try {
 
 const temiz = path.join(klasor, 'ses-temiz.wav');
 await calistir('ffmpeg', ['-v', 'error', '-y', '-i', hamSes, '-af', `${on},${ikinci}`, '-ar', '48000', '-ac', '1', temiz]);
+
+// Süzgeçler (özellikle gürültü azaltma) sesi birkaç on milisaniye geciktirebilir. Ölçülür ve geri alınır;
+// yoksa ses, dudak hareketinin gerisinde kalır.
+const kayma = await kaymaOlc(hamSes, temiz);
+if (Math.abs(kayma) >= 0.001) {
+  const hizali = path.join(ara, 'ses-hizali.wav');
+  const duzeltme = kayma > 0 ? `atrim=start=${kayma.toFixed(5)},asetpts=PTS-STARTPTS,apad=pad_dur=${kayma.toFixed(5)}` : `adelay=${Math.round(-kayma * 1000)}:all=1`;
+  await calistir('ffmpeg', ['-v', 'error', '-y', '-i', temiz, '-af', duzeltme, '-ar', '48000', '-ac', '1', hizali]);
+  await calistir('ffmpeg', ['-v', 'error', '-y', '-i', hizali, '-c', 'copy', temiz]);
+}
 
 // Düzeyi hedefe oturt ve sonucu ölç. Asıl ayar kesimden sonra, yalnızca videoda kalan konuşma
 // üzerinden bir kez daha yapılır (kes.mjs); çünkü kesilecek yerler (çekim arası konuşma, uzun

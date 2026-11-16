@@ -22,6 +22,10 @@ Asistan, başkalarının hazırladığı açık kaynak araçları ve yazı tiple
 
 Bu lisans yazı tiplerini videolarında, ticari işler dahil, serbestçe kullanmana izin verir.
 
+## Depoda bulunan ses efektleri
+
+`skills/reels-kurgu/sesler/` klasöründeki on ses, Freesound'da **CC0 1.0** (kamu malı) olarak yayımlanmış kayıtlardır. Atıf gerektirmez ve ticari işler dahil serbestçe kullanılabilir. Her kaydın özgün adı, kaydedeni ve kaynağı `skills/reels-kurgu/sesler/KAYNAKLAR.md` dosyasındadır.
+
 ## Kurulumda indirilen araçlar
 
 Bunlar depoda bulunmaz. Kurulum sırasında kendi resmî kaynaklarından indirilir ve her biri kendi lisansına tabidir.
@@ -44,4 +48,4 @@ GSAP açık kaynak lisanslı değildir; ücretsiz kullanılır ama yeniden dağ�
 
 ## Senin içeriğin
 
-Videoların, görsellerin ve verdiğin Lottie dosyaları senindir; asistan onlara dair hiçbir hak iddia etmez. Videolarına eklediğin görsel, müzik ve animasyonların lisansından sen sorumlusun.
+Videoların, görsellerin ve verdiğin Lottie dosyaları senindir; asistan onlara dair hiçbir hak iddia etmez. Videolarına eklediğin görsel, müzik, animasyon ve yazı tiplerinin lisansından sen sorumlusun.

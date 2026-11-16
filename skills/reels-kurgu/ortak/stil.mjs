@@ -29,11 +29,13 @@ export const VARSAYILAN_STIL = {
   tempo: 'dengeli', // 'sakin' · 'dengeli' · 'hizli'
   hiz: 1, // 1 = olduğu gibi
   grafik: 'dengeli', // 'az' · 'dengeli' · 'yogun'
-  sesEfekti: 'az', // 'yok' · 'az' · 'cok'
+  sesEfekti: 'az', // 'yok' · 'az' (kart girerken tek ses) · 'cok' (maddelerde tık, sayıda çın)
+  sesEfektiDuzeyi: 0, // efektlerin yüksekliği, dB: -6 daha kısık, +4 daha belirgin
   cagri: '', // videoların sonundaki çağrı cümlesi
   ozelAdlar: [], // dökümde doğru yazılması istenen adlar: ["Claude", "Reels"]
   duzeltmeler: {}, // dökümde hep yanlış çıkan kelimeler: {"Cloud": "Claude"}
   dolguSozcukler: [], // kişi kesilmesini istediyse: ["şey", "yani"]
+  ozelFontlar: [], // kişinin kendi eklediği yazı tipleri (bkz. ortak/fontlar.mjs)
   kurallar: [], // kişinin sonradan söylediği kurallar, düz yazıyla
 };
 

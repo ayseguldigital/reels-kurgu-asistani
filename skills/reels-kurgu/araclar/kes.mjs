@@ -15,6 +15,7 @@ import { calistir, medyaBilgisi, sureYaz } from '../ortak/calistir.mjs';
 import { planla, tempoAl } from '../ortak/zaman.mjs';
 import { HEDEF_LUFS, duzeyeGetir } from '../ortak/ses.mjs';
 import { duzeyOlc, sesliSure } from '../ortak/duzey.mjs';
+import { goruntuKaynagi } from '../ortak/goruntu.mjs';
 import { STIL_DOSYASI, hamBul, araKlasor, jsonOku, klasorAl, secenek } from '../ortak/yollar.mjs';
 
 const EN = 1080;
@@ -54,9 +55,9 @@ try {
   console.error('Not: ses-temiz.wav yok, ham kaydın sesi kullanılıyor. Önce ses-temizle.mjs çalıştırmanız önerilir.');
   ses = ham;
 }
-if (bilgi.hdr) {
-  console.error('UYARI: Bu kayıt HDR çekilmiş. Renkler soluk ya da fazla parlak çıkabilir. Telefonun kamera ayarlarında HDR videoyu kapatıp çekmek en sağlıklısıdır.');
-}
+// HDR kayıt olağan renk aralığına çevrilmiş kopyasından kesilir (bkz. ortak/goruntu.mjs).
+const goruntuKaynak = await goruntuKaynagi(klasor);
+if (goruntuKaynak.uyari) console.error(`UYARI: ${goruntuKaynak.uyari}`);
 if (bilgi.en > bilgi.boy) {
   console.error('Not: Kayıt yatay çekilmiş. Dikey videoya sığması için ortadan kırpılıyor; kenarlar görünmeyecek.');
 }
@@ -93,7 +94,7 @@ for (let n = 0; n < bloklar.length; n++) {
   suzgec.push('format=yuv420p');
   const dosya = path.join(ara, `blok-${n}.mp4`);
   await calistir('ffmpeg', [
-    '-v', 'error', '-y', '-ss', baslangic.toFixed(6), '-t', uzunluk.toFixed(6), '-i', ham,
+    '-v', 'error', '-y', '-ss', baslangic.toFixed(6), '-t', uzunluk.toFixed(6), '-i', goruntuKaynak.dosya,
     '-an', '-vf', suzgec.join(','),
     '-c:v', 'libx264', '-preset', 'medium', '-crf', '15', '-g', String(kareAraligi), '-bf', '2',
     '-color_primaries', 'bt709', '-color_trc', 'bt709', '-colorspace', 'bt709', '-color_range', 'tv',
