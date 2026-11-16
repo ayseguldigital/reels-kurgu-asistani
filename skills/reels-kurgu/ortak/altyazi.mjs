@@ -30,9 +30,13 @@ function yaziHazirla(m, ayar, duzeltmeler) {
  * @param {object} ayar stil.altyazi
  * @param {Record<string,string>} [duzeltmeler] stil.duzeltmeler
  * @param {number} [sure] videonun süresi
+ * @param {{duzeltme?: Record<string,string>, vurgu?: number[]}} [kisi] kişinin inceleme sayfasında yaptıkları:
+ *   kelime numarasına göre yazım düzeltmesi ve öne çıkarılan kelimeler
  * @returns {{bas:number, bit:number, boyut:number, kelimeler:{i:number, m:string, bas:number, bit:number, vurgu:boolean}[]}[]}
  */
-export function altyaziUret(kelimeler, ayar, duzeltmeler = {}, sure = Infinity) {
+export function altyaziUret(kelimeler, ayar, duzeltmeler = {}, sure = Infinity, kisi = {}) {
+  const elleDuzeltme = kisi.duzeltme || {};
+  const vurgulu = new Set(kisi.vurgu || []);
   const bicim = BICIMLER[ayar.bicim] || BICIMLER.ifade;
   const taban = bicim.taban[ayar.boyut] || bicim.taban.orta;
   const gruplar = [];
@@ -46,11 +50,13 @@ export function altyaziUret(kelimeler, ayar, duzeltmeler = {}, sure = Infinity) 
   };
 
   kelimeler.forEach((k, n) => {
-    const yazi = yaziHazirla(k.m, ayar, duzeltmeler);
+    // Kişinin elle yazdığı düzeltme olduğu gibi kullanılır; yoksa kelime stil ayarlarına göre hazırlanır.
+    const elle = elleDuzeltme[k.i];
+    const yazi = typeof elle === 'string' && elle.trim() ? elle.trim() : yaziHazirla(k.m, ayar, duzeltmeler);
     if (!yazi) return;
     const eklenince = harf + (simdiki.length ? 1 : 0) + yazi.length;
     if (simdiki.length && (simdiki.length >= bicim.enCokKelime || eklenince > bicim.enCokHarf)) kapat();
-    simdiki.push({ i: k.i, m: yazi, bas: k.bas, bit: k.bit, vurgu: false });
+    simdiki.push({ i: k.i, m: yazi, bas: k.bas, bit: k.bit, vurgu: vurgulu.has(k.i) });
     harf += (simdiki.length > 1 ? 1 : 0) + yazi.length;
     const sonraki = kelimeler[n + 1];
     const cumleSonu = /[.!?…]["')\]]?$/.test(k.m);

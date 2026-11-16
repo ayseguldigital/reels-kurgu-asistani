@@ -109,3 +109,13 @@ test('satırlar cümle sonunda ve duraklamada bölünür', () => {
   ]);
   assert.deepEqual(s.map((x) => [x.ilk, x.son]), [[0, 0], [1, 2], [3, 3]]);
 });
+
+test('karar özeti: sıra fark etmez, içerik değişince değişir, notlar etkilemez', async () => {
+  const { kararOzeti } = await import('../skills/reels-kurgu/ortak/zaman.mjs');
+  const a = { kes: [3, 1, 2], tutDuraklama: [5], bas: null, bit: null, sira: [[0, 4]], duzeltme: { 2: 'x', 1: 'y' }, vurgu: [4, 0], kartlar: { 1: { durum: 'cikar' } }, stilIstegi: { altyazi: { zemin: 'kutu' } } };
+  const b = { ...a, kes: [1, 2, 3], vurgu: [0, 4], duzeltme: { 1: 'y', 2: 'x' }, notlar: [{ t: 1, metin: 'not' }], durum: 'bitti' };
+  assert.equal(kararOzeti(a), kararOzeti(b));
+  assert.notEqual(kararOzeti(a), kararOzeti({ ...a, kes: [1, 2] }));
+  assert.notEqual(kararOzeti(a), kararOzeti({ ...a, kartlar: {} }));
+  assert.equal(kararOzeti({}), kararOzeti({ kes: [], vurgu: [], kartlar: {} }));
+});

@@ -24,7 +24,7 @@ const klasor = klasorAl('node araclar/kur.mjs <proje klasörü> [--altyazisiz]')
 const altyazisiz = secenek('altyazisiz', false);
 const kurgu = await jsonOku(path.join(klasor, 'kurgu.json'));
 const kesim = await jsonOku(path.join(klasor, 'kesim.json'));
-const stil = await stilOku();
+const stil = await stilOku(klasor);
 const fontListesi = await jsonOku(path.join(FONTLAR, 'fontlar.json'));
 
 async function varMi(dosya) {

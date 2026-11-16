@@ -31,7 +31,7 @@ if (!video) {
 }
 
 const kesim = await jsonOku(path.join(klasor, 'kesim.json'));
-const stil = await stilOku();
+const stil = await stilOku(klasor);
 const ara = await araKlasor(klasor);
 let sorun = 0;
 const iyi = (m) => console.log(`  ✓ ${m}`);

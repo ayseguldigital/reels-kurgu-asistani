@@ -1,5 +1,6 @@
 // Stil: kişinin videolarının nasıl görüneceği. Hepsi tek dosyada durur (stil.json) ve ilk kullanımdaki
 // kısa sohbetle doldurulur. Burada yalnızca başlangıç değerleri ve dosyayı okuyan yardımcı vardır.
+import path from 'node:path';
 import { jsonOku, STIL_DOSYASI } from './yollar.mjs';
 
 export const VARSAYILAN_STIL = {
@@ -48,10 +49,16 @@ function birlestir(taban, ust) {
   return sonuc;
 }
 
-/** stil.json dosyasını okur; eksik alanlar başlangıç değerleriyle tamamlanır. */
-export async function stilOku(dosya = STIL_DOSYASI) {
+/**
+ * stil.json dosyasını okur; eksik alanlar başlangıç değerleriyle tamamlanır.
+ * Proje klasörü verilirse o klasördeki stil-ek.json da üstüne eklenir: yalnızca o videoya özel ayarlar
+ * (örneğin bu videoda altyazı kutulu olsun) orada durur, kişinin genel stili değişmez.
+ */
+export async function stilOku(projeKlasoru = null, dosya = STIL_DOSYASI) {
   const kisi = await jsonOku(dosya, {});
-  return birlestir(VARSAYILAN_STIL, kisi);
+  let stil = birlestir(VARSAYILAN_STIL, kisi);
+  if (projeKlasoru) stil = birlestir(stil, await jsonOku(path.join(projeKlasoru, 'stil-ek.json'), {}));
+  return stil;
 }
 
 /** Stil dosyası var mı? (Yoksa önce stil sohbeti yapılır.) */

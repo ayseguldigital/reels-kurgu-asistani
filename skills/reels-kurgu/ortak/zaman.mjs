@@ -200,3 +200,25 @@ export function satirlaraBol(kelimeler, enAzBosluk = 0.45, enCokKelime = 18) {
   });
   return satirlar;
 }
+
+/**
+ * Kararların kısa özeti. Önizleme hangi kararlarla alındı, sonradan bir şey değişti mi diye karşılaştırmak
+ * için kullanılır; sayfa ve araçlar aynı özeti üretir.
+ */
+export function kararOzeti(k) {
+  const sirali = (liste) => [...(liste || [])].sort((a, b) => a - b);
+  const cekirdek = JSON.stringify([
+    sirali(k.kes),
+    sirali(k.tutDuraklama),
+    k.bas ?? null,
+    k.bit ?? null,
+    k.sira ?? null,
+    Object.entries(k.duzeltme || {}).sort(([a], [b]) => Number(a) - Number(b)),
+    sirali(k.vurgu),
+    Object.entries(k.kartlar || {}).map(([n, d]) => [n, d.durum || 'tut', d.not || '']).sort(([a], [b]) => Number(a) - Number(b)),
+    Object.entries(k.stilIstegi?.altyazi || {}).sort(),
+  ]);
+  let h = 2166136261;
+  for (let i = 0; i < cekirdek.length; i++) h = Math.imul(h ^ cekirdek.charCodeAt(i), 16777619);
+  return (h >>> 0).toString(16);
+}

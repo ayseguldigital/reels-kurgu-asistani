@@ -1,0 +1,791 @@
+<title>Reels İnceleme</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap">
+<style>
+/* Düzen: solda (telefonda üstte) sabit duran oynatıcı, yanında sekmeli karar panelleri, altta özet ve bitir çubuğu. */
+:root {
+  --zemin: #F3F5F8; --yuzey: #FFFFFF; --yuzey-2: #E9EDF3; --murekkep: #141821; --soluk: #5F6878; --cizgi: #D8DEE8;
+  --vurgu: #2B56E0; --vurgu-ustu: #FFFFFF; --kesik: #C7354F; --kesik-zemin: #FBE9EC; --bekle: #9A6508; --bekle-zemin: #FBF1DC; --iyi: #1F7A4D;
+  --yazi: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --baslik: "Space Grotesk", "Inter", system-ui, sans-serif;
+  --r: 12px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --zemin: #0E1116; --yuzey: #171B23; --yuzey-2: #212733; --murekkep: #E9ECF2; --soluk: #9AA4B5; --cizgi: #2B3340;
+  --vurgu: #86A2FF; --vurgu-ustu: #0E1116; --kesik: #FF8296; --kesik-zemin: #3A1A22; --bekle: #E7B34F; --bekle-zemin: #33280F; --iyi: #5FCB93; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --zemin: #0E1116; --yuzey: #171B23; --yuzey-2: #212733; --murekkep: #E9ECF2; --soluk: #9AA4B5; --cizgi: #2B3340;
+  --vurgu: #86A2FF; --vurgu-ustu: #0E1116; --kesik: #FF8296; --kesik-zemin: #3A1A22; --bekle: #E7B34F; --bekle-zemin: #33280F; --iyi: #5FCB93; color-scheme: dark }
+
+body { background: var(--zemin); color: var(--murekkep); font-family: var(--yazi); font-size: 15px; line-height: 1.45; }
+button, input, textarea, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--vurgu); outline-offset: 2px; }
+
+.uyg { max-width: 1120px; margin: 0 auto; padding-block: 14px 110px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 14px; }
+.ust { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.ust h1 { font-family: var(--baslik); font-size: 22px; font-weight: 700; letter-spacing: -0.01em; margin: 0; text-wrap: balance; }
+.ust .ad { color: var(--soluk); font-size: 13px; }
+.durum { font-size: 12.5px; color: var(--soluk); white-space: nowrap; }
+.durum.hata { color: var(--kesik); }
+
+/* Oynatıcı */
+.sol { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--zemin); padding-block: 6px 10px; display: grid; gap: 10px; }
+.ekran { position: relative; height: min(30vh, 250px); aspect-ratio: 9 / 16; max-width: 100%; margin: 0 auto; border-radius: var(--r); overflow: hidden; background: #000; }
+.ekran video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ay-onizleme { position: absolute; left: 6%; right: 6%; bottom: 22%; text-align: center; font-weight: 800; line-height: 1.12; font-size: 13px; color: #fff; pointer-events: none; text-wrap: balance; }
+.ay-onizleme.kontur { text-shadow: 0 0 2px #000, 0 0 2px #000, 0 1px 3px #000; }
+.ay-onizleme.golge { text-shadow: 0 1px 4px rgba(0,0,0,.8); }
+.ay-onizleme.kutu span.kutu { background: var(--ay-ana, #14213D); padding: 2px 6px; border-radius: 5px; display: inline-block; }
+.kumanda { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; }
+.oynat { border: 0; border-radius: 999px; background: var(--vurgu); color: var(--vurgu-ustu); font-weight: 700; padding: 9px 16px; min-width: 96px; }
+.cizelge { width: 100%; accent-color: var(--vurgu); min-width: 0; }
+.zaman { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--soluk); white-space: nowrap; }
+
+/* Sekmeler */
+.sekmeler { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; }
+.sekme { border: 1px solid var(--cizgi); background: var(--yuzey); border-radius: 999px; padding: 7px 14px; font-weight: 600; white-space: nowrap; }
+.sekme[aria-selected="true"] { background: var(--murekkep); color: var(--zemin); border-color: var(--murekkep); }
+.sekme .sayi { font-weight: 500; opacity: .7; margin-left: 4px; font-variant-numeric: tabular-nums; }
+.panel { background: var(--yuzey); border: 1px solid var(--cizgi); border-radius: var(--r); padding: 16px; min-width: 0; }
+.panel h2 { font-family: var(--baslik); font-size: 17px; margin: 0 0 4px; }
+.ipucu { color: var(--soluk); font-size: 13.5px; margin: 0 0 14px; max-width: 65ch; }
+.bolum-adi { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--soluk); margin: 18px 0 6px; }
+.bolum-adi:first-of-type { margin-top: 0; }
+
+/* Kesim: satırlar ve kelimeler */
+.satir { display: grid; grid-template-columns: auto 1fr auto; gap: 8px; align-items: start; padding: 7px 0; border-top: 1px solid var(--cizgi); }
+.satir:first-of-type { border-top: 0; }
+.satir.kullanilmayan { opacity: .55; }
+.kucuk { border: 1px solid var(--cizgi); background: transparent; border-radius: 8px; min-width: 34px; height: 30px; padding: 0 8px; font-size: 12.5px; font-variant-numeric: tabular-nums; color: var(--soluk); }
+.kucuk:hover { border-color: var(--vurgu); color: var(--vurgu); }
+.kelimeler { display: flex; flex-wrap: wrap; gap: 4px 3px; min-width: 0; }
+.k { border: 0; background: transparent; border-radius: 6px; padding: 3px 5px; font-size: 16px; line-height: 1.3; }
+.k:hover { background: var(--yuzey-2); }
+.k.kesik { color: var(--kesik); background: var(--kesik-zemin); text-decoration: line-through; text-decoration-thickness: 1.5px; }
+.k.dusuk { border-bottom: 2px dotted var(--bekle); border-radius: 6px 6px 0 0; }
+.k.simdi { box-shadow: inset 0 0 0 2px var(--vurgu); }
+.d { border: 1px dashed var(--cizgi); background: transparent; border-radius: 999px; padding: 2px 8px; font-size: 12px; color: var(--soluk); font-variant-numeric: tabular-nums; align-self: center; text-decoration: line-through; }
+.d.tut { border-style: solid; border-color: var(--bekle); color: var(--bekle); background: var(--bekle-zemin); text-decoration: none; }
+.s { align-self: center; font-size: 12px; color: var(--bekle); padding: 0 3px; }
+.aciklama { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12.5px; color: var(--soluk); margin: 0 0 12px; padding: 0; list-style: none; }
+.aciklama b { font-weight: 600; color: var(--murekkep); }
+.bildirim { border: 1px solid var(--cizgi); border-radius: 10px; padding: 10px 12px; font-size: 13.5px; margin: 0 0 12px; display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+.bildirim.uyari { border-color: var(--bekle); background: var(--bekle-zemin); }
+
+/* Altyazı */
+.secim { display: flex; flex-wrap: wrap; gap: 14px 22px; margin-bottom: 14px; }
+.secim fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+.secim legend { font-size: 12px; font-weight: 700; color: var(--soluk); padding: 0; margin-bottom: 5px; }
+.parcali { display: inline-flex; border: 1px solid var(--cizgi); border-radius: 9px; overflow: hidden; }
+.parcali button { border: 0; background: transparent; padding: 6px 12px; font-size: 13.5px; border-left: 1px solid var(--cizgi); }
+.parcali button:first-child { border-left: 0; }
+.parcali button[aria-pressed="true"] { background: var(--vurgu); color: var(--vurgu-ustu); font-weight: 600; }
+.ay { display: grid; grid-template-columns: auto 1fr auto; gap: 8px; align-items: center; padding: 7px 0; border-top: 1px solid var(--cizgi); }
+.ay .kel { display: flex; flex-wrap: wrap; gap: 4px; min-width: 0; }
+.ak { border: 1px solid transparent; background: var(--yuzey-2); border-radius: 7px; padding: 3px 8px; font-size: 15.5px; font-weight: 600; }
+.ak.vurgulu { background: var(--vurgu); color: var(--vurgu-ustu); }
+.ay input { width: 9.5em; max-width: 100%; border: 1px solid var(--cizgi); border-radius: 7px; padding: 5px 8px; background: var(--zemin); font-size: 15px; }
+
+/* Grafik */
+.kart { display: grid; grid-template-columns: 46px 1fr; gap: 12px; padding: 12px 0; border-top: 1px solid var(--cizgi); }
+.kart:first-of-type { border-top: 0; }
+.kart.cikar .govde > .ust-satir, .kart.cikar .ozet { opacity: .5; text-decoration: line-through; }
+.maket { width: 46px; aspect-ratio: 9/16; border-radius: 6px; background: var(--yuzey-2); position: relative; overflow: hidden; border: 1px solid var(--cizgi); }
+.maket i { position: absolute; display: block; border-radius: 2px; }
+.maket .yer { background: var(--vurgu); left: 10%; right: 10%; }
+.maket .kisi { background: var(--soluk); opacity: .55; }
+.maket .yazi { background: var(--murekkep); opacity: .35; left: 22%; right: 22%; height: 4%; top: 68%; }
+.kart .govde { min-width: 0; display: grid; gap: 6px; }
+.ust-satir { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; }
+.tur { font-weight: 700; }
+.ozet { color: var(--soluk); font-size: 14px; overflow-wrap: anywhere; }
+.kart textarea { width: 100%; min-height: 38px; resize: vertical; border: 1px solid var(--cizgi); border-radius: 8px; padding: 7px 9px; background: var(--zemin); font-size: 14px; }
+.rozet { font-size: 12px; border-radius: 999px; padding: 2px 8px; background: var(--bekle-zemin); color: var(--bekle); }
+
+/* Ses */
+.ses { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.ses figure { margin: 0; display: grid; gap: 6px; }
+.ses figcaption { font-weight: 600; }
+.ses audio { width: 100%; }
+.olcum { font-size: 13.5px; color: var(--soluk); margin-top: 12px; }
+
+/* Önizleme */
+.taslak-ekran { height: min(60vh, 520px); aspect-ratio: 9/16; max-width: 100%; margin: 0 auto 12px; border-radius: var(--r); overflow: hidden; background: #000; }
+.taslak-ekran video { width: 100%; height: 100%; display: block; }
+.not-yaz { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+.not-yaz input { border: 1px solid var(--cizgi); border-radius: 9px; padding: 9px 11px; background: var(--zemin); min-width: 0; }
+.notlar { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 6px; }
+.notlar li { display: grid; grid-template-columns: auto 1fr auto; gap: 8px; align-items: center; font-size: 14px; }
+.birincil { border: 0; border-radius: 10px; background: var(--vurgu); color: var(--vurgu-ustu); font-weight: 700; padding: 10px 16px; }
+.ikincil { border: 1px solid var(--cizgi); border-radius: 10px; background: var(--yuzey); padding: 9px 14px; font-weight: 600; }
+
+/* Alt çubuk */
+.alt { position: fixed; left: 0; right: 0; bottom: 0; z-index: 8; background: var(--yuzey); border-top: 1px solid var(--cizgi); padding-block: 10px calc(10px + env(safe-area-inset-bottom, 0px)); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.alt .ic { max-width: 1120px; margin: 0 auto; display: flex; gap: 10px 16px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+.ozet-satir { font-size: 13px; font-variant-numeric: tabular-nums; min-width: 0; }
+.ozet-satir .ayrinti { color: var(--soluk); }
+@media (max-width: 520px) { .ozet-satir .ayrinti { display: block; font-size: 12px; } .alt .ic { flex-wrap: nowrap; } .alt .dugmeler button { padding-inline: 12px; white-space: nowrap; } }
+.ozet-satir b { font-family: var(--baslik); font-size: 16px; }
+.alt .dugmeler { display: flex; gap: 8px; }
+.bitti { border: 1px solid var(--iyi); border-radius: var(--r); padding: 14px 16px; background: var(--yuzey); }
+.bitti strong { color: var(--iyi); }
+.bitti code { background: var(--yuzey-2); border-radius: 6px; padding: 2px 7px; font-size: 14px; }
+.bos { color: var(--soluk); padding: 24px 0; text-align: center; }
+
+@media (min-width: 880px) {
+  .uyg { grid-template-columns: 300px minmax(0, 1fr); align-items: start; column-gap: 22px; }
+  .ust, .bitti { grid-column: 1 / -1; }
+  .sol { top: 12px; padding: 0; }
+  .ekran { height: min(62vh, 520px); }
+  .sag { display: grid; gap: 12px; min-width: 0; }
+}
+@media (prefers-reduced-motion: no-preference) { .k, .ak, .sekme, .parcali button { transition: background-color .12s, color .12s; } }
+</style>
+
+<div class="uyg" id="uyg">
+  <header class="ust">
+    <div>
+      <h1>Reels İnceleme</h1>
+      <div class="ad" id="proje-adi">Yükleniyor…</div>
+    </div>
+    <div class="durum" id="durum" role="status" aria-live="polite"></div>
+  </header>
+
+  <div class="bitti" id="bitti-kutusu" hidden>
+    <strong>Kararların kaydedildi.</strong> Şimdi Claude'a şunu yaz: <code id="bitti-komut">incelemeyi bitirdim</code>
+    <button class="kucuk" id="bitti-kopyala" type="button">Kopyala</button>
+    <div class="ipucu" style="margin:6px 0 0">Bir şeyi değiştirmek istersen sayfada değiştirip yeniden "İncelemeyi bitir" demen yeterli.</div>
+  </div>
+
+  <section class="sol" aria-label="Oynatıcı">
+    <div class="ekran">
+      <video id="video" playsinline preload="metadata"></video>
+      <div class="ay-onizleme" id="ay-onizleme" aria-hidden="true"></div>
+    </div>
+    <div class="kumanda">
+      <button class="oynat" id="oynat" type="button">▶ Oynat</button>
+      <input class="cizelge" id="cizelge" type="range" min="0" max="1" step="0.01" value="0" aria-label="Kesilmiş videoda konum">
+      <span class="zaman" id="zaman">0:00 / 0:00</span>
+    </div>
+  </section>
+
+  <div class="sag">
+    <nav class="sekmeler" role="tablist" aria-label="Bölümler">
+      <button class="sekme" role="tab" id="s-kesim" data-sekme="kesim" aria-selected="true" type="button">Kesim</button>
+      <button class="sekme" role="tab" id="s-altyazi" data-sekme="altyazi" aria-selected="false" type="button">Altyazı</button>
+      <button class="sekme" role="tab" id="s-grafik" data-sekme="grafik" aria-selected="false" type="button">Grafik<span class="sayi" id="grafik-sayisi"></span></button>
+      <button class="sekme" role="tab" id="s-ses" data-sekme="ses" aria-selected="false" type="button">Ses</button>
+      <button class="sekme" role="tab" id="s-onizleme" data-sekme="onizleme" aria-selected="false" type="button" hidden>Önizleme</button>
+    </nav>
+
+    <section class="panel" id="p-kesim" role="tabpanel" aria-labelledby="s-kesim">
+      <h2>Ne kalsın, ne gitsin?</h2>
+      <p class="ipucu">Bir kelimeye dokununca kesilir, yeniden dokununca geri gelir. Değişikliği hemen yukarıdaki videoda izleyebilirsin; hiçbir şey render edilmez.</p>
+      <ul class="aciklama">
+        <li><b style="color:var(--kesik);text-decoration:line-through">kesik</b> videoda olmayacak</li>
+        <li><b>⏸</b> duraklama: üstü çiziliyse kısaltılır, dokunursan olduğu gibi kalır</li>
+        <li><b style="border-bottom:2px dotted var(--bekle)">noktalı</b> emin olunamayan kelime</li>
+        <li><b style="color:var(--bekle)">♪</b> kelime yok ama ses var</li>
+      </ul>
+      <div id="kesim-bildirim"></div>
+      <div id="kesim-icerik"><p class="bos">Kelimeler yükleniyor…</p></div>
+    </section>
+
+    <section class="panel" id="p-altyazi" role="tabpanel" aria-labelledby="s-altyazi" hidden>
+      <h2>Altyazı</h2>
+      <p class="ipucu">Öne çıkmasını istediğin kelimeye dokun; cümle başına bir kelime yeter. Yanlış yazılmış kelime için satırın sonundaki kaleme bas.</p>
+      <div class="secim" id="altyazi-secim"></div>
+      <div id="altyazi-icerik"></div>
+    </section>
+
+    <section class="panel" id="p-grafik" role="tabpanel" aria-labelledby="s-grafik" hidden>
+      <h2>Grafikler</h2>
+      <p class="ipucu">Claude'un önerdiği grafikler. İstemediğini çıkar; değişmesini istediğin bir şey varsa altına yaz. Küçük çizim grafiğin kadrajdaki yerini gösterir.</p>
+      <div id="grafik-icerik"></div>
+    </section>
+
+    <section class="panel" id="p-ses" role="tabpanel" aria-labelledby="s-ses" hidden>
+      <h2>Ses</h2>
+      <p class="ipucu">Aynı 10 saniye, temizlikten önce ve sonra. Kulaklıkla dinlersen fark daha net duyulur.</p>
+      <div id="ses-icerik"></div>
+    </section>
+
+    <section class="panel" id="p-onizleme" role="tabpanel" aria-labelledby="s-onizleme" hidden>
+      <h2>Önizleme</h2>
+      <p class="ipucu">Altyazısı ve grafikleriyle taslak video. Bir şey gözüne batarsa videoyu orada durdur ve notunu yaz; Claude o ana bakar.</p>
+      <div id="onizleme-icerik"></div>
+    </section>
+  </div>
+</div>
+
+<div class="alt">
+  <div class="ic">
+    <div class="ozet-satir" id="ozet">&nbsp;</div>
+    <div class="dugmeler">
+      <button class="ikincil" id="geri-al" type="button" disabled>Geri al</button>
+      <button class="birincil" id="bitir" type="button" disabled>İncelemeyi bitir</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { planla, satirlaraBol, kararOzeti } from './zaman.js';
+import { altyaziUret } from './altyazi.js';
+import { kartlariCoz } from './kartlar.js';
+
+const $ = (secici, kok = document) => kok.querySelector(secici);
+const kacis = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+const sureYaz = (sn) => {
+  const s = Math.max(0, sn);
+  const dk = Math.floor(s / 60);
+  return `${dk}:${String(Math.floor(s - dk * 60)).padStart(2, '0')}`;
+};
+const ondalik = (x) => x.toFixed(1).replace('.', ',');
+
+// ------------------------------------------------------------ Veri deposu
+// Sayfa iki yerde çalışır: bu bilgisayardaki küçük sunucuda ya da claude.ai'de. İkisi de aynı dört işi yapar.
+async function depoAc() {
+  if (['127.0.0.1', 'localhost'].includes(location.hostname)) {
+    const al = (yol) => fetch(yol, { cache: 'no-store' }).then((y) => (y.ok ? y.json() : null));
+    return {
+      veri: () => al('api/veri'),
+      kararlar: () => al('api/kararlar'),
+      yaz: (k) => fetch('api/kararlar', { method: 'PUT', body: JSON.stringify(k) }).then((y) => { if (!y.ok) throw new Error('yazılamadı'); }),
+      taslakIzle: (fn) => {
+        const bak = () => al('api/taslak').then((t) => fn(t || {})).catch(() => {});
+        bak();
+        setInterval(() => { if (!document.hidden) bak(); }, 6000);
+      },
+    };
+  }
+  const db = window.claude?.use ? await window.claude.use('db') : null;
+  if (!db) return null;
+  // Belgeler tek bir "json" alanı taşır: iç içe listeler depoda sorun çıkarmasın.
+  const oku = async (yol) => {
+    const b = await db.doc(yol).get();
+    return b.exists && b.data()?.json ? JSON.parse(b.data().json) : null;
+  };
+  return {
+    veri: () => oku('inceleme/veri'),
+    kararlar: () => oku('inceleme/kararlar'),
+    yaz: (k) => db.doc('inceleme/kararlar').set({ json: JSON.stringify(k), durum: k.durum, guncellendi: k.guncellendi }),
+    taslakIzle: (fn) => db.doc('inceleme/taslak').onSnapshot((b) => fn(b.exists && b.data()?.json ? JSON.parse(b.data().json) : {}), () => {}),
+  };
+}
+
+// ------------------------------------------------------------ Durum
+let depo;
+let V; // sayfanın verisi (döküm, öneri, stil, kartlar)
+let K; // kişinin kararları
+let T = null; // taslak önizleme kaydı
+let plan;
+let kurguKelimeleri = [];
+let altyazilar = [];
+let parcaNo = 0;
+let duzenlenen = -1; // yazımı düzeltilen altyazının sırası
+const gecmis = [];
+
+const video = $('#video');
+const durumEl = $('#durum');
+
+function bosKararlar(oneri) {
+  return {
+    surum: 1, kes: [...oneri.kes], tutDuraklama: [...oneri.tutDuraklama], bas: oneri.bas, bit: oneri.bit, sira: oneri.sira, hiz: oneri.hiz,
+    duzeltme: { ...oneri.duzeltme }, vurgu: [...oneri.vurgu], kartlar: {}, stilIstegi: { altyazi: {} }, notlar: [], durum: 'suruyor',
+  };
+}
+
+const ozetAl = kararOzeti;
+
+function altyaziAyari() {
+  return { ...V.stil.altyazi, ...(K.stilIstegi?.altyazi || {}) };
+}
+
+function hesapla() {
+  plan = planla({ kelimeler: V.kelimeler, sure: V.sure }, K, V.tempo);
+  kurguKelimeleri = plan.kurguKelimeleri();
+  altyazilar = altyaziUret(kurguKelimeleri, altyaziAyari(), V.stil.duzeltmeler, plan.sure, { duzeltme: K.duzeltme, vurgu: K.vurgu });
+}
+
+// ------------------------------------------------------------ Kaydetme
+let kayitZamanlayici = 0;
+let yaziliyor = false;
+let bekleyen = false;
+function kaydet(hemen = false) {
+  clearTimeout(kayitZamanlayici);
+  durumEl.textContent = 'Kaydediliyor…';
+  durumEl.classList.remove('hata');
+  kayitZamanlayici = setTimeout(async () => {
+    if (yaziliyor) { bekleyen = true; return; }
+    yaziliyor = true;
+    try {
+      K.guncellendi = new Date().toISOString();
+      K.ozet = ozetAl(K);
+      await depo.yaz(K);
+      durumEl.textContent = 'Kaydedildi';
+    } catch {
+      durumEl.textContent = 'Kaydedilemedi; bağlantını kontrol et';
+      durumEl.classList.add('hata');
+    }
+    yaziliyor = false;
+    if (bekleyen) { bekleyen = false; kaydet(true); }
+  }, hemen ? 0 : 700);
+}
+
+/** Bir kararı uygular: geri alınabilsin diye önceki hâli saklar, her şeyi yeniden hesaplar ve kaydeder. */
+function degistir(fn, { yenidenCiz = true } = {}) {
+  gecmis.push(JSON.stringify(K));
+  if (gecmis.length > 60) gecmis.shift();
+  fn(K);
+  if (K.durum === 'bitti') K.durum = 'suruyor';
+  $('#bitti-kutusu').hidden = true;
+  const kaynakAn = video.currentTime;
+  hesapla();
+  konumla(plan.kaynaktanKurguya(kaynakAn), false);
+  if (yenidenCiz) ciz();
+  else ozetCiz();
+  kaydet();
+}
+
+// ------------------------------------------------------------ Oynatıcı
+// Video ham kayıttır; kesilmiş hâli, kesilen yerlerin üstünden atlayarak oynatılır.
+function kurguAni() {
+  const p = plan.parcalar[parcaNo];
+  if (!p) return plan.sure;
+  return plan.baslangiclar[parcaNo] + (Math.min(Math.max(video.currentTime, p.a), p.b) - p.a) / plan.hiz;
+}
+function konumla(c, sar = true) {
+  const hedef = Math.min(Math.max(0, c), Math.max(0, plan.sure - 0.01));
+  let n = plan.parcalar.length - 1;
+  for (let i = 0; i < plan.parcalar.length; i++) {
+    if (hedef < plan.baslangiclar[i] + (plan.parcalar[i].b - plan.parcalar[i].a) / plan.hiz) { n = i; break; }
+  }
+  parcaNo = Math.max(0, n);
+  if (sar && plan.parcalar.length) video.currentTime = plan.kurgudanKaynaga(hedef);
+  kumandaCiz();
+}
+function kumandaCiz() {
+  const c = kurguAni();
+  const cizelge = $('#cizelge');
+  cizelge.max = String(Math.max(0.01, plan.sure));
+  if (document.activeElement !== cizelge) cizelge.value = String(c);
+  $('#zaman').textContent = `${sureYaz(c)} / ${sureYaz(plan.sure)}`;
+  $('#oynat').textContent = video.paused ? '▶ Oynat' : '❚❚ Durdur';
+
+  // Altyazı önizlemesi: o anda ekranda olacak altyazı, yaklaşık görünümüyle.
+  const ayar = altyaziAyari();
+  const kutu = $('#ay-onizleme');
+  const a = altyazilar.find((x) => c >= x.bas && c < x.bit);
+  kutu.className = `ay-onizleme ${ayar.zemin}`;
+  kutu.style.bottom = ayar.konum === 'orta' ? '40%' : '22%';
+  kutu.style.setProperty('--ay-ana', V.stil.renkler.ana);
+  if (!a) { kutu.textContent = ''; }
+  else {
+    const ic = a.kelimeler.map((k) => {
+      const aktif = ayar.aktifKelime && a.kelimeler.length > 1 && c >= k.bas && c < k.bit;
+      const renk = k.vurgu || aktif ? V.stil.renkler.vurgu : ayar.renk;
+      return `<span style="color:${kacis(renk)}">${kacis(k.m)}</span>`;
+    }).join(' ');
+    kutu.innerHTML = ayar.zemin === 'kutu' ? `<span class="kutu">${ic}</span>` : ic;
+    kutu.style.fontSize = `${Math.max(9, a.boyut * 0.19)}px`;
+  }
+
+  // O anda söylenen kelimeyi işaretle.
+  const t = video.currentTime;
+  const simdiki = document.querySelector('.k.simdi');
+  const yeni = document.querySelector(`.k[data-i="${V.kelimeler.findIndex((k) => t >= k.bas && t < k.bit)}"]`);
+  if (simdiki !== yeni) {
+    simdiki?.classList.remove('simdi');
+    yeni?.classList.add('simdi');
+  }
+}
+function adim() {
+  if (video.paused || !plan?.parcalar.length) return;
+  const p = plan.parcalar[parcaNo];
+  const t = video.currentTime;
+  if (!p) video.pause();
+  else if (t >= p.b - 0.03) {
+    parcaNo++;
+    const sonraki = plan.parcalar[parcaNo];
+    if (sonraki) video.currentTime = sonraki.a;
+    else { video.pause(); parcaNo = plan.parcalar.length - 1; }
+  } else if (t < p.a - 0.3 || t > p.b + 0.3) video.currentTime = p.a;
+  kumandaCiz();
+}
+function tik() {
+  adim();
+  requestAnimationFrame(tik);
+}
+// Sekme arka plandayken kare döngüsü yavaşlar; atlamalar yine de kaçmasın.
+video.addEventListener('timeupdate', adim);
+$('#oynat').addEventListener('click', () => {
+  if (video.paused) {
+    if (kurguAni() >= plan.sure - 0.05) konumla(0);
+    video.playbackRate = plan.hiz;
+    video.play().catch(() => {});
+  } else video.pause();
+});
+$('#cizelge').addEventListener('input', (e) => konumla(Number(e.target.value)));
+video.addEventListener('pause', kumandaCiz);
+video.addEventListener('play', kumandaCiz);
+
+// ------------------------------------------------------------ Kesim paneli
+function kesimCiz() {
+  const kesik = new Set(K.kes);
+  const duraklama = new Map(plan.duraklamalar.map((d) => [d.sonra, d]));
+  const sesli = new Map((V.sesliBosluklar || []).map((b) => [b.sonra, b]));
+  const satirlar = satirlaraBol(V.kelimeler);
+  const bolumler = K.sira?.length ? K.sira : [[0, V.kelimeler.length - 1]];
+  const kullanilan = new Set();
+  const disarida = (i) => (K.bas !== null && V.kelimeler[i].bas < K.bas) || (K.bit !== null && V.kelimeler[i].bit > K.bit);
+
+  const satirHtml = (ilk, son, etkin) => {
+    const parcalar = [];
+    for (let i = ilk; i <= son; i++) {
+      const k = V.kelimeler[i];
+      const sinif = ['k', (kesik.has(i) || disarida(i)) && 'kesik', k.p < 0.5 && 'dusuk'].filter(Boolean).join(' ');
+      parcalar.push(`<button type="button" class="${sinif}" data-i="${i}"${etkin ? '' : ' disabled'} aria-pressed="${kesik.has(i)}">${kacis(k.m)}</button>`);
+      const d = duraklama.get(i);
+      if (etkin && d && i < son + 1) parcalar.push(`<button type="button" class="d${d.tutuldu ? ' tut' : ''}" data-d="${i}" title="Duraklama">⏸ ${ondalik(d.uzunluk)}</button>`);
+      else if (sesli.has(i) && !kesik.has(i)) parcalar.push('<span class="s" title="Kelime yok ama ses var">♪</span>');
+    }
+    const hepsiKesik = Array.from({ length: son - ilk + 1 }, (_, n) => ilk + n).every((i) => kesik.has(i));
+    return `<div class="satir${etkin ? '' : ' kullanilmayan'}">
+      <button type="button" class="kucuk" data-git="${V.kelimeler[ilk].bas}" aria-label="Buradan oynat">▶ ${sureYaz(V.kelimeler[ilk].bas)}</button>
+      <div class="kelimeler">${parcalar.join('')}</div>
+      ${etkin ? `<button type="button" class="kucuk" data-satir="${ilk}-${son}">${hepsiKesik ? 'Geri al' : 'Satırı kes'}</button>` : '<span></span>'}
+    </div>`;
+  };
+
+  let html = '';
+  bolumler.forEach(([bIlk, bSon], n) => {
+    if (bolumler.length > 1) html += `<div class="bolum-adi">${n + 1}. bölüm${n === 0 ? ' · video bununla açılıyor' : ''}</div>`;
+    for (const s of satirlar) {
+      const ilk = Math.max(s.ilk, bIlk);
+      const son = Math.min(s.son, bSon);
+      if (ilk > son) continue;
+      for (let i = ilk; i <= son; i++) kullanilan.add(i);
+      html += satirHtml(ilk, son, true);
+    }
+  });
+  const kalan = satirlar.map((s) => {
+    const liste = [];
+    for (let i = s.ilk; i <= s.son; i++) if (!kullanilan.has(i)) liste.push(i);
+    return liste;
+  }).filter((l) => l.length);
+  if (kalan.length) {
+    html += '<div class="bolum-adi">Videoya alınmayan çekimler</div>';
+    html += '<p class="ipucu">Claude bu bölümleri videoya koymadı (tekrar çekim ya da çekim arası konuşma). Birini videoya almak istersen Claude\'a yaz.</p>';
+    for (const l of kalan) html += satirHtml(l[0], l[l.length - 1], false);
+  }
+  $('#kesim-icerik').innerHTML = html;
+
+  let bildirim = '';
+  if (K.bas !== null || K.bit !== null) {
+    const parca = [K.bas !== null && `ilk ${ondalik(K.bas)} saniye`, K.bit !== null && `son ${ondalik(Math.max(0, V.sure - K.bit))} saniye`].filter(Boolean).join(' ve ');
+    bildirim = `<div class="bildirim"><span>Kaydın ${parca} atıldı (kamerayı yerleştirme ya da kayıttan çıkma anı).</span><button type="button" class="kucuk" data-bas-son>Geri getir</button></div>`;
+  }
+  $('#kesim-bildirim').innerHTML = bildirim;
+}
+$('#p-kesim').addEventListener('click', (e) => {
+  const hedef = e.target.closest('button');
+  if (!hedef) return;
+  if (hedef.dataset.i !== undefined) {
+    const i = Number(hedef.dataset.i);
+    degistir((k) => { k.kes = k.kes.includes(i) ? k.kes.filter((x) => x !== i) : [...k.kes, i]; });
+  } else if (hedef.dataset.d !== undefined) {
+    const i = Number(hedef.dataset.d);
+    degistir((k) => { k.tutDuraklama = k.tutDuraklama.includes(i) ? k.tutDuraklama.filter((x) => x !== i) : [...k.tutDuraklama, i]; });
+  } else if (hedef.dataset.satir) {
+    const [ilk, son] = hedef.dataset.satir.split('-').map(Number);
+    const aralik = Array.from({ length: son - ilk + 1 }, (_, n) => ilk + n);
+    degistir((k) => {
+      const hepsi = aralik.every((i) => k.kes.includes(i));
+      k.kes = hepsi ? k.kes.filter((i) => !aralik.includes(i)) : [...new Set([...k.kes, ...aralik])];
+    });
+  } else if (hedef.dataset.git !== undefined) {
+    konumla(plan.kaynaktanKurguya(Number(hedef.dataset.git) + 0.01));
+  } else if ('basSon' in hedef.dataset) {
+    degistir((k) => { k.bas = null; k.bit = null; });
+  }
+});
+
+// ------------------------------------------------------------ Altyazı paneli
+const SECENEKLER = {
+  bicim: ['Biçim', { kelime: 'Tek kelime', ifade: 'Kısa ifade', cumle: 'Cümle' }],
+  zemin: ['Zemin', { kontur: 'Kontur', golge: 'Gölge', kutu: 'Kutu' }],
+  boyut: ['Boyut', { kucuk: 'Küçük', orta: 'Orta', buyuk: 'Büyük' }],
+};
+function altyaziCiz() {
+  const ayar = altyaziAyari();
+  $('#altyazi-secim').innerHTML = Object.entries(SECENEKLER).map(([alan, [ad, degerler]]) => `
+    <fieldset><legend>${ad}</legend><div class="parcali">${Object.entries(degerler).map(([d, etiket]) =>
+      `<button type="button" data-alan="${alan}" data-deger="${d}" aria-pressed="${ayar[alan] === d}">${etiket}</button>`).join('')}</div></fieldset>`).join('');
+
+  $('#altyazi-icerik').innerHTML = altyazilar.length ? altyazilar.map((a, n) => {
+    const ic = duzenlenen === n
+      ? a.kelimeler.map((k) => `<input id="dz-${k.i}" data-dz="${k.i}" value="${kacis(k.m)}" aria-label="Kelimenin yazımı" autocomplete="off" autocapitalize="off" spellcheck="false">`).join('')
+      : a.kelimeler.map((k) => `<button type="button" class="ak${k.vurgu ? ' vurgulu' : ''}" data-v="${k.i}" aria-pressed="${k.vurgu}">${kacis(k.m)}</button>`).join('');
+    return `<div class="ay">
+      <button type="button" class="kucuk" data-c="${a.bas}" aria-label="Bu altyazıya git">▶ ${sureYaz(a.bas)}</button>
+      <div class="kel">${ic}</div>
+      <button type="button" class="kucuk" data-duzenle="${n}">${duzenlenen === n ? 'Tamam' : '✎'}</button>
+    </div>`;
+  }).join('') : '<p class="bos">Videoda kelime kalmadı.</p>';
+}
+$('#p-altyazi').addEventListener('click', (e) => {
+  const hedef = e.target.closest('button');
+  if (!hedef) return;
+  if (hedef.dataset.alan) {
+    degistir((k) => { k.stilIstegi.altyazi[hedef.dataset.alan] = hedef.dataset.deger; });
+  } else if (hedef.dataset.v !== undefined) {
+    const i = Number(hedef.dataset.v);
+    degistir((k) => { k.vurgu = k.vurgu.includes(i) ? k.vurgu.filter((x) => x !== i) : [...k.vurgu, i]; });
+  } else if (hedef.dataset.c !== undefined) {
+    konumla(Number(hedef.dataset.c) + 0.01);
+  } else if (hedef.dataset.duzenle !== undefined) {
+    const n = Number(hedef.dataset.duzenle);
+    if (duzenlenen === n) {
+      const girdiler = [...document.querySelectorAll('[data-dz]')].map((g) => [g.dataset.dz, g.value.trim()]);
+      duzenlenen = -1;
+      degistir((k) => {
+        const eskiler = Object.fromEntries(altyazilar[n].kelimeler.map((w) => [w.i, w.m]));
+        for (const [i, yazi] of girdiler) if (yazi && yazi !== eskiler[i]) k.duzeltme[i] = yazi;
+      });
+    } else {
+      duzenlenen = n;
+      altyaziCiz();
+      document.querySelector('[data-dz]')?.focus();
+    }
+  }
+});
+
+// ------------------------------------------------------------ Grafik paneli
+const TUR_ADLARI = { baslik: 'Başlık', etiket: 'Etiket', liste: 'Liste', sayi: 'Sayı', cagri: 'Çağrı', gorsel: 'Görsel', site: 'Site görüntüsü', karsilastirma: 'Karşılaştırma', lottie: 'Animasyon', yakinlas: 'Yakınlaşma' };
+function kartOzeti(k) {
+  const temiz = (s) => String(s ?? '').replace(/\*/g, '').replace(/\s*\/\s*/g, ' ');
+  switch (k.tur) {
+    case 'liste': return `${temiz(k.baslik) || 'Liste'}: ${(k.maddeler || []).map((m) => temiz(m.metin ?? m)).join(' · ')}`;
+    case 'sayi': return `${k.onEk || ''}${k.deger}${k.sonEk || ''} ${temiz(k.aciklama)}`;
+    case 'gorsel': return `${[].concat(k.dosyalar || []).length} görsel`;
+    case 'site': return k.adres || 'site';
+    case 'karsilastirma': return `${temiz(k.sol?.baslik)} ↔ ${temiz(k.sag?.baslik)}`;
+    case 'lottie': return 'hazır animasyon';
+    case 'yakinlas': return 'konuşmacıya kısa yaklaşma';
+    default: return temiz(k.metin);
+  }
+}
+function maket(k) {
+  if (k.tur === 'yakinlas') return '<div class="maket"><i class="kisi" style="left:8%;right:8%;top:14%;bottom:8%"></i></div>';
+  const konum = String(k.konum || (k.tur === 'cagri' ? 'alt' : 'ust'));
+  const ust = konum.startsWith('orta') ? 40 : konum.startsWith('alt') ? 54 : 14;
+  const boy = ['liste', 'gorsel', 'site', 'karsilastirma'].includes(k.tur) ? 26 : k.tur === 'etiket' || k.tur === 'cagri' ? 6 : 13;
+  const kisi = k.zemin ? '<i class="kisi" style="left:14%;right:14%;top:43%;height:34%"></i>' : '<i class="kisi" style="left:0;right:0;top:0;bottom:0;opacity:.22"></i>';
+  return `<div class="maket">${kisi}<i class="yer" style="top:${ust}%;height:${boy}%"></i><i class="yazi"></i></div>`;
+}
+function grafikCiz() {
+  const kartlar = V.kartlar || [];
+  $('#grafik-sayisi').textContent = kartlar.length ? String(kartlar.filter((_, n) => K.kartlar[n]?.durum !== 'cikar').length) : '';
+  if (!kartlar.length) {
+    $('#grafik-icerik').innerHTML = '<p class="bos">Bu video için grafik önerilmedi.</p>';
+    return;
+  }
+  const kesim = { kelimeler: kurguKelimeleri, sure: plan.sure };
+  $('#grafik-icerik').innerHTML = kartlar.map((kart, n) => {
+    const karar = K.kartlar[n] || {};
+    const { kartlar: cozulmus, hatalar } = kartlariCoz([kart], kesim);
+    const c = cozulmus[0];
+    const zaman = c ? `<button type="button" class="kucuk" data-c="${c.bas}">▶ ${sureYaz(c.bas)}</button>` : '';
+    const uyari = hatalar.length ? '<span class="rozet">bağlı olduğu kelime kesildi</span>' : '';
+    return `<div class="kart${karar.durum === 'cikar' ? ' cikar' : ''}">
+      ${maket(c || kart)}
+      <div class="govde">
+        <div class="ust-satir"><span class="tur">${TUR_ADLARI[kart.tur] || kacis(kart.tur)}</span>${zaman}${uyari}
+          <div class="parcali"><button type="button" data-kart="${n}" data-durum="tut" aria-pressed="${karar.durum !== 'cikar'}">Kalsın</button><button type="button" data-kart="${n}" data-durum="cikar" aria-pressed="${karar.durum === 'cikar'}">Çıkar</button></div>
+        </div>
+        <div class="ozet">${kacis(kartOzeti(kart))}</div>
+        <textarea id="kn-${n}" data-not="${n}" rows="1" placeholder="Değişmesini istediğin bir şey varsa yaz" aria-label="Bu grafik için not">${kacis(karar.not || '')}</textarea>
+      </div>
+    </div>`;
+  }).join('');
+}
+$('#p-grafik').addEventListener('click', (e) => {
+  const hedef = e.target.closest('button');
+  if (!hedef) return;
+  if (hedef.dataset.kart !== undefined) {
+    const n = hedef.dataset.kart;
+    degistir((k) => { k.kartlar[n] = { ...(k.kartlar[n] || {}), durum: hedef.dataset.durum }; });
+  } else if (hedef.dataset.c !== undefined) konumla(Number(hedef.dataset.c) + 0.01);
+});
+$('#p-grafik').addEventListener('input', (e) => {
+  if (e.target.dataset.not === undefined) return;
+  const n = e.target.dataset.not;
+  degistir((k) => { k.kartlar[n] = { ...(k.kartlar[n] || {}), not: e.target.value }; }, { yenidenCiz: false });
+});
+
+// ------------------------------------------------------------ Ses paneli
+function sesCiz() {
+  const m = V.medya || {};
+  if (!m.sesOnce || !m.sesSonra) {
+    $('#ses-icerik').innerHTML = '<p class="bos">Ses karşılaştırması hazırlanmadı.</p>';
+    return;
+  }
+  const s = V.ses;
+  const olcum = s ? `<p class="olcum">Arka plan gürültüsü ${ondalik(s.once.taban)} dB → ${ondalik(s.sonra.taban)} dB. Ses düzeyi Instagram'ın beklediği seviyeye getirildi${s.gurultuAzaltma ? `; gürültü azaltma uygulandı` : '; gürültü azaltmaya gerek kalmadı'}.</p>${(s.uyarilar || []).map((u) => `<div class="bildirim uyari">${kacis(u)}</div>`).join('')}` : '';
+  $('#ses-icerik').innerHTML = `<div class="ses">
+    <figure><figcaption>Önce (ham kayıt)</figcaption><audio controls preload="none" src="${kacis(m.sesOnce)}"></audio></figure>
+    <figure><figcaption>Sonra (temizlenmiş)</figcaption><audio controls preload="none" src="${kacis(m.sesSonra)}"></audio></figure>
+  </div>${olcum}`;
+}
+
+// ------------------------------------------------------------ Önizleme paneli
+function onizlemeCiz() {
+  $('#s-onizleme').hidden = !T;
+  if (!T) return;
+  const eski = T.ozet && T.ozet !== ozetAl(K);
+  const notlar = (K.notlar || []).map((n, i) => [n, i]).filter(([n]) => n.yer === 'taslak');
+  const kutu = $('#onizleme-icerik');
+  const mevcut = $('#taslak-video');
+  if (!mevcut || mevcut.dataset.kaynak !== T.medya) {
+    kutu.innerHTML = `<div id="taslak-uyari"></div>
+      <div class="taslak-ekran"><video id="taslak-video" controls playsinline preload="metadata" data-kaynak="${kacis(T.medya)}" src="${kacis(T.medya)}"></video></div>
+      <form class="not-yaz" id="not-formu"><input id="not-metni" placeholder="Videoyu durdurduğun an için notun" aria-label="Not" autocomplete="off"><button class="birincil" type="submit">Not bırak</button></form>
+      <ul class="notlar" id="not-listesi"></ul>`;
+    $('#not-formu').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const metin = $('#not-metni').value.trim();
+      if (!metin) return;
+      const t = $('#taslak-video').currentTime;
+      $('#not-metni').value = '';
+      degistir((k) => { k.notlar = [...(k.notlar || []), { yer: 'taslak', t: +t.toFixed(2), metin }]; });
+    });
+    $('#not-listesi').addEventListener('click', (e) => {
+      const hedef = e.target.closest('button');
+      if (!hedef) return;
+      if (hedef.dataset.sil !== undefined) degistir((k) => { k.notlar = k.notlar.filter((_, i) => i !== Number(hedef.dataset.sil)); });
+      else if (hedef.dataset.t !== undefined) $('#taslak-video').currentTime = Number(hedef.dataset.t);
+    });
+  }
+  $('#taslak-uyari').innerHTML = eski ? '<div class="bildirim uyari">Bu önizleme eski: ondan sonra yaptığın değişiklikleri içermiyor. Yenisi için Claude\'a "önizleme yap" yaz.</div>' : '';
+  $('#not-listesi').innerHTML = notlar.map(([n, i]) => `<li><button type="button" class="kucuk" data-t="${n.t}">▶ ${sureYaz(n.t)}</button><span>${kacis(n.metin)}</span><button type="button" class="kucuk" data-sil="${i}" aria-label="Notu sil">Sil</button></li>`).join('');
+}
+
+// ------------------------------------------------------------ Özet, sekmeler, bitirme
+function ozetCiz() {
+  const kisalan = plan.duraklamalar.filter((d) => !d.tutuldu).length;
+  $('#ozet').innerHTML = `<b>${sureYaz(V.sure)} → ${sureYaz(plan.sure)}</b> <span class="ayrinti">${K.kes.length} kelime kesik · ${kisalan} duraklama kısalıyor</span>`;
+  $('#geri-al').disabled = !gecmis.length;
+  $('#grafik-sayisi').textContent = (V.kartlar || []).length ? String(V.kartlar.filter((_, n) => K.kartlar[n]?.durum !== 'cikar').length) : '';
+  if (T) $('#taslak-uyari') && ($('#taslak-uyari').innerHTML = T.ozet && T.ozet !== ozetAl(K) ? '<div class="bildirim uyari">Bu önizleme eski: ondan sonra yaptığın değişiklikleri içermiyor. Yenisi için Claude\'a "önizleme yap" yaz.</div>' : '');
+}
+function ciz() {
+  kesimCiz();
+  altyaziCiz();
+  grafikCiz();
+  onizlemeCiz();
+  ozetCiz();
+  kumandaCiz();
+}
+document.querySelector('.sekmeler').addEventListener('click', (e) => {
+  const hedef = e.target.closest('[data-sekme]');
+  if (!hedef) return;
+  for (const s of document.querySelectorAll('.sekme')) s.setAttribute('aria-selected', String(s === hedef));
+  for (const p of document.querySelectorAll('.panel')) p.hidden = p.id !== `p-${hedef.dataset.sekme}`;
+  try { localStorage.setItem('reels-inceleme-sekme', hedef.dataset.sekme); } catch { /* saklanamazsa sorun değil */ }
+});
+$('#geri-al').addEventListener('click', () => {
+  const onceki = gecmis.pop();
+  if (!onceki) return;
+  K = JSON.parse(onceki);
+  const kaynakAn = video.currentTime;
+  hesapla();
+  konumla(plan.kaynaktanKurguya(kaynakAn), false);
+  ciz();
+  kaydet();
+});
+$('#bitir').addEventListener('click', () => {
+  K.durum = 'bitti';
+  kaydet(true);
+  const kutu = $('#bitti-kutusu');
+  kutu.hidden = false;
+  kutu.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+});
+$('#bitti-kopyala').addEventListener('click', async () => {
+  const metin = $('#bitti-komut').textContent;
+  try {
+    await navigator.clipboard.writeText(metin);
+    $('#bitti-kopyala').textContent = 'Kopyalandı';
+  } catch {
+    getSelection().selectAllChildren($('#bitti-komut'));
+  }
+});
+
+// ------------------------------------------------------------ Başlangıç
+async function baslat() {
+  const zamanAsimi = setTimeout(() => { if (!V) durumEl.textContent = 'Veri gelmedi. Sayfayı yenilemeyi dene.'; }, 10000);
+  try {
+    depo = await depoAc();
+    if (!depo) {
+      $('#proje-adi').textContent = 'Bu sayfa şu an verisine ulaşamıyor. claude.ai hesabınla giriş yaptığından emin ol.';
+      clearTimeout(zamanAsimi);
+      return;
+    }
+    V = await depo.veri();
+    clearTimeout(zamanAsimi);
+    if (!V) {
+      $('#proje-adi').textContent = 'Henüz inceleme verisi yok. Claude videoyu hazırlayınca burada görünecek.';
+      $('#kesim-icerik').innerHTML = '<p class="bos">Bir videoyu Claude\'a verip "bunu Reels yap" dediğinde kesim önerisi buraya gelir.</p>';
+      return;
+    }
+    const kayitli = await depo.kararlar().catch(() => null);
+    K = { ...bosKararlar(V.oneri), ...(kayitli || {}) };
+    K.stilIstegi = { altyazi: {}, ...(K.stilIstegi || {}) };
+    K.kartlar = K.kartlar || {};
+    $('#proje-adi').textContent = V.ad;
+    video.src = V.medya.kaynak;
+    hesapla();
+    video.addEventListener('loadedmetadata', () => konumla(0), { once: true });
+    sesCiz();
+    ciz();
+    $('#bitir').disabled = false;
+    if (K.durum === 'bitti') $('#bitti-kutusu').hidden = false;
+    durumEl.textContent = kayitli ? 'Kaldığın yerden devam ediyorsun' : 'Claude\'un önerisi yüklendi';
+    try {
+      const sekme = localStorage.getItem('reels-inceleme-sekme');
+      if (sekme && sekme !== 'onizleme') document.querySelector(`[data-sekme="${sekme}"]`)?.click();
+    } catch { /* saklanamazsa sorun değil */ }
+    depo.taslakIzle(async (t) => {
+      // Claude kararları uygulayıp veriyi tazelediyse (kesilen kartlar, yeni öneri) sayfa da kendini tazeler.
+      if (t.veriHazirlandi && t.veriHazirlandi !== V.hazirlandi) {
+        const yeniVeri = await depo.veri().catch(() => null);
+        if (yeniVeri && yeniVeri.hazirlandi !== V.hazirlandi) {
+          V = yeniVeri;
+          const yeniKararlar = await depo.kararlar().catch(() => null);
+          K = { ...bosKararlar(V.oneri), ...(yeniKararlar || {}) };
+          K.stilIstegi = { altyazi: {}, ...(K.stilIstegi || {}) };
+          K.kartlar = K.kartlar || {};
+          gecmis.length = 0;
+          duzenlenen = -1;
+          hesapla();
+          konumla(0);
+          ciz();
+          $('#bitti-kutusu').hidden = true;
+          durumEl.textContent = 'Claude kararlarını uyguladı';
+        }
+      }
+      const yeniTaslak = t.medya ? t : null;
+      const degisti = JSON.stringify(yeniTaslak) !== JSON.stringify(T);
+      T = yeniTaslak;
+      if (degisti) onizlemeCiz();
+    });
+    requestAnimationFrame(tik);
+  } catch (e) {
+    clearTimeout(zamanAsimi);
+    durumEl.textContent = 'Sayfa açılırken bir sorun oldu';
+    durumEl.classList.add('hata');
+    console.error(e);
+  }
+}
+baslat();
+</script>
