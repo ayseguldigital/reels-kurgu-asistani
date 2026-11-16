@@ -16,9 +16,9 @@ Code sekmesi ilk açılışta bir klasör seçmenizi ister. Belgeler klasörün�
 
 Homebrew, Mac'e araç kurmayı kolaylaştıran ücretsiz bir program. Asistanın kullandığı araçları o kurar. Bu adımı yalnızca bir kez yaparsınız.
 
-1. [Homebrew kurulum dosyasını indirin](https://github.com/Homebrew/brew/releases/latest/download/Homebrew.pkg) (155 MB kadar).
+1. [Homebrew kurulum dosyasını indirin](https://github.com/Homebrew/brew/releases/latest/download/Homebrew.pkg) (155 MB kadar; bağlantınıza göre 5-40 dakika sürebilir).
 2. İndirilenler klasöründeki **Homebrew.pkg** dosyasına çift tıklayın.
-3. Açılan pencerede **Sürdür** (Continue) ve **Yükle** (Install) düğmelerine basın.
+3. Açılan pencerede **Sürdür** (Continue) düğmesiyle ilerleyin. Lisans sorusunda **Kabul Et** (Agree), son ekranda **Yükle** (Install) düğmesine basın.
 4. Mac parolanızı ya da Touch ID'nizi ister. Onaylayın; kurulum bir iki dakika sürer.
 5. Kurulumun bittiğini yazınca pencereyi kapatın.
 
@@ -147,7 +147,7 @@ Kişi kurulum ya da güncelleme istediğinde sırayla:
 1. `~/.reels-kurgu/kaynak` yoksa depoyu oraya indir: `git clone https://github.com/ayseguldigital/reels-kurgu-asistani.git ~/.reels-kurgu/kaynak`. Varsa `git -C ~/.reels-kurgu/kaynak pull`.
 2. `bash ~/.reels-kurgu/kaynak/kur.sh` çalıştır. Model indirmesi uzun sürer; komutu arka planda çalıştır ve kişiye bunun 5–20 dakika alabileceğini söyle.
 3. Betik "Homebrew kurulu değil" derse önce `uname -m` ile Mac'in türüne bak.
-   - `arm64` (Apple çipli): kurulum dosyasını indir ve aç: `curl -fL -o ~/Downloads/Homebrew.pkg https://github.com/Homebrew/brew/releases/latest/download/Homebrew.pkg && open ~/Downloads/Homebrew.pkg`. Kişiye açılan pencerede **Sürdür** ve **Yükle** düğmelerine basmasını, parolasını o pencereye yazmasını ve bitince sana haber vermesini söyle. Haber gelince `/opt/homebrew/bin/brew --version` ile doğrula ve 2. adımdaki betiği yeniden çalıştır.
+   - `arm64` (Apple çipli): kurulum dosyasını indir ve aç: `curl -fL -o ~/Downloads/Homebrew.pkg https://github.com/Homebrew/brew/releases/latest/download/Homebrew.pkg && open ~/Downloads/Homebrew.pkg`. Kişiye açılan pencerede **Sürdür** ile ilerlemesini, lisansı kabul edip **Yükle**'ye basmasını, parolasını o pencereye yazmasını ve bitince sana haber vermesini söyle. Haber gelince `/opt/homebrew/bin/brew --version` ile doğrula ve 2. adımdaki betiği yeniden çalıştır.
    - `x86_64` (Intel): kişiyi bu sayfadaki "Mac'iniz Intel işlemciliyse" bölümüne yönlendir.
    - Parolayı sen isteme ve sen girme; `sudo` ile komut çalıştırma, Homebrew'un Terminal kurulumunu kendin başlatma.
 4. Sonunda `bash ~/.reels-kurgu/kaynak/kur.sh --kontrol` ile doğrula. Çıktı **HAZIR** diyorsa kişiye Claude uygulamasını yeniden açmasını ve bir video verip "bunu Reels yap" yazmasını söyle.
