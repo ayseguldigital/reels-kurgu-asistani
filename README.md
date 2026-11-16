@@ -1,37 +1,37 @@
 # Reels Kurgu Asistanı
 
-Kameraya konuştuğun ham videoyu Claude'a verirsin, kendi stilinde bitmiş bir Reels alırsın: sesi temizlenmiş, gereksiz yerleri kesilmiş, Türkçe altyazılı ve grafikli.
+Kameraya konuştuğunuz ham videoyu Claude'a verin, kendi stilinizde bitmiş bir Reels alın: sesi temizlenmiş, gereksiz yerleri kesilmiş, Türkçe altyazılı ve grafikli.
 
-Kurgu bilmen gerekmez. Claude ile konuşursun; o keser, sen onaylarsın.
+Kurgu bilmeniz gerekmez. Claude ile konuşursunuz; o keser, siz onaylarsınız.
 
 [Ayşegül Digital](https://aysegul.digital) tarafından hazırlandı. Ücretsiz ve açık kaynak.
 
-## Ne yapar
+## Ne yapar?
 
 - **Sesi temizler.** Arka plan gürültüsünü azaltır, sesi netleştirir ve Instagram'ın beklediği düzeye getirir.
-- **iPhone'un HDR videosunu çevirir.** iPhone videoyu olağan ayarda HDR çeker ve bu, başka araçlarda soluk çıkar. Asistan bunu Reels'in renk aralığına, Apple'ın kendi dönüşümüyle aynı sonucu verecek biçimde çevirir. Telefonunda bir ayar değiştirmen gerekmez.
-- **Konuşmanı yazıya döker.** Türkçe, kelime kelime. Bilgisayarında yapılır; sesin hiçbir yere gönderilmez.
-- **Kesim önerir.** Kamerayı yerleştirdiğin anları, tekrar çekimleri, çekim arası konuşmaları ve uzun duraklamaları bulur. Sen onaylamadan hiçbir şey kesilmez.
-- **Altyazı ekler.** Senin renginde ve yazı tipinde. Söylenen kelime o an renklenir, öne çıkmasını istediğin kelimeler vurgulanır.
-- **Grafik ekler.** Başlık, liste, sayı, karşılaştırma, site görüntüsü, kendi görsellerin ve çağrı. Her grafik o anda söylediğini gösterir.
-- **Ses efekti ekler.** Grafikler girerken kısa sesler çalar. İstemediğin grafikte kapatırsın ya da hiç kullanmazsın.
-- **Önce gösterir.** Kesimleri, altyazıyı ve grafikleri bir inceleme sayfasında görürsün; kelimelere dokunarak değiştirirsin. Sonra önizlemeyi izler, beğenmediğin ana not bırakırsın.
-- **Kapak hazırlar.** Videodan kareyi sen seçersin, başlığı yazarsın, sekiz görünümden birini seçersin.
+- **iPhone'un HDR videosunu çevirir.** iPhone videoyu olağan ayarda HDR çeker ve bu video başka araçlarda soluk çıkar. Asistan onu Reels'in renk aralığına çevirir; sonuç Apple'ın kendi dönüşümüyle aynıdır. Telefonunuzda bir ayar değiştirmeniz gerekmez.
+- **Konuşmanızı yazıya döker.** Türkçe, kelime kelime. Bu iş bilgisayarınızda yapılır; sesiniz hiçbir yere gönderilmez.
+- **Kesim önerir.** Kamerayı yerleştirdiğiniz anları, tekrar çekimleri, çekim arası konuşmaları ve uzun duraklamaları bulur. Siz onaylamadan hiçbir şey kesilmez.
+- **Altyazı ekler.** Sizin renginizde ve yazı tipinizde. Söylenen kelime o an renklenir, öne çıkmasını istediğiniz kelimeler vurgulanır.
+- **Grafik ekler.** Başlık, liste, sayı, karşılaştırma, site görüntüsü, kendi görselleriniz ve çağrı. Her grafik o anda söylediğinizi gösterir.
+- **Ses efekti ekler.** Grafikler girerken kısa sesler çalar. İstemediğiniz grafikte kapatırsınız ya da hiç kullanmazsınız.
+- **Önce gösterir.** Kesimleri, altyazıyı ve grafikleri bir inceleme sayfasında görürsünüz; kelimelere dokunarak değiştirirsiniz. Sonra önizlemeyi izler, beğenmediğiniz ana not bırakırsınız.
+- **Kapak hazırlar.** Videodan kareyi siz seçersiniz, başlığı siz yazarsınız, sekiz görünümden birini seçersiniz.
 - **Kontrol eder.** Bitmiş videonun boyutunu, ses düzeyini ve kesimde yutulmuş kelime olup olmadığını ölçer.
 
-Sonunda üç dosya çıkar: altyazılı video, altyazısız sürüm ve altyazı dosyası (.srt). Altyazısız sürümü başka bir uygulamada kendi altyazınla kullanabilirsin.
+Sonunda elinizde üç dosya olur: altyazılı video, altyazısız sürüm ve altyazı dosyası (.srt). Altyazısız sürümü başka bir uygulamada kendi altyazınızla kullanabilirsiniz.
 
-## Nasıl ilerler
+## Nasıl ilerler?
 
-1. Telefonunla kameraya konuşarak videonu çek ve Mac'ine aktar.
-2. Claude'a videoyu ver ve **"bunu Reels yap"** yaz.
-3. İlk seferde Claude sana stilini sorar: renklerin, yazı tipin, altyazı biçimin. Beş dakika sürer, bir daha sorulmaz.
-4. Claude bir **inceleme sayfası** açar. Kesilecek kelimeler üstü çizili görünür; dokunursan geri gelir. "Oynat" kesilmiş hâli hemen gösterir.
-5. "İncelemeyi bitirdim" dersin. Claude bir önizleme hazırlar (yaklaşık bir dakika).
-6. Önizlemeyi izlersin. Tamamsa "tamam" dersin; değilse videoyu o anda durdurup notunu yazarsın.
-7. Claude son hâli hazırlar ve kapak isteyip istemediğini sorar.
+1. Telefonunuzla kameraya konuşarak videonuzu çekin ve Mac'inize aktarın.
+2. Videoyu Claude'a verin ve **"bunu Reels yap"** yazın.
+3. İlk seferde Claude size stilinizi sorar: renkleriniz, yazı tipiniz, altyazı biçiminiz. Beş dakika sürer, bir daha sorulmaz.
+4. Claude bir **inceleme sayfası** açar. Kesilecek kelimeler üstü çizili görünür; dokunursanız geri gelir. "Oynat" kesilmiş hâli hemen gösterir.
+5. "İncelemeyi bitirdim" dersiniz. Claude bir önizleme hazırlar (yaklaşık bir dakika).
+6. Önizlemeyi izlersiniz. Tamamsa "tamam" dersiniz; değilse videoyu o anda durdurup notunuzu yazarsınız.
+7. Claude son hâli hazırlar ve kapak isteyip istemediğinizi sorar.
 
-## Ne gerekir
+## Ne gerekir?
 
 - **Bir Mac.** Windows ve Linux'ta denenmedi.
 - **Claude masaüstü uygulaması ve ücretli bir Claude planı** (Pro ya da üstü).
@@ -40,17 +40,17 @@ Sonunda üç dosya çıkar: altyazılı video, altyazısız sürüm ve altyazı 
 
 ## Kurulum
 
-Daha önce Terminal açmadıysan [KURULUM.md](KURULUM.md) dosyasını izle; her adımı tek tek anlatır.
+Daha önce Terminal açmadıysanız [KURULUM.md](KURULUM.md) dosyasını izleyin; her adımı tek tek anlatıyorum.
 
-Homebrew kuruluysa Claude uygulamasında **Code** sekmesini aç ve şunu yaz:
+Homebrew kuruluysa Claude uygulamasında **Code** sekmesini açın ve şunu yazın:
 
 ```
 github.com/ayseguldigital/reels-kurgu-asistani adresindeki Reels Kurgu Asistanı'nı kur
 ```
 
-Claude depoyu indirir, eksik araçları kurar ve hazır olduğunda haber verir. İlk kurulum, model indirmesi yüzünden 10–30 dakika sürebilir.
+Claude depoyu indirir, eksik araçları kurar ve hazır olduğunda haber verir. İlk kurulum, model indirmesi yüzünden 10-30 dakika sürebilir.
 
-Kendin kurmak istersen:
+Kendiniz kurmak isterseniz:
 
 ```bash
 git clone https://github.com/ayseguldigital/reels-kurgu-asistani.git ~/.reels-kurgu/kaynak
@@ -62,51 +62,51 @@ bash ~/.reels-kurgu/kaynak/kur.sh
 
 ## Kullanım
 
-Claude uygulamasında Code sekmesinde, videoyu mesaj kutusuna sürükleyip yazman yeterli:
+Claude uygulamasında Code sekmesinde videoyu mesaj kutusuna sürükleyip yazmanız yeterli:
 
-| Ne istiyorsan | Ne yazarsın |
+| Ne istiyorsanız | Ne yazarsınız |
 |---|---|
 | Videoyu baştan sona kurgulatmak | `bunu Reels yap` |
 | Yalnızca altyazı | `bu videoya altyazı ekle` |
 | Yalnızca kesim | `bu videodaki boşlukları ve tekrarları kes` |
 | Kapak | `bu video için kapak yap` |
-| Stilini değiştirmek | `altyazım kutulu olsun` ya da `stilimi değiştirmek istiyorum` |
+| Stilinizi değiştirmek | `altyazım kutulu olsun` ya da `stilimi değiştirmek istiyorum` |
 | Bir kural koymak | `bir daha sayı kartı kullanma` |
-| Kendi yazı tipini kullanmak | yazı tipi dosyasını sürükle ve `bu yazı tipini kullan` yaz |
+| Kendi yazı tipinizi kullanmak | yazı tipi dosyasını sürükleyin ve `bu yazı tipini kullan` yazın |
 | Ses efektlerini kapatmak | `ses efekti istemiyorum` |
 
-Videoların ve stil dosyan **Filmler → Reels Kurgu** klasöründe durur. Her video kendi klasöründedir; bitmiş dosyalar içindeki `bitmis` klasörüne yazılır.
+Videolarınız ve stil dosyanız **Filmler → Reels Kurgu** klasöründe durur. Her video kendi klasöründedir; bitmiş dosyalar içindeki `bitmis` klasörüne yazılır.
 
-## Videon nereye gidiyor
+## Videonuz nereye gidiyor?
 
-- **Döküm, kesim ve video hazırlama bilgisayarında yapılır.** Videon ve sesin bu adımlarda hiçbir yere gönderilmez.
-- **Claude** konuşmanın yazıya dökülmüş hâlini ve videodan aldığı birkaç kareyi görür; kurgu kararlarını buna göre verir. Bu, Claude ile yaptığın her konuşma gibi işlenir.
-- **İnceleme sayfası** iki yerde açılabilir. Bilgisayarında açarsan hiçbir şey dışarı çıkmaz. Telefonundan da bakmak istersen claude.ai hesabında gizli bir sayfa olarak açılır; o zaman videonun küçültülmüş bir kopyası kendi claude.ai hesabına yüklenir ve yalnızca sen görebilirsin. Hangisini istediğini Claude sana sorar.
-- **Kapak stüdyosu** yalnızca bilgisayarında çalışır.
+- **Döküm, kesim ve video hazırlama bilgisayarınızda yapılır.** Videonuz ve sesiniz bu adımlarda hiçbir yere gönderilmez.
+- **Claude** konuşmanızın yazıya dökülmüş hâlini ve videodan aldığı birkaç kareyi görür; kurgu kararlarını buna göre verir. Bu, Claude ile yaptığınız her konuşma gibi işlenir.
+- **İnceleme sayfası** iki yerde açılabilir. Bilgisayarınızda açarsanız hiçbir şey dışarı çıkmaz. Telefonunuzdan da bakmak isterseniz claude.ai hesabınızda gizli bir sayfa olarak açılır; o zaman videonun küçültülmüş bir kopyası kendi claude.ai hesabınıza yüklenir ve yalnızca siz görebilirsiniz. Hangisini istediğinizi Claude size sorar.
+- **Kapak stüdyosu** yalnızca bilgisayarınızda çalışır.
 - Videoda adı geçen bir sitenin görüntüsü istenirse Claude o sitenin herkese açık ana sayfasını açar.
 
-## Ücreti var mı
+## Ücreti var mı?
 
-Asistan ücretsizdir. Claude planın dışında hiçbir şey ödemezsin: kullanılan bütün araçlar açık kaynaktır ve bilgisayarında çalışır. Video hazırlamak para değil zaman harcar; 30 saniyelik bir video için önizleme yaklaşık bir dakika, son hâl bir iki dakika sürer.
+Asistan ücretsiz. Claude planınızın dışında hiçbir şey ödemezsiniz: kullanılan bütün araçlar açık kaynak ve bilgisayarınızda çalışır. Video hazırlamanın tek bedeli zaman. 30 saniyelik bir video için önizleme yaklaşık bir dakika, son hâl bir iki dakika sürer.
 
-## Neleri yapamaz
+## Neleri yapamaz?
 
 - **Windows ve Linux:** denenmedi.
-- **Arka plan müziği:** eklemez. Müziği paylaşırken Instagram'da eklersin; güncel sesler zaten oradadır.
+- **Arka plan müziği:** eklemez. Müziği paylaşırken Instagram'da eklersiniz; güncel sesler zaten orada.
 - **Çok kameralı çekim ve röportaj:** tek kişinin kameraya konuştuğu videolar için hazırlandı.
-- **Ekran kaydı ve ek görüntü kurgusu:** yok. Kendi ekran görüntülerini ve fotoğraflarını grafik olarak ekleyebilirsin.
-- **Kısa "ııı"lar:** uzun duraksamalar kendiliğinden gider ama bir kelimeye yapışık kısa bir "ııı" kalabilir. İnceleme sayfasında dinleyip kesebilirsin.
-- **Yazım:** özel adları yanlış duyabilir. Paylaşmadan önce altyazıyı bir kez oku.
+- **Ekran kaydı ve ek görüntü kurgusu:** yok. Kendi ekran görüntülerinizi ve fotoğraflarınızı grafik olarak ekleyebilirsiniz.
+- **Kısa "ııı"lar:** uzun duraklamalar kendiliğinden gider, ama bir kelimeye yapışık kısa bir "ııı" kalabilir. İnceleme sayfasında dinleyip kesebilirsiniz.
+- **Yazım:** özel adları yanlış duyabilir. Paylaşmadan önce altyazıyı bir kez okuyun.
 
-## Stilin
+## Stiliniz
 
-Görünüşle ilgili her şey tek dosyadadır: `Filmler/Reels Kurgu/stil.json`. Claude ile konuşarak değiştirirsin; elle açman gerekmez. Bir kural söylediğinde ("bir daha kutulu altyazı kullanma") Claude onu dosyaya yazar ve sonraki videolarda uyar.
+Görünüşle ilgili her şey tek dosyada durur: `Filmler/Reels Kurgu/stil.json`. Claude ile konuşarak değiştirirsiniz; dosyayı elle açmanız gerekmez. Bir kural söylediğinizde ("bir daha kutulu altyazı kullanma") Claude onu dosyaya yazar ve sonraki videolarda uyar.
 
-Dokuz yazı tipi hazır gelir ve hepsi Türkçe harfleri içerir: Inter, Poppins, Rubik, Nunito, Bricolage Grotesque, Space Grotesk, Playfair Display, DM Serif Display, Bebas Neue. Markana ait bir yazı tipin varsa dosyasını Claude'a ver; onu da kullanabilirsin. Asistan, yazı tipinde eksik Türkçe harf varsa seni uyarır.
+Dokuz yazı tipi hazır gelir ve hepsi Türkçe harfleri içerir: Inter, Poppins, Rubik, Nunito, Bricolage Grotesque, Space Grotesk, Playfair Display, DM Serif Display, Bebas Neue. Markanıza ait bir yazı tipiniz varsa dosyasını Claude'a verin; onu da kullanabilirsiniz. Yazı tipinde eksik Türkçe harf varsa asistan sizi uyarır.
 
-Doldurulmuş bir örnek için [ornek/stil.json](ornek/stil.json) dosyasına bakabilirsin.
+Doldurulmuş bir örnek görmek isterseniz [ornek/stil.json](ornek/stil.json) dosyasına bakın.
 
-## Depoda neler var
+## Depoda neler var?
 
 ```
 kur.sh                       kurulum ve güncelleme
@@ -126,17 +126,17 @@ testler/                     otomatik testler
 LISANSLAR.md                 kullanılan araçların ve yazı tiplerinin lisansları
 ```
 
-Kendi ihtiyacına göre değiştirmek serbest. Claude'a "bu depoda şunu değiştir" demen yeterli; değişikliği yapıp `bash kur.sh` ile yeniden kurar.
+Kendi ihtiyacınıza göre değiştirmek serbest. Claude'a "bu depoda şunu değiştir" demeniz yeterli; değişikliği yapar ve `bash kur.sh` ile yeniden kurar.
 
 ## Lisans
 
-[MIT](LICENSE). Dilediğin gibi kullanabilir, değiştirebilir ve paylaşabilirsin.
+[MIT](LICENSE). Dilediğiniz gibi kullanabilir, değiştirebilir ve paylaşabilirsiniz.
 
-Asistan şu açık kaynak araçların üstüne kuruludur: HyperFrames, whisper.cpp, FFmpeg, GSAP ve lottie-web. Yazı tipleri SIL Open Font License ile dağıtılır; ses efektleri kamu malı (CC0) kayıtlardır. Ayrıntılar [LISANSLAR.md](LISANSLAR.md) dosyasında.
+Asistan şu açık kaynak araçların üstüne kurulu: HyperFrames, whisper.cpp, FFmpeg, GSAP ve lottie-web. Yazı tipleri SIL Open Font License ile dağıtılır; ses efektleri kamu malı (CC0) kayıtlardır. Ayrıntılar [LISANSLAR.md](LISANSLAR.md) dosyasında.
 
-## Bir yerde takılırsan
+## Bir yerde takılırsanız
 
-Önce Claude'a sor: "kurulumu kontrol et" ya da "şu hatayı aldım" demen çoğu zaman yeter. Çözülmezse Instagram'da [@aysegul.digital](https://instagram.com/aysegul.digital) hesabına yaz.
+Önce Claude'a sorun: "kurulumu kontrol et" ya da "şu hatayı aldım" demeniz çoğu zaman yeter. Çözülmezse bana Instagram'da [@aysegul.digital](https://instagram.com/aysegul.digital) hesabından yazın.
 
 ## Ayşegül Digital
 
