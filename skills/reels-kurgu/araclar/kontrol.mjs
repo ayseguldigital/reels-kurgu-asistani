@@ -128,10 +128,12 @@ await kutuphane(LOTTIE, 'Lottie oynatıcısı');
 
 // 7. HyperFrames ve onun kullandığı tarayıcı: videonun kendisini üretir
 const hf = hyperframes();
+// HyperFrames kendi tarayıcısını indirir. İndirilmemişse bilgisayardaki Chrome'a düşer; sonuç sürümden
+// sürüme değişebileceği için hep kendi tarayıcısı kullanılır.
 async function hfTarayiciVar() {
   try {
     const { cikti } = await calistir(hf.komut, [...hf.on, 'browser', 'path'], { ortam: hf.ortam });
-    return cikti.trim().length > 0;
+    return /hyperframes/i.test(cikti.trim().split('\n').pop() || '');
   } catch {
     return false;
   }
@@ -143,9 +145,9 @@ if (nodeSurum < 22) {
 } else if (!kur) {
   yok(`HyperFrames ${HYPERFRAMES_SURUM} ya da tarayıcısı hazır değil`);
 } else {
-  console.log('  … HyperFrames ve tarayıcısı indiriliyor (yaklaşık 200 MB)');
+  console.log('  … HyperFrames ve tarayıcısı indiriliyor (yaklaşık 300 MB)');
   await new Promise((coz) => {
-    const s = spawn(hf.komut, [...hf.on, 'browser', 'ensure'], { stdio: 'inherit', env: hf.ortam });
+    const s = spawn(hf.komut, [...hf.on, 'browser', 'ensure', '--force'], { stdio: 'inherit', env: hf.ortam });
     s.on('error', () => coz(1));
     s.on('close', coz);
   });

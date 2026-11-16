@@ -162,6 +162,7 @@ const satirlar = satirlaraBol(cikti.kelimeler);
 const yazi = [];
 yazi.push(`Süre ${sureYaz(cikti.sure)} · ${cikti.kelimeler.length} kelime · dil ${dil}`);
 yazi.push('Satır başındaki sayı satır numarası, köşeli parantezdeki sayılar o satırın ilk ve son kelime numarasıdır.');
+yazi.push('Her satırın altında kelimeler numaralarıyla yazılır (12·kelime); kesim kararları ve grafikler bu numaralarla verilir.');
 yazi.push('(?) = emin olunamayan kelime · ⏸ = duraklama (sn) · ♪ = kelime yok ama ses var (ııı, gülme ya da atlanmış söz olabilir)');
 yazi.push('');
 satirlar.forEach((s, n) => {
@@ -183,6 +184,9 @@ satirlar.forEach((s, n) => {
   yazi.push(
     `${String(n + 1).padStart(3)}  ${sureYaz(s.bas).padStart(7)}–${sureYaz(s.bit).padEnd(7)} [${s.ilk}–${s.son}]  ${parcalar.join(' ')}${ek}`,
   );
+  const numarali = [];
+  for (let i = s.ilk; i <= s.son; i++) numarali.push(`${i}·${cikti.kelimeler[i].m}`);
+  yazi.push(`       ${numarali.join('  ')}`);
 });
 await writeFile(path.join(klasor, 'dokum.txt'), yazi.join('\n') + '\n');
 

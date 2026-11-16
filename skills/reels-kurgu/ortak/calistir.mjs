@@ -4,6 +4,11 @@ import { access } from 'node:fs/promises';
 import { constants } from 'node:fs';
 import path from 'node:path';
 
+// Homebrew'un kurduğu araçlar (ffmpeg, whisper-cli) bazı kabuklarda yolda görünmez; iki olağan klasör eklenir.
+for (const klasor of ['/opt/homebrew/bin', '/usr/local/bin']) {
+  if (!(process.env.PATH || '').split(path.delimiter).includes(klasor)) process.env.PATH = `${process.env.PATH || ''}${path.delimiter}${klasor}`;
+}
+
 /**
  * Bir programı çalıştırır, bitince çıktısını döndürür.
  * @param {string} komut

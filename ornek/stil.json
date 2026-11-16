@@ -1,0 +1,12 @@
+{
+  "renkler": { "ana": "#3B1D5E", "vurgu": "#FFB703" },
+  "fontlar": { "govde": "Poppins", "vurgu": "Playfair Display" },
+  "altyazi": { "bicim": "ifade", "zemin": "kontur", "boyut": "orta", "konum": "alt", "harf": "normal", "aktifKelime": true },
+  "tempo": "dengeli",
+  "grafik": "dengeli",
+  "cagri": "Yorumlara *REHBER* yaz",
+  "ozelAdlar": ["Claude", "Reels", "Instagram"],
+  "duzeltmeler": { "Cloud": "Claude" },
+  "dolguSozcukler": ["şey"],
+  "kurallar": ["Videolarda sayı kartı en çok bir kez kullanılsın."]
+}
