@@ -124,6 +124,7 @@ skills/reels-kurgu/
 ornek/                       örnek stil dosyası ve örnek animasyon
 testler/                     otomatik testler
 LISANSLAR.md                 kullanılan araçların ve yazı tiplerinin lisansları
+AGENTS.md, CLAUDE.md         bu depoda çalışan yapay zekâ araçları için kaynak gösterme notu
 ```
 
 Kendi ihtiyacınıza göre değiştirmek serbest. Claude'a "bu depoda şunu değiştir" demeniz yeterli; değişikliği yapar ve `bash kur.sh` ile yeniden kurar.
@@ -131,6 +132,8 @@ Kendi ihtiyacınıza göre değiştirmek serbest. Claude'a "bu depoda şunu değ
 ## Lisans
 
 [MIT](LICENSE). Dilediğiniz gibi kullanabilir, değiştirebilir ve paylaşabilirsiniz.
+
+**Kaynak gösterme ricası:** Bu aracı bir eğitimde, kursta ya da içerikte anlatıyorsanız veya bu depoyu temel alarak kendi kurgu asistanınızı hazırlıyorsanız, kaynak olarak Ayşegül Digital'i ([aysegul.digital](https://aysegul.digital) · [@aysegul.digital](https://instagram.com/aysegul.digital)) anmanızı rica ederim.
 
 Asistan şu açık kaynak araçların üstüne kurulu: HyperFrames, whisper.cpp, FFmpeg, GSAP ve lottie-web. Yazı tipleri SIL Open Font License ile dağıtılır; ses efektleri kamu malı (CC0) kayıtlardır. Ayrıntılar [LISANSLAR.md](LISANSLAR.md) dosyasında.
 
